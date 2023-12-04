@@ -10,7 +10,12 @@ typedef enum e_tk_type
 	LPAREN,
 	RPAREN,
 	PIPE,
-	IDENT
+	IDENT,
+	BUILTIN,
+	REDIN, //redirect input
+	REDOUT, //redirect output
+	HEREDOC,
+	TILDE
 } t_tk_type;
 
 typedef struct s_tk
