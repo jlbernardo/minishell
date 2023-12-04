@@ -6,9 +6,10 @@
 
 typedef enum e_tk_type
 {
-	CMND,
-	IDENT,
-	DELIM
+	SEMICOLON,
+	LPAREN,
+	RPAREN,
+	PIPE
 } t_tk_type;
 
 typedef struct s_tk

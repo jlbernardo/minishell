@@ -27,16 +27,41 @@ t_tk	*new_token(t_tk_type type, char *literal)
 	token = ft_calloc(1, sizeof(t_tk *));
 	token->type = type;
 	token->literal = ft_strdup(literal);
+	token->next = NULL;
 	return (token);
+}
+
+t_tk	*next_token(t_lexer *l)
+{
+	if (l->ch == '(')
+		return new_token(LPAREN, "(");
+	if (l->ch == ')')
+		return new_token(RPAREN, ")");
+	if (l->ch == ';')
+		return new_token(SEMICOLON, ";");
+	if (l->ch == '|')
+		return new_token(PIPE, "(");
+	else
+		return (NULL);
 }
 
 int main(void)
 {
 	char *input;
 	t_lexer	lexer;
+	t_tk	*token;
 
 	input = readline("$>");
 	set_lexer(&lexer, input);
+	read_char(&lexer);
+	token = next_token(&lexer);
+	read_char(&lexer);
+	token = next_token(&lexer);
+	read_char(&lexer);
+	token = next_token(&lexer);
+	read_char(&lexer);
+	token = next_token(&lexer);
+
 	free(input);
 
 	return (0);
