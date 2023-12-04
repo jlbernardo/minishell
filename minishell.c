@@ -87,15 +87,11 @@ int main(void)
 	head = ft_calloc(1, sizeof(t_tk **));
 	input = readline("$>");
 	set_lexer(&lexer, input);
-	read_char(&lexer);
-	next_token(&lexer, head);
-	read_char(&lexer);
-	next_token(&lexer, head);
-	read_char(&lexer);
-	next_token(&lexer, head);
-	read_char(&lexer);
-	next_token(&lexer, head);
-
+	while(lexer.read_pos <= lexer.size)
+	{
+		read_char(&lexer);
+		next_token(&lexer, head);
+	}
 	free(input);
 
 	return (0);
