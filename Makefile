@@ -31,4 +31,7 @@ fclean: clean
 
 re: fclean $(NAME)
 
+debug: $(LIBFT) $(OBJ)
+	$(CC) $(FLAGS) -gdwarf-4 $(SRC) $(LIBFT_DIR)/*.c -o $(NAME) $(LIBS)
+
 .PHONY: all clean fclean re
