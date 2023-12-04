@@ -20,6 +20,16 @@ void	read_char(t_lexer *l)
 	l->read_pos++;
 }
 
+t_tk	*new_token(t_tk_type type, char *literal)
+{
+	t_tk *token;
+
+	token = ft_calloc(1, sizeof(t_tk *));
+	token->type = type;
+	token->literal = ft_strdup(literal);
+	return (token);
+}
+
 int main(void)
 {
 	char *input;
