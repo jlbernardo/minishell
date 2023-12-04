@@ -31,36 +31,52 @@ t_tk	*new_token(t_tk_type type, char *literal)
 	return (token);
 }
 
-t_tk	*next_token(t_lexer *l)
+void	append_token(t_tk **head, t_tk *token)
 {
+	t_tk	*last;
+
+	if (*head == NULL)
+	{
+		*head = token;
+		return ;
+	}
+	last = *head;
+	while (last->next != NULL)
+		last = last->next;
+	last->next = token;
+}
+
+void	next_token(t_lexer *l, t_tk **head)
+{
+	// if (ft_isalpha(l->ch) || l->ch == '_')
+	// 	return append_token(head, new_token(IDENT, read_identifier(l));
 	if (l->ch == '(')
-		return new_token(LPAREN, "(");
+		return append_token(head, new_token(LPAREN, "("));
 	if (l->ch == ')')
-		return new_token(RPAREN, ")");
+		return append_token(head, new_token(RPAREN, ")"));
 	if (l->ch == ';')
-		return new_token(SEMICOLON, ";");
+		return append_token(head, new_token(SEMICOLON, ";"));
 	if (l->ch == '|')
-		return new_token(PIPE, "(");
-	else
-		return (NULL);
+		return append_token(head, new_token(PIPE, "|"));
 }
 
 int main(void)
 {
 	char *input;
 	t_lexer	lexer;
-	t_tk	*token;
+	t_tk **head;
 
+	head = ft_calloc(1, sizeof(t_tk **));
 	input = readline("$>");
 	set_lexer(&lexer, input);
 	read_char(&lexer);
-	token = next_token(&lexer);
+	next_token(&lexer, head);
 	read_char(&lexer);
-	token = next_token(&lexer);
+	next_token(&lexer, head);
 	read_char(&lexer);
-	token = next_token(&lexer);
+	next_token(&lexer, head);
 	read_char(&lexer);
-	token = next_token(&lexer);
+	next_token(&lexer, head);
 
 	free(input);
 
