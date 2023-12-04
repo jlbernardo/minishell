@@ -46,10 +46,28 @@ void	append_token(t_tk **head, t_tk *token)
 	last->next = token;
 }
 
+char *read_identifier(t_lexer *l)
+{
+	char *identifier;
+	size_t len;
+
+	while (ft_isalnum(l->input[l->read_pos]) || l->input[l->read_pos] == '_')
+		++l->read_pos;
+	len = l->read_pos - l->pos;
+	identifier = ft_substr(l->input, l->pos, len);
+	l->pos = l->read_pos - 1;
+	return (identifier);
+}
+
 void	next_token(t_lexer *l, t_tk **head)
 {
-	// if (ft_isalpha(l->ch) || l->ch == '_')
-	// 	return append_token(head, new_token(IDENT, read_identifier(l));
+	char *ident;
+	if (ft_isalpha(l->ch) || l->ch == '_')
+	{
+		append_token(head, new_token(IDENT, ident = read_identifier(l)));
+		free(ident);
+		return ;
+	}
 	if (l->ch == '(')
 		return append_token(head, new_token(LPAREN, "("));
 	if (l->ch == ')')

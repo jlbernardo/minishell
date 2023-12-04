@@ -9,7 +9,8 @@ typedef enum e_tk_type
 	SEMICOLON,
 	LPAREN,
 	RPAREN,
-	PIPE
+	PIPE,
+	IDENT
 } t_tk_type;
 
 typedef struct s_tk
