@@ -4,16 +4,17 @@
 #include "../libft/libft.h"
 #include <readline/readline.h>
 
-typedef struct s_word
+typedef enum e_tk_type
 {
-	char *word;
-	int	flags;
-} t_word;
+	CMND,
+	IDENT,
+	DELIM
+} t_tk_type;
 
-typedef struct s_word_list
+typedef struct s_tk
 {
-	t_word word;
-	t_word *next;
-} t_word_list;
+	t_tk_type	type;
+	char		*literal;
+} t_tk;
 
 #endif //MINISHELL_H
