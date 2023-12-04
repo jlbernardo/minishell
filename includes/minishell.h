@@ -15,7 +15,8 @@ typedef enum e_tk_type
 	REDIN, //redirect input
 	REDOUT, //redirect output
 	HEREDOC,
-	TILDE
+	TILDE,
+	STRING
 } t_tk_type;
 
 typedef struct s_tk
