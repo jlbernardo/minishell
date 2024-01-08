@@ -80,9 +80,9 @@ void	next_token(t_lexer *l, t_tk **head)
 
 int main(void)
 {
+	t_tk **head;
 	char *input;
 	t_lexer	lexer;
-	t_tk **head;
 
 	head = ft_calloc(1, sizeof(t_tk **));
 	input = readline("$>");
