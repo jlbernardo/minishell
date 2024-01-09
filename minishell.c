@@ -16,8 +16,7 @@ void	read_char(t_lexer *l)
 		l->ch = 0;
 	else
 		l->ch = l->input[l->read_pos];
-	l->pos = l->read_pos;
-	l->read_pos++;
+	l->pos = l->read_pos++;
 }
 
 t_tk	*new_token(t_tk_type type, char *literal)
@@ -44,6 +43,23 @@ void	append_token(t_tk **head, t_tk *token)
 	while (last->next != NULL)
 		last = last->next;
 	last->next = token;
+}
+
+char *read_string(t_lexer *l)
+{
+	char	*string;
+	char	quote;
+	size_t	len;
+
+	quote = l->ch;
+	l->pos = l->read_pos++;
+	while (l->input[l->read_pos] != quote && l->input[l->read_pos] != '\0')
+		++l->read_pos;
+	len = l->read_pos - l->pos;
+	string = ft_substr(l->input, l->pos, len);
+	l->pos = l->read_pos - 1;
+	l->ch = l->input[l->read_pos];
+	return (string);
 }
 
 char *read_identifier(t_lexer *l)
@@ -85,14 +101,39 @@ void	next_token(t_lexer *l, t_tk **head)
 		free(word);
 		return ;
 	}
+	else if (l->ch == '"')
+	{
+		word = read_string(l);
+		if (l->ch == '"')
+		{
+			append_token(head, new_token(STRING, word));
+			l->pos = l->read_pos++;
+		}
+		else
+			append_token(head, new_token(ILLEGAL, word));
+		free(word);
+		return ;
+	}
+	else if (l->ch == 39)
+	{
+		word = read_string(l);
+		if (l->ch == 39)
+		{
+			append_token(head, new_token(STRING, word));
+			l->pos = l->read_pos++;
+		}
+		else
+			append_token(head, new_token(ILLEGAL, word));
+		free(word);
+		return ;
+	}
 	else if (l->ch == '>')
 	{
 		//checa se o próximo é '>'
 		if (l->input[l->read_pos] == '>')
 		{
 			append_token(head, new_token(APPEND, ">>"));
-			l->pos++;
-			l->read_pos++;
+			l->pos = l->read_pos++;
 			return ;
 		}
 		else
@@ -105,8 +146,7 @@ void	next_token(t_lexer *l, t_tk **head)
 		if (l->input[l->read_pos] == '<')
 		{
 			append_token(head, new_token(HEREDOC, "<<"));
-			l->pos++;
-			l->read_pos++;
+			l->pos = l->read_pos++;
 			return ;
 		}
 		else
