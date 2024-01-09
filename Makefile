@@ -26,7 +26,7 @@ clean:
 	rm -f *.o
 
 fclean: clean
-	rm $(LIBFT)
+	rm -f $(LIBFT)
 	rm -f $(NAME)
 
 re: fclean $(NAME)
@@ -34,4 +34,6 @@ re: fclean $(NAME)
 debug: $(LIBFT) $(OBJ)
 	$(CC) $(FLAGS) -gdwarf-4 $(SRC) $(LIBFT_DIR)/*.c -o $(NAME) $(LIBS)
 
-.PHONY: all clean fclean re
+rebug: fclean debug
+
+.PHONY: all clean fclean re rebug debug
