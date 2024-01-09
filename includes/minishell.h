@@ -6,14 +6,18 @@
 
 typedef enum e_tk_type
 {
+	END,
+	ILLEGAL,
 	SEMICOLON,
 	LPAREN,
 	RPAREN,
 	PIPE,
 	IDENT,
 	BUILTIN,
+	FLAG,
 	REDIN, //redirect input
 	REDOUT, //redirect output
+	APPEND,
 	HEREDOC,
 	TILDE,
 	STRING

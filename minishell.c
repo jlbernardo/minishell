@@ -68,14 +68,58 @@ void	next_token(t_lexer *l, t_tk **head)
 		free(ident);
 		return ;
 	}
-	if (l->ch == '(')
+	else if (l->ch == '>')
+	{
+		//checa se o próximo é '>'
+		if (l->input[l->read_pos] == '>')
+		{
+			append_token(head, new_token(APPEND, ">>"));
+			l->pos++;
+			l->read_pos++;
+			return ;
+		}
+		else
+		{
+			return append_token(head, new_token(REDOUT, ">"));
+		}
+	}
+	else if (l->ch == '<')
+	{
+		if (l->input[l->read_pos] == '<')
+		{
+			append_token(head, new_token(HEREDOC, "<<"));
+			l->pos++;
+			l->read_pos++;
+			return ;
+		}
+		else
+		{
+			return append_token(head, new_token(REDIN, "<"));
+		}
+	}
+	else if (l->ch == '(')
 		return append_token(head, new_token(LPAREN, "("));
-	if (l->ch == ')')
+	else if (l->ch == ')')
 		return append_token(head, new_token(RPAREN, ")"));
-	if (l->ch == ';')
+	else if (l->ch == ';')
 		return append_token(head, new_token(SEMICOLON, ";"));
-	if (l->ch == '|')
+	else if (l->ch == '|')
 		return append_token(head, new_token(PIPE, "|"));
+	else if (l->ch == '~')
+		return append_token(head, new_token(TILDE, "~"));
+	else if ((l->ch >= 7 && l->ch <= 13) || l->ch == 32)
+		return ;
+	else if (l->ch == 0)
+		return append_token(head, new_token(END, ""));
+	else if (l->ch == '-' && l->input[l->read_pos] == 'n')
+	{
+		append_token(head, new_token(FLAG, "-n"));
+		l->pos++;
+		l->read_pos++;
+		return ;
+	}
+	else
+		return append_token(head, new_token(ILLEGAL, "ILLEGAL"));
 }
 
 int main(void)
