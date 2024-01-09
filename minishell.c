@@ -59,13 +59,30 @@ char *read_identifier(t_lexer *l)
 	return (identifier);
 }
 
+unsigned int	check_builtin(char *word)
+{
+	if (!ft_strncmp(word, "echo", ft_strlen(word)) ||
+		!ft_strncmp(word, "cd", ft_strlen(word)) ||
+		!ft_strncmp(word, "pwd", ft_strlen(word)) ||
+		!ft_strncmp(word, "export", ft_strlen(word)) ||
+		!ft_strncmp(word, "unset", ft_strlen(word)) ||
+		!ft_strncmp(word, "env", ft_strlen(word)) ||
+		!ft_strncmp(word, "exit", ft_strlen(word)))
+		return (1);
+	return (0);
+}
+
 void	next_token(t_lexer *l, t_tk **head)
 {
-	char *ident;
+	char *word;
 	if (ft_isalpha(l->ch) || l->ch == '_')
 	{
-		append_token(head, new_token(IDENT, ident = read_identifier(l)));
-		free(ident);
+		word = read_identifier(l);
+		if (check_builtin(word))
+			append_token(head, new_token(BUILTIN, word));
+		else
+			append_token(head, new_token(IDENT, word));
+		free(word);
 		return ;
 	}
 	else if (l->ch == '>')
