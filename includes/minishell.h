@@ -1,7 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
+/*   Updated: 2024/01/10 14:54:12 by julberna         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
 #include "../libft/libft.h"
+#include <stdio.h>
 #include <readline/readline.h>
 
 typedef enum e_tk_type
@@ -12,7 +25,8 @@ typedef enum e_tk_type
 	LPAREN,
 	RPAREN,
 	PIPE,
-	IDENT,
+	VAR,
+	WORD,
 	BUILTIN,
 	FLAG,
 	REDIN, //redirect input
@@ -38,5 +52,10 @@ typedef struct s_lexer
 	char			ch;
 	unsigned int	size;
 } t_lexer;
+
+// ** LEXER **
+void	read_char(t_lexer *l);
+void	set_lexer(t_lexer *lexer, char *input);
+t_tk	*new_token(t_tk_type type, char *literal);
 
 #endif //MINISHELL_H

@@ -1,34 +1,16 @@
-#include <stdio.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/10 13:43:53 by julberna          #+#    #+#             */
+/*   Updated: 2024/01/10 16:23:02 by julberna         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "includes/minishell.h"
-
-void	set_lexer(t_lexer *lexer, char *input)
-{
-	lexer->input = input;
-	lexer->pos = 0;
-	lexer->read_pos = 0;
-	lexer->ch = 0;
-	lexer->size = ft_strlen(input);
-}
-
-void	read_char(t_lexer *l)
-{
-	if (l->read_pos >= l->size)
-		l->ch = 0;
-	else
-		l->ch = l->input[l->read_pos];
-	l->pos = l->read_pos++;
-}
-
-t_tk	*new_token(t_tk_type type, char *literal)
-{
-	t_tk *token;
-
-	token = ft_calloc(1, sizeof(t_tk *));
-	token->type = type;
-	token->literal = ft_strdup(literal);
-	token->next = NULL;
-	return (token);
-}
 
 void	append_token(t_tk **head, t_tk *token)
 {
@@ -62,12 +44,12 @@ char *read_string(t_lexer *l)
 	return (string);
 }
 
-char *read_identifier(t_lexer *l)
+char *read_word(t_lexer *l)
 {
 	char *identifier;
 	size_t len;
 
-	while (ft_isalnum(l->input[l->read_pos]) || l->input[l->read_pos] == '_')
+	while (ft_notspace(l->input[l->read_pos]))
 		++l->read_pos;
 	len = l->read_pos - l->pos;
 	identifier = ft_substr(l->input, l->pos, len);
@@ -88,20 +70,38 @@ unsigned int	check_builtin(char *word)
 	return (0);
 }
 
+unsigned int	check_variable(char **word, t_lexer *l)
+{
+	int	i;
+
+	i = 0;
+	if (*word[i] == '$' && (ft_isalpha((*word)[i + 1]) || 
+		(*word)[i + 1] == '_'))
+	{
+		// word = word + 2;
+		i += 2;
+		while ((*word)[i])
+		{
+			if (ft_isalnum((*word)[i]) || (*word)[i] == '_')
+				i++;
+			else
+			{
+				(*word)[i] = '\0';
+				l->read_pos -= l->read_pos - (ft_strlen(*word));
+				l->pos = l->read_pos - 1;
+				l->ch = l->input[l->read_pos];
+				break ;
+			}
+		}
+		return (1);
+	}
+	return (0);
+}
+
 void	next_token(t_lexer *l, t_tk **head)
 {
 	char *word;
-	if (ft_isalpha(l->ch) || l->ch == '_')
-	{
-		word = read_identifier(l);
-		if (check_builtin(word))
-			append_token(head, new_token(BUILTIN, word));
-		else
-			append_token(head, new_token(IDENT, word));
-		free(word);
-		return ;
-	}
-	else if (l->ch == '"')
+	if (l->ch == '"')
 	{
 		word = read_string(l);
 		if (l->ch == '"')
@@ -173,6 +173,18 @@ void	next_token(t_lexer *l, t_tk **head)
 		append_token(head, new_token(FLAG, "-n"));
 		l->pos++;
 		l->read_pos++;
+		return ;
+	}
+	else if (ft_notspace(l->ch))
+	{
+		word = read_word(l);
+		if (check_builtin(word))
+			append_token(head, new_token(BUILTIN, word));
+		else if (check_variable(&word, l))
+			append_token(head, new_token(VAR, word + 1));
+		else
+			append_token(head, new_token(WORD, word));
+		free(word);
 		return ;
 	}
 	else

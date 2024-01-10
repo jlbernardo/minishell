@@ -9,7 +9,7 @@ LIBFT_DIR = ./libft
 
 INCLUDE = ./includes
 
-SRC = minishell.c
+SRC = minishell.c parser.c lexer.c token.c
 
 OBJ = $(SRC:.c=.o)
 
@@ -34,6 +34,8 @@ re: fclean $(NAME)
 debug: $(LIBFT) $(OBJ)
 	$(CC) $(FLAGS) -gdwarf-4 $(SRC) $(LIBFT_DIR)/*.c -o $(NAME) $(LIBS)
 
-rebug: fclean debug
+rebug: clean debug
 
-.PHONY: all clean fclean re rebug debug
+frebug: fclean debug
+
+.PHONY: all clean fclean re rebug frebug debug
