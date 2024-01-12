@@ -6,7 +6,7 @@
 /*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:49 by julberna          #+#    #+#             */
-/*   Updated: 2024/01/11 20:55:48 by julberna         ###   ########.fr       */
+/*   Updated: 2024/01/12 17:56:34 by julberna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,15 @@
 void	lexer(t_token **tokens)
 {
 	char	*input;
-	t_lexer	*lex;
+	t_lexer	lex;
 
-	*tokens = ft_calloc(1, sizeof(t_token *));
-	*input = readline("$>");
+	*tokens = NULL;
+	input = readline("$>");
 	set_lexer(&lex, input);
-	while(lex->read_pos <= lex->size)
+	while (lex.read_pos <= lex.size)
 	{
 		read_char(&lex);
-		find_token(&lex, tokens);
+		find_token(&lex, tokens, 1);
 	}
 	free(input);
 }
@@ -37,36 +37,30 @@ void	set_lexer(t_lexer *lex, char *input)
 	lex->size = ft_strlen(input);
 }
 
-void	read_char(t_lexer *lex)
-{
-	if (lex->read_pos >= lex->size)
-		lex->ch = 0;
-	else
-		lex->ch = lex->input[lex->read_pos];
-	lex->pos = lex->read_pos++;
-}
-
-void	*find_token(t_lexer *lex, t_token **tokens)
+void	find_token(t_lexer *lex, t_token **tokens, int size)
 {
 	char	*str;
-	int		size;
 
-	if (is_operand(lex->ch))
+	if (lex->ch == ' ')
+		return ;
+	else if (is_operand(lex->ch))
 	{
-		size = 1;
-		if ((lex->ch == '>' || lex->ch == '<') && 
-			lex->input[lex->read_pos] == lex->ch)
+		if ((lex->ch == '>' || lex->ch == '<')
+			&& lex->input[lex->read_pos] == lex->ch)
 			size++;
-		ft_strlcpy(str, lex->input[lex->pos], size); //check correct start
-		new_token(tokens, "operand", str);
+		str = ft_calloc(size + 1, sizeof(char));
+		ft_memcpy(str, &lex->input[lex->pos], size);
+		new_token(tokens, OPERAND, str);
+		if (size > 1)
+			lex->pos = lex->read_pos++;
 	}
 	else
 	{
 		if (lex->ch == '"' || lex->ch == '\'')
-			str = read_string(lex);
+			str = read_quoted(lex);
 		else
-			str = read_word(lex);
-		new_token(tokens, "word", str);
+			str = read_unquoted(lex);
+		new_token(tokens, WORD, str);
 	}
-	return ;
+	return (free(str));
 }

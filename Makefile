@@ -9,7 +9,7 @@ LIBFT_DIR = ./libft
 
 INCLUDE = ./includes
 
-SRC = minishell.c parser.c lexer.c token.c
+SRC = minishell.c lexer.c list_handler.c input_handler.c
 
 OBJ = $(SRC:.c=.o)
 
