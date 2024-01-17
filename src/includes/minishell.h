@@ -6,7 +6,7 @@
 /*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/01/13 17:00:20 by julberna         ###   ########.fr       */
+/*   Updated: 2024/01/17 17:54:00 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,18 +31,36 @@ typedef struct s_token
 	struct s_token	*next;
 }				t_token;
 
+typedef struct s_redirect
+{
+	int	mode;
+	char	*filename;
+	struct	s_redirect *next;
+} t_redirect;
+
 typedef struct s_cmd
 {
-	char			*cmd;
-	char			*flag;
-	char			*args;
-	int				out_fd;
-	int				out_mode;
-	int				in_fd;
-	int				in_delim;
-	int				err_fd;
+	char			*pathname;
+	char			**word_list;
+	t_redirect		*redirects;
 	struct s_cmd	*next;
 }				t_cmd;
+
+typedef struct s_pipeline
+{
+	t_cmd	*left;
+	union u_pl_right
+	{
+		t_cmd *cmd;
+		struct s_pipeline *pipeline;
+	} *right;
+} t_pipeline;
+
+typedef struct s_wordlist
+{
+	char *word;
+	struct s_wordlist *next;
+} t_wordlist;
 
 typedef struct s_lexer
 {
