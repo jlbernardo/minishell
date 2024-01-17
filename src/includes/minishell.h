@@ -6,7 +6,7 @@
 /*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/01/17 17:54:00 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/01/17 18:10:48 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,15 +46,18 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 }				t_cmd;
 
+typedef union
+{
+	t_cmd	*cmd;
+	struct s_pipeline	*pipeline;
+}	u_plcmd;
+
 typedef struct s_pipeline
 {
 	t_cmd	*left;
-	union u_pl_right
-	{
-		t_cmd *cmd;
-		struct s_pipeline *pipeline;
-	} *right;
+	u_plcmd	*right;
 } t_pipeline;
+
 
 typedef struct s_wordlist
 {
@@ -87,5 +90,10 @@ void	new_token(t_token **tk, int type, char *literal);
 void	new_cmd(t_cmd **cmd, char *cmd_str, char *flag, char *args);
 t_cmd	*cmd_last(t_cmd *cmd);
 t_token	*tk_last(t_token *tk);
+
+/* PARSER */
+u_plcmd *parse_pipeline(t_token *tokens);
+t_cmd	*parse_cmd(t_token *tokens);
+
 
 #endif
