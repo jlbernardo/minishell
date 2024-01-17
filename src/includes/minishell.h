@@ -6,14 +6,14 @@
 /*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/01/12 17:56:01 by julberna         ###   ########.fr       */
+/*   Updated: 2024/01/13 17:00:20 by julberna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "../libft/libft.h"
+# include "../../libft/libft.h"
 # include <stdio.h>
 # include <stddef.h>
 # include <readline/readline.h>
