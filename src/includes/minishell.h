@@ -6,7 +6,7 @@
 /*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/01/17 18:10:48 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/01/18 11:06:44 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,17 @@ typedef struct s_redirect
 	struct	s_redirect *next;
 } t_redirect;
 
+typedef struct s_wl_element
+{
+	char *word;
+	struct s_wl_element *next;
+} t_wl_element;
+
 typedef struct s_cmd
 {
 	char			*pathname;
-	char			**word_list;
+	t_wl_element	**word_list;
 	t_redirect		*redirects;
-	struct s_cmd	*next;
 }				t_cmd;
 
 typedef union
@@ -57,13 +62,6 @@ typedef struct s_pipeline
 	t_cmd	*left;
 	u_plcmd	*right;
 } t_pipeline;
-
-
-typedef struct s_wordlist
-{
-	char *word;
-	struct s_wordlist *next;
-} t_wordlist;
 
 typedef struct s_lexer
 {
@@ -94,6 +92,8 @@ t_token	*tk_last(t_token *tk);
 /* PARSER */
 u_plcmd *parse_pipeline(t_token *tokens);
 t_cmd	*parse_cmd(t_token *tokens);
-
+void	set_cmd(t_cmd *cmd);
+t_wl_element	*new_wle(char *s);
+void	append_wle(t_wl_element *w, t_wl_element **wl);
 
 #endif
