@@ -6,49 +6,58 @@
 /*   By: iusantos <iusantos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:55:58 by iusantos          #+#    #+#             */
-/*   Updated: 2024/01/18 11:59:16 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/01/18 16:02:46 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
-//TODO
-//parse_pipeline
-//parse_cmd
-
-u_plcmd *parse_pipeline(t_token *tokens, u_plcmd *parent)
+t_ast_node *parse_pipeline(t_token **tokens, t_ast_node *parent)
 {
-	u_plcmd *pl;
+	t_ast_node *pl_node;
 
-	pl = malloc(sizeof(u_plcmd *));
-	if (pl == NULL)
+	if ((*tokens)->next == NULL)
+		return (NULL);
+	pl_node = malloc(sizeof(t_ast_node *));
+	if (pl_node == NULL)
 		return NULL;
-	pl->pipeline->parent = parent;
-	pl->pipeline->left = parse_cmd(tokens, pl->pipeline);
-	pl->pipeline->right = parse_pipeline(tokens, pl);
+	pl_node->type = PIPELINE;
+	pl_node->parent = parent;
+	pl_node->left = parse_cmd(tokens, pl_node);
+	if ((*tokens)->next == NULL)
+		pl_node->right = NULL;
+	if (ft_strncmp((*tokens)->literal, "|", 1) == 0)
+		pl_node->right = parse_pipeline(tokens, pl_node);
+	else
+		pl_node->right = parse_cmd(tokens, pl_node);
 
-	return pl;
+	return pl_node;
 }
 
-t_cmd	*parse_cmd(t_token *tokens, t_pipeline *parent)
+t_ast_node	*parse_cmd(t_token **tokens, t_ast_node *parent)
 {
-	t_cmd	*cmd;
+	t_ast_node	*cmd_node;
 
-	cmd = malloc(sizeof(t_cmd *));
-	if (cmd == NULL)
+	cmd_node = malloc(sizeof(t_ast_node *));
+	if (cmd_node == NULL)
 		return NULL;
-	set_cmd(cmd, parent);
-	while (tokens->next != NULL)
+	cmd_node->type = CMD;
+	cmd_node->parent = parent;
+	cmd_node->left = NULL;
+	cmd_node->right = NULL;
+	set_cmd(cmd_node);
+	while ((*tokens)->next != NULL
+		&& ft_strncmp((*tokens)->literal, "|", 1) != 0)
 	{
-		if (tokens->type == OPERAND && tokens->next->type == WORD)
+		if ((*tokens)->type == OPERAND && (*tokens)->next->type == WORD)
 		{
-			append_redirect(new_redirect(tokens), cmd->redirects);
-			tokens = tokens->next->next;
+			append_redirect(new_redirect(*tokens), cmd_node->data->redirects);
+			*tokens = (*tokens)->next->next;
 		}
-		else if (tokens->type == WORD)
+		else if ((*tokens)->type == WORD)
 		{
-			append_wle(new_wle(tokens->literal), cmd->word_list);
-			tokens = tokens->next;
+			append_wle(new_wle((*tokens)->literal), cmd_node->data->word_list);
+			*tokens = (*tokens)->next;
 		}
 		else
 		{
@@ -56,7 +65,7 @@ t_cmd	*parse_cmd(t_token *tokens, t_pipeline *parent)
 			return NULL;
 		}
 	}
-	return (cmd);
+	return (cmd_node);
 }
 
 t_redirect	*new_redirect(t_token *tokens)
@@ -103,12 +112,14 @@ void	append_redirect(t_redirect *r, t_redirect **rl)
 	return ;
 }
 
-void	set_cmd(t_cmd *cmd, t_pipeline *parent)
+void	set_cmd(t_ast_node *cmd_node)
 {
-	cmd->parent = parent;
-	cmd->pathname = NULL;
-	cmd->redirects = ft_calloc(sizeof(t_redirect **), 1);
-	cmd->word_list = ft_calloc(sizeof(t_wl_element **), 1);
+	cmd_node->data = malloc(sizeof(t_cmd *));
+	if (cmd_node->data == NULL)
+		return ;
+	cmd_node->data->pathname = ft_calloc(sizeof(char *), 1);
+	cmd_node->data->redirects = ft_calloc(sizeof(t_redirect **), 1);
+	cmd_node->data->word_list = ft_calloc(sizeof(t_wl_element **), 1);
 }
 
 t_wl_element	*new_wle(char *s)
