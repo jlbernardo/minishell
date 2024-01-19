@@ -23,7 +23,7 @@ $(LIBFT):
 
 clean: 
 	$(MAKE) -C $(LIBFT_DIR) clean
-	rm -f *.o
+	rm -f src/*.o
 
 fclean: clean
 	rm -f $(LIBFT)
