@@ -111,6 +111,7 @@ t_token	*tk_last(t_token *tk);
 
 /* PARSER */
 t_ast_node *parse_pipeline(t_token **tokens, t_ast_node *parent);
+int	has_other_pipes(t_token *tokens);
 t_ast_node	*parse_cmd(t_token **tokens, t_ast_node *parent);
 void	set_cmd(t_ast_node *cmd);
 t_redirect	*new_redirect(t_token *tokens);

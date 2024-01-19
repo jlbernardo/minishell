@@ -26,12 +26,27 @@ t_ast_node *parse_pipeline(t_token **tokens, t_ast_node *parent)
 	pl_node->left = parse_cmd(tokens, pl_node);
 	if ((*tokens)->next == NULL)
 		pl_node->right = NULL;
-	if (ft_strncmp((*tokens)->literal, "|", 1) == 0)
+	if (ft_strncmp((*tokens)->literal, "|", 1) == 0
+		&& has_other_pipes(*tokens) == 1)
 		pl_node->right = parse_pipeline(tokens, pl_node);
-	else
+	else if (ft_strncmp((*tokens)->literal, "|", 1) == 0
+		&& has_other_pipes(*tokens) == 0)
 		pl_node->right = parse_cmd(tokens, pl_node);
 
 	return pl_node;
+}
+
+int	has_other_pipes(t_token *tokens)
+{
+	tokens = tokens->next;
+	while (tokens != NULL)
+	{
+		if (ft_strncmp(tokens->literal, "|", 1) == 0)
+			return (1);
+		tokens = tokens->next;
+	}
+	return (0);
+
 }
 
 t_ast_node	*parse_cmd(t_token **tokens, t_ast_node *parent)
