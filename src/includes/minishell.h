@@ -18,64 +18,46 @@
 # include <stddef.h>
 # include <readline/readline.h>
 
-typedef enum e_tk_type
-{
-	WORD,
-	OPERAND,
-}				t_tk_type;
+# define WORD 10
+# define OPERAND 11
 
-typedef enum e_redir_type
-{
-	REDOUT,
-	APPEND,
-	REDIN,
-	HEREDOC
-}	t_redir_type;
+# define REDOUT 20
+# define APPEND 21
+# define REDIN 22
+# define HEREDOC 23
 
-typedef enum e_ast_node_type
-{
-	CMD,
-	PIPELINE
-}	t_ast_node_type;
-
-
-typedef struct s_pipeline
-{
-	struct s_pipeline	*parent;
-	struct s_cmd	*left;
-} t_pipeline;
+# define CMD 30
+# define PIPELINE 31
 
 typedef struct s_cmd
 {
 	char			*pathname;
 	struct s_wl_element	**word_list;
-	struct s_redirect		**redirects;
+	struct s_redirect	**redirects;
 }				t_cmd;
 
 typedef struct s_ast_node
 {
-	t_ast_node_type type;
-	struct s_ast_node *parent;
-	struct s_ast_node *left;
-	struct s_ast_node *right;
+	int type;
+	struct s_ast_node **parent;
+	struct s_ast_node **left;
+	struct s_ast_node **right;
 	struct s_cmd	*data;
 }	t_ast_node;
 
 typedef struct s_token
 {
-	int				type;
+	int		type;
 	char			*literal;
 	struct s_token	*next;
 }				t_token;
 
 typedef struct s_redirect
 {
-	t_redir_type	type;
+	int	type;
 	char	*filename;
 	struct	s_redirect *next;
 } t_redirect;
-
-
 
 typedef struct s_wl_element
 {
@@ -106,11 +88,12 @@ char	*read_unquoted(t_lexer *l);
 /* LIST HANDLER */
 void	new_token(t_token **tk, int type, char *literal);
 void	new_cmd(t_cmd **cmd, char *cmd_str, char *flag, char *args);
-t_cmd	*cmd_last(t_cmd *cmd);
+// t_cmd	*cmd_last(t_cmd *cmd);
 t_token	*tk_last(t_token *tk);
 
 /* PARSER */
 t_ast_node *parse_pipeline(t_token **tokens, t_ast_node *parent);
+void set_pl_node(t_ast_node *pl_node);
 int	has_other_pipes(t_token *tokens);
 t_ast_node	*parse_cmd(t_token **tokens, t_ast_node *parent);
 void	set_cmd(t_ast_node *cmd);

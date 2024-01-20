@@ -18,22 +18,37 @@ t_ast_node *parse_pipeline(t_token **tokens, t_ast_node *parent)
 
 	if ((*tokens)->next == NULL)
 		return (NULL);
-	pl_node = malloc(sizeof(t_ast_node *));
+	pl_node = malloc(sizeof(t_ast_node));
+	set_pl_node(pl_node);
 	if (pl_node == NULL)
 		return NULL;
 	pl_node->type = PIPELINE;
-	pl_node->parent = parent;
-	pl_node->left = parse_cmd(tokens, pl_node);
+	*(pl_node->parent) = parent;
+	*(pl_node->left) = parse_cmd(tokens, pl_node);
 	if ((*tokens)->next == NULL)
-		pl_node->right = NULL;
+		*(pl_node->right) = NULL;
 	if (ft_strncmp((*tokens)->literal, "|", 1) == 0
 		&& has_other_pipes(*tokens) == 1)
-		pl_node->right = parse_pipeline(tokens, pl_node);
+	{
+		*tokens = (*tokens)->next;
+		*(pl_node->right) = parse_pipeline(tokens, pl_node);
+	}
 	else if (ft_strncmp((*tokens)->literal, "|", 1) == 0
 		&& has_other_pipes(*tokens) == 0)
-		pl_node->right = parse_cmd(tokens, pl_node);
+	{
+		*tokens = (*tokens)->next;
+		*(pl_node->right) = parse_cmd(tokens, pl_node);
+	}
 
 	return pl_node;
+}
+
+void set_pl_node(t_ast_node *pl_node)
+{
+	pl_node->parent = ft_calloc(1, sizeof(t_ast_node *));
+	pl_node->left = ft_calloc(1, sizeof(t_ast_node *));
+	pl_node->right = ft_calloc(1, sizeof(t_ast_node *));
+	pl_node->data = NULL;
 }
 
 int	has_other_pipes(t_token *tokens)
@@ -46,21 +61,20 @@ int	has_other_pipes(t_token *tokens)
 		tokens = tokens->next;
 	}
 	return (0);
-
 }
 
 t_ast_node	*parse_cmd(t_token **tokens, t_ast_node *parent)
 {
 	t_ast_node	*cmd_node;
 
-	cmd_node = malloc(sizeof(t_ast_node *));
+	cmd_node = malloc(sizeof(t_ast_node));
 	if (cmd_node == NULL)
 		return NULL;
-	cmd_node->type = CMD;
-	cmd_node->parent = parent;
-	cmd_node->left = NULL;
-	cmd_node->right = NULL;
 	set_cmd(cmd_node);
+	cmd_node->type = CMD;
+	*(cmd_node->parent) = parent;
+	// cmd_node->left = NULL;
+	// cmd_node->right = NULL;
 	while ((*tokens)->next != NULL
 		&& ft_strncmp((*tokens)->literal, "|", 1) != 0)
 	{
@@ -116,6 +130,9 @@ t_redirect	*new_redirect(t_token *tokens)
 
 void	append_redirect(t_redirect *r, t_redirect **rl)
 {
+	t_redirect	*og;
+
+	og = *rl;
 	if (*rl == NULL)
 	{
 		*rl = r;
@@ -124,17 +141,21 @@ void	append_redirect(t_redirect *r, t_redirect **rl)
 	while ((*rl)->next != NULL)
 		*rl = (*rl)->next;
 	(*rl)->next = r;
+	*rl = og;
 	return ;
 }
 
 void	set_cmd(t_ast_node *cmd_node)
 {
-	cmd_node->data = malloc(sizeof(t_cmd *));
+	cmd_node->parent = ft_calloc(1, sizeof(t_ast_node));
+	cmd_node->left = ft_calloc(1, sizeof(t_ast_node));
+	cmd_node->right = ft_calloc(1, sizeof(t_ast_node));
+	cmd_node->data = malloc(sizeof(t_cmd));
 	if (cmd_node->data == NULL)
 		return ;
-	cmd_node->data->pathname = ft_calloc(sizeof(char *), 1);
-	cmd_node->data->redirects = ft_calloc(sizeof(t_redirect **), 1);
-	cmd_node->data->word_list = ft_calloc(sizeof(t_wl_element **), 1);
+	cmd_node->data->pathname = ft_calloc(1, sizeof(char *));
+	cmd_node->data->redirects = ft_calloc(1, sizeof(t_redirect *));
+	cmd_node->data->word_list = ft_calloc(1, sizeof(t_wl_element *));
 }
 
 t_wl_element	*new_wle(char *s)
@@ -151,6 +172,9 @@ t_wl_element	*new_wle(char *s)
 
 void	append_wle(t_wl_element *w, t_wl_element **wl)
 {
+	t_wl_element *og;
+
+	og = *wl;
 	if (*wl == NULL)
 	{
 		*wl = w;
@@ -159,5 +183,6 @@ void	append_wle(t_wl_element *w, t_wl_element **wl)
 	while ((*wl)->next != NULL)
 		*wl = (*wl)->next;
 	(*wl)->next = w;
+	*wl = og;
 	return ;
 }

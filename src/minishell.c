@@ -19,6 +19,6 @@ int	main(void)
 
 	lexer(&tokens);
 	ast = parse_pipeline(&tokens, NULL);
-	printf("oi");
+	printf("%p", ast);
 	return (0);
 }

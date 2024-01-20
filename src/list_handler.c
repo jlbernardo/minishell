@@ -12,7 +12,7 @@
 
 #include "includes/minishell.h"
 
-t_cmd	*cmd_last(t_cmd *cmd);
+// t_cmd	*cmd_last(t_cmd *cmd);
 t_token	*tk_last(t_token *tk);
 
 void	new_token(t_token **tk, int type, char *literal)
