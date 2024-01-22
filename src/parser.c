@@ -6,7 +6,7 @@
 /*   By: iusantos <iusantos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:55:58 by iusantos          #+#    #+#             */
-/*   Updated: 2024/01/22 11:25:29 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/01/22 11:47:37 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,14 @@ t_ast_node *parse_pipeline(t_token **tokens, t_ast_node *parent)
 		*(pl_node->right) = parse_pipeline(tokens, pl_node);
 	}
 	else if (ft_strncmp((*tokens)->literal, "|", 1) == 0
-		&& has_other_pipes(*tokens) == 0)
+		&& has_other_pipes(*tokens) == 0
+		&& (*tokens)->next->next != NULL)
 	{
 		*tokens = (*tokens)->next;
 		*(pl_node->right) = parse_cmd(tokens, pl_node);
 	}
 	else {
-	ft_printf("syntax error near %s", (*tokens)->literal);
+		ft_printf("syntax error near %s", (*tokens)->literal);
 	}
 
 	return pl_node;
