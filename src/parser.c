@@ -6,13 +6,12 @@
 /*   By: iusantos <iusantos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:55:58 by iusantos          #+#    #+#             */
-/*   Updated: 2024/01/22 11:47:37 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/01/22 18:18:00 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
-//syntax error: pipe op followed by another pipe op
 t_ast_node *parse_pipeline(t_token **tokens, t_ast_node *parent)
 {
 	t_ast_node *pl_node;
@@ -20,45 +19,37 @@ t_ast_node *parse_pipeline(t_token **tokens, t_ast_node *parent)
 	pl_node = malloc(sizeof(t_ast_node));
 	if (pl_node == NULL)
 		return NULL;
-	set_pl_node(pl_node);
 	pl_node->type = PIPELINE;
-	*(pl_node->parent) = parent;
-	if (*(pl_node->parent) == NULL
+	pl_node->parent = parent;
+	if (pl_node->parent == NULL
 		&& ft_strncmp((*tokens)->literal, "|", 1) == 0)
 	{
 		ft_printf("Syntax error near token %s\n", (*tokens)->literal);
 		return NULL;
 	}
-	*(pl_node->left) = parse_cmd(tokens, pl_node);
+	pl_node->left = parse_cmd(tokens, pl_node);
 	if ((*tokens)->next == NULL)
-		*(pl_node->right) = NULL;
-	if (ft_strncmp((*tokens)->literal, "|", 1) == 0
+		pl_node->right = NULL;
+	else if (ft_strncmp((*tokens)->literal, "|", 1) == 0
 		&& has_other_pipes(*tokens) == 1
 		&& ft_strncmp((*tokens)->next->literal, "|", 1) != 0)
 	{
 		*tokens = (*tokens)->next;
-		*(pl_node->right) = parse_pipeline(tokens, pl_node);
+		pl_node->right = parse_pipeline(tokens, pl_node);
 	}
 	else if (ft_strncmp((*tokens)->literal, "|", 1) == 0
 		&& has_other_pipes(*tokens) == 0
 		&& (*tokens)->next->next != NULL)
 	{
 		*tokens = (*tokens)->next;
-		*(pl_node->right) = parse_cmd(tokens, pl_node);
+		pl_node->right = parse_cmd(tokens, pl_node);
 	}
 	else {
 		ft_printf("syntax error near %s", (*tokens)->literal);
+		return NULL;
 	}
 
 	return pl_node;
-}
-
-void set_pl_node(t_ast_node *pl_node)
-{
-	pl_node->parent = ft_calloc(1, sizeof(t_ast_node *));
-	pl_node->left = ft_calloc(1, sizeof(t_ast_node *));
-	pl_node->right = ft_calloc(1, sizeof(t_ast_node *));
-	pl_node->data = NULL;
 }
 
 int	has_other_pipes(t_token *tokens)
@@ -73,7 +64,6 @@ int	has_other_pipes(t_token *tokens)
 	return (0);
 }
 
-//syntax error: redirect op not followed by WORD.
 t_ast_node	*parse_cmd(t_token **tokens, t_ast_node *parent)
 {
 	t_ast_node	*cmd_node;
@@ -81,11 +71,7 @@ t_ast_node	*parse_cmd(t_token **tokens, t_ast_node *parent)
 	cmd_node = malloc(sizeof(t_ast_node));
 	if (cmd_node == NULL)
 		return NULL;
-	set_cmd(cmd_node);
-	cmd_node->type = CMD;
-	*(cmd_node->parent) = parent;
-	cmd_node->left = NULL;
-	cmd_node->right = NULL;
+	set_cmd(cmd_node, parent);
 	while ((*tokens)->next != NULL
 		&& ft_strncmp((*tokens)->literal, "|", 1) != 0)
 	{
@@ -156,9 +142,12 @@ void	append_redirect(t_redirect *r, t_redirect **rl)
 	return ;
 }
 
-void	set_cmd(t_ast_node *cmd_node)
+void	set_cmd(t_ast_node *cmd_node, t_ast_node *parent)
 {
-	cmd_node->parent = ft_calloc(1, sizeof(t_ast_node));
+	cmd_node->type = CMD;
+	cmd_node->parent = parent;
+	cmd_node->left = NULL;
+	cmd_node->right = NULL;
 	cmd_node->data = malloc(sizeof(t_cmd));
 	if (cmd_node->data == NULL)
 		return ;

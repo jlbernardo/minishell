@@ -6,7 +6,7 @@
 /*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/01/18 16:01:43 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/01/22 18:08:33 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ typedef struct s_cmd
 typedef struct s_ast_node
 {
 	int type;
-	struct s_ast_node **parent;
-	struct s_ast_node **left;
-	struct s_ast_node **right;
+	struct s_ast_node *parent;
+	struct s_ast_node *left;
+	struct s_ast_node *right;
 	struct s_cmd	*data;
 }	t_ast_node;
 
@@ -93,10 +93,9 @@ t_token	*tk_last(t_token *tk);
 
 /* PARSER */
 t_ast_node *parse_pipeline(t_token **tokens, t_ast_node *parent);
-void set_pl_node(t_ast_node *pl_node);
 int	has_other_pipes(t_token *tokens);
 t_ast_node	*parse_cmd(t_token **tokens, t_ast_node *parent);
-void	set_cmd(t_ast_node *cmd);
+void	set_cmd(t_ast_node *cmd_node, t_ast_node *parent);
 t_redirect	*new_redirect(t_token *tokens);
 void	append_redirect(t_redirect *r, t_redirect **rl);
 t_wl_element	*new_wle(char *s);
