@@ -6,7 +6,7 @@
 /*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/01/13 17:00:20 by julberna         ###   ########.fr       */
+/*   Updated: 2024/01/18 19:10:24 by julberna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,10 @@
 # include <stdio.h>
 # include <stddef.h>
 # include <readline/readline.h>
-
-typedef enum e_tk_type
-{
-	WORD,
-	OPERAND,
-}				t_tk_type;
+# define LIE 0
+# define TRUTH 1
+# define WORD 0
+# define REDIRECT 1
 
 typedef struct s_token
 {
@@ -33,16 +31,16 @@ typedef struct s_token
 
 typedef struct s_cmd
 {
-	char			*cmd;
-	char			*flag;
-	char			*args;
-	int				out_fd;
-	int				out_mode;
-	int				in_fd;
-	int				in_delim;
-	int				err_fd;
-	struct s_cmd	*next;
+	t_list			*args;
+	t_list			*redir;
 }				t_cmd;
+
+typedef struct s_pipeline
+{
+	void				*left;
+	void				*right;
+	struct s_pipeline	*next;
+}				t_pipeline;
 
 typedef struct s_lexer
 {
@@ -54,20 +52,28 @@ typedef struct s_lexer
 }				t_lexer;
 
 /* MAIN CALLS */
-void	lexer(t_token **head);	
+void		lexer(t_token **tokens);
+void		parser(t_token **tokens);
 
 /* LEXER */
-void	read_char(t_lexer *lex);
-void	set_lexer(t_lexer *lex, char *input);
-void	find_token(t_lexer *lex, t_token **tokens, int size);
-int		is_operand(char ch);
-char	*read_quoted(t_lexer *l);
-char	*read_unquoted(t_lexer *l);
+void		read_char(t_lexer *lex);
+void		set_lexer(t_lexer *lex, char *input);
+void		find_token(t_lexer *lex, t_token **tokens, int size);
+int			is_operand(char ch);
+char		*read_quoted(t_lexer *l);
+char		*read_unquoted(t_lexer *l);
+
+/* PARSER */
+void		check_operator(t_token **tokens, t_pipeline **head, int *is_cmd);
+void		add_word_left(t_pipeline **head, t_token **tokens);
 
 /* LIST HANDLER */
-void	new_token(t_token **tk, int type, char *literal);
-void	new_cmd(t_cmd **cmd, char *cmd_str, char *flag, char *args);
-t_cmd	*cmd_last(t_cmd *cmd);
-t_token	*tk_last(t_token *tk);
+void		new_token(t_token **tk, int type, char *literal);
+void		new_pipeline(t_pipeline **head, t_list **node);
+t_token		*tk_last(t_token *tk);
+t_pipeline	*pipeline_last(t_pipeline *head);
+
+/* FINISHER */
+void		finish_lexer(t_lexer *lex);
 
 #endif
