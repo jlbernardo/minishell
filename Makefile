@@ -9,7 +9,7 @@ LIBFT_DIR = ./libft
 
 INCLUDE = ./includes
 
-SRC = minishell.c lexer.c list_handler.c input_handler.c
+SRC = $(addprefix src/, minishell.c lexer.c list_handler.c input_handler.c)
 
 OBJ = $(SRC:.c=.o)
 
@@ -19,11 +19,11 @@ $(NAME): $(LIBFT) $(OBJ)
 	$(CC) $(FLAGS) $(SRC) -I$(INCLUDE) -o $(NAME) $(LIBS)
 
 $(LIBFT):
-	$(MAKE) -C $(LIBFT_DIR)
+	make -C $(LIBFT_DIR)
 
 clean: 
-	$(MAKE) -C $(LIBFT_DIR) clean
-	rm -f *.o
+	make -C $(LIBFT_DIR) clean
+	rm -f $(OBJ)
 
 fclean: clean
 	rm -f $(LIBFT)
