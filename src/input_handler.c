@@ -6,7 +6,7 @@
 /*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 20:18:04 by julberna          #+#    #+#             */
-/*   Updated: 2024/01/13 16:59:47 by julberna         ###   ########.fr       */
+/*   Updated: 2024/01/23 15:32:56 by julberna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ char	*read_quoted(t_lexer *l)
 
 	quote = l->ch;
 	l->read_pos++;
-	while (l->input[l->read_pos] != quote && l->input[l->read_pos] != '\0')
+	while (l->input[l->read_pos] != ' ' && !is_operand(l->input[l->read_pos]) 
+			&& l->input[l->read_pos] != '\0')
 		++l->read_pos;
 	l->read_pos++;
 	len = l->read_pos - l->pos;
