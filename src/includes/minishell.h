@@ -6,7 +6,7 @@
 /*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/01/22 18:08:33 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/01/23 14:06:06 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,5 +100,8 @@ t_redirect	*new_redirect(t_token *tokens);
 void	append_redirect(t_redirect *r, t_redirect **rl);
 t_wl_element	*new_wle(char *s);
 void	append_wle(t_wl_element *w, t_wl_element **wl);
+
+void	free_wl(t_wl_element **wl);
+void	free_wl2(t_wl_element **wl);
 
 #endif

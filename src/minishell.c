@@ -6,7 +6,7 @@
 /*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 17:38:30 by julberna          #+#    #+#             */
-/*   Updated: 2024/01/18 15:42:08 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/01/23 14:12:58 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ int	main(void)
 
 	lexer(&tokens);
 	ast = parse_pipeline(&tokens, NULL);
+	// test freeing of word_lists
+	// free_wl2(ast->left->data->word_list);
 	printf("%p", ast);
 	return (0);
 }

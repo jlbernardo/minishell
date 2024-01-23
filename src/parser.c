@@ -6,7 +6,7 @@
 /*   By: iusantos <iusantos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:55:58 by iusantos          #+#    #+#             */
-/*   Updated: 2024/01/22 18:18:00 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/01/23 14:10:05 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,4 +183,29 @@ void	append_wle(t_wl_element *w, t_wl_element **wl)
 	(*wl)->next = w;
 	*wl = og;
 	return ;
+}
+
+//it's possible to rewrite this function with recursion -> see free_wl2
+void	free_wl(t_wl_element **wl)
+{
+	t_wl_element *next_word;
+
+	if (wl == NULL)
+		return ;
+	while ((*wl)->next != NULL)
+	{
+		next_word = (*wl)->next;
+		free(*wl);
+		*wl = next_word;
+	}
+	free(*wl);
+	*wl = NULL;
+}
+
+void	free_wl2(t_wl_element **wl)
+{
+	if (wl == NULL || *wl == NULL)
+		return ;
+	free_wl2(&(*wl)->next);
+	free(*wl);
 }
