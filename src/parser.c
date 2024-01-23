@@ -6,7 +6,7 @@
 /*   By: iusantos <iusantos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:55:58 by iusantos          #+#    #+#             */
-/*   Updated: 2024/01/23 14:19:28 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/01/23 14:28:55 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,7 +201,6 @@ void	free_wl(t_wl_element **wl)
 	}
 	free((*wl)->word);
 	free(*wl);
-	*wl = NULL;
 }
 
 void	free_wl2(t_wl_element **wl)
@@ -213,7 +212,29 @@ void	free_wl2(t_wl_element **wl)
 	free(*wl);
 }
 
-// void	free_redirects(t_redirect **rl)
-// {
-//
-// }
+//for recursive implementation see free_redirects2 below
+void	free_redirects(t_redirect **rl)
+{
+	t_redirect	*next_redirect;
+
+	if (rl == NULL)
+		return ;
+	while ((*rl)->next != NULL)
+	{
+		next_redirect = (*rl)->next;
+		free((*rl)->filename);
+		free(*rl);
+		*rl = next_redirect;
+	}
+	free((*rl)->filename);
+	free(*rl);
+}
+
+void	free_redirects2(t_redirect **rl)
+{
+	if (rl == NULL || *rl == NULL)
+		return;
+	free_redirects2(&(*rl)->next);
+	free((*rl)->filename);
+	free(*rl);
+}
