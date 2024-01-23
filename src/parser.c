@@ -6,7 +6,7 @@
 /*   By: iusantos <iusantos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:55:58 by iusantos          #+#    #+#             */
-/*   Updated: 2024/01/23 14:10:05 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/01/23 14:19:28 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,9 +195,11 @@ void	free_wl(t_wl_element **wl)
 	while ((*wl)->next != NULL)
 	{
 		next_word = (*wl)->next;
+		free((*wl)->word);
 		free(*wl);
 		*wl = next_word;
 	}
+	free((*wl)->word);
 	free(*wl);
 	*wl = NULL;
 }
@@ -207,5 +209,11 @@ void	free_wl2(t_wl_element **wl)
 	if (wl == NULL || *wl == NULL)
 		return ;
 	free_wl2(&(*wl)->next);
+	free((*wl)->word);
 	free(*wl);
 }
+
+// void	free_redirects(t_redirect **rl)
+// {
+//
+// }
