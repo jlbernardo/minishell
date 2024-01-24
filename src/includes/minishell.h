@@ -6,7 +6,7 @@
 /*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/01/24 11:32:25 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/01/24 14:41:14 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,11 @@
 # include <stdio.h>
 # include <stddef.h>
 # include <readline/readline.h>
+# define LIE 0
+# define TRUTH 1
 
-# define WORD 10
-# define OPERAND 11
+# define WORD 0
+# define REDIRECT 1
 
 # define REDOUT 20
 # define APPEND 21
@@ -29,12 +31,12 @@
 # define CMD 30
 # define PIPELINE 31
 
-typedef struct s_cmd
+typedef struct s_token
 {
-	char			*pathname;
-	struct s_wl_element	**word_list;
-	struct s_redirect	**redirects;
-}				t_cmd;
+	int				type;
+	char			*literal;
+	struct s_token	*next;
+}				t_token;
 
 typedef struct s_ast_node
 {
@@ -45,12 +47,12 @@ typedef struct s_ast_node
 	struct s_cmd	*data;
 }	t_ast_node;
 
-typedef struct s_token
+typedef struct s_cmd
 {
-	int		type;
-	char			*literal;
-	struct s_token	*next;
-}				t_token;
+	char			*pathname;
+	struct s_wl_element	**word_list;
+	struct s_redirect	**redirects;
+}				t_cmd;
 
 typedef struct s_redirect
 {
@@ -75,21 +77,16 @@ typedef struct s_lexer
 }				t_lexer;
 
 /* MAIN CALLS */
-void	lexer(t_token **head);	
+void		lexer(t_token **tokens);
+void		parser(t_token **tokens);
 
 /* LEXER */
-void	read_char(t_lexer *lex);
-void	set_lexer(t_lexer *lex, char *input);
-void	find_token(t_lexer *lex, t_token **tokens, int size);
-int		is_operand(char ch);
-char	*read_quoted(t_lexer *l);
-char	*read_unquoted(t_lexer *l);
-
-/* LIST HANDLER */
-void	new_token(t_token **tk, int type, char *literal);
-void	new_cmd(t_cmd **cmd, char *cmd_str, char *flag, char *args);
-// t_cmd	*cmd_last(t_cmd *cmd);
-t_token	*tk_last(t_token *tk);
+void		read_char(t_lexer *lex);
+void		set_lexer(t_lexer *lex, char *input);
+void		find_token(t_lexer *lex, t_token **tokens, int size);
+int			is_operand(char ch);
+char		*read_quoted(t_lexer *l);
+char		*read_unquoted(t_lexer *l);
 
 /* PARSER */
 t_ast_node *parse_pipeline(t_token **tokens, t_ast_node *parent);
@@ -107,5 +104,12 @@ void	free_redirects(t_redirect **rl);
 void	free_redirects2(t_redirect **rl);
 void	free_data(t_cmd	*cmd);
 void	free_ast(t_ast_node *ast);
+
+/* LIST HANDLER */
+void		new_token(t_token **tk, int type, char *literal);
+t_token		*tk_last(t_token *tk);
+
+/* FINISHER */
+void		finish_lexer(t_lexer *lex);
 
 #endif
