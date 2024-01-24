@@ -6,7 +6,7 @@
 /*   By: iusantos <iusantos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:55:58 by iusantos          #+#    #+#             */
-/*   Updated: 2024/01/24 13:58:22 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/01/24 15:10:57 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ t_ast_node	*parse_cmd(t_token **tokens, t_ast_node *parent)
 	while ((*tokens)->next != NULL
 		&& ft_strncmp((*tokens)->literal, "|", 1) != 0)
 	{
-		if ((*tokens)->type == OPERAND && (*tokens)->next->type == WORD)
+		if ((*tokens)->type == REDIRECT && (*tokens)->next->type == WORD)
 		{
 			append_redirect(new_redirect(*tokens), cmd_node->data->redirects);
 			*tokens = (*tokens)->next->next;
