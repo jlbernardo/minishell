@@ -6,7 +6,7 @@
 /*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 17:38:30 by julberna          #+#    #+#             */
-/*   Updated: 2024/01/24 15:03:37 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/01/24 18:15:43 by julberna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	main(void)
 {
-	t_token	*tokens;
+	t_token		*tokens;
 	t_ast_node	*ast;
 
 	lexer(&tokens);
