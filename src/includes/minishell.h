@@ -6,7 +6,7 @@
 /*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/01/23 14:28:25 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/01/24 11:32:25 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,5 +105,7 @@ void	free_wl(t_wl_element **wl);
 void	free_wl2(t_wl_element **wl);
 void	free_redirects(t_redirect **rl);
 void	free_redirects2(t_redirect **rl);
+void	free_data(t_cmd	*cmd);
+void	free_ast(t_ast_node *ast);
 
 #endif

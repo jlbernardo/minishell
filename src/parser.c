@@ -6,7 +6,7 @@
 /*   By: iusantos <iusantos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:55:58 by iusantos          #+#    #+#             */
-/*   Updated: 2024/01/23 14:28:55 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/01/24 11:32:02 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,4 +237,27 @@ void	free_redirects2(t_redirect **rl)
 	free_redirects2(&(*rl)->next);
 	free((*rl)->filename);
 	free(*rl);
+}
+
+void	free_data(t_cmd	*cmd)
+{
+	if (cmd == NULL)
+		return ;
+	free(cmd->pathname);
+	free_wl2(cmd->word_list);
+	free(cmd->word_list);
+	free_redirects2(cmd->redirects);
+	free(cmd->redirects);
+	free(cmd);
+}
+
+void	free_ast(t_ast_node *ast)
+{
+	if (ast == NULL)
+		return;
+	free_ast(ast->right);
+	free_ast(ast->left);
+	if (ast->type == CMD)
+		free_data(ast->data);
+	free(ast);
 }
