@@ -6,7 +6,7 @@
 /*   By: iusantos <iusantos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:55:58 by iusantos          #+#    #+#             */
-/*   Updated: 2024/01/24 11:32:02 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/01/24 13:58:22 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ t_redirect	*new_redirect(t_token *tokens)
 {
 	t_redirect *redir;
 
-	redir = malloc(sizeof(t_redirect *));
+	redir = malloc(sizeof(t_redirect));
 	if (redir == NULL)
 		return (NULL);
 	if (ft_strncmp(tokens->literal, ">", 1) == 0)
@@ -160,7 +160,7 @@ t_wl_element	*new_wle(char *s)
 {
 	t_wl_element	*wle;
 
-	wle = malloc(sizeof(t_wl_element *));
+	wle = malloc(sizeof(t_wl_element));
 	if (wle == NULL)
 		return NULL;
 	wle->word = ft_strdup(s);
