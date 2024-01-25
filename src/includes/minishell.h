@@ -6,7 +6,7 @@
 /*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/01/24 20:59:07 by julberna         ###   ########.fr       */
+/*   Updated: 2024/01/25 14:56:29 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void			find_token(t_lexer *lex, t_token **tokens, int size);
 int				has_other_pipes(t_token *tokens);
 void			append_wle(t_wl_element *w, t_wl_element **wl);
 void			append_redirect(t_redirect *r, t_redirect **rl);
-void			set_cmd(t_ast_node *cmd_node, t_ast_node *parent);
+void			set_cmd(t_ast_node **cmd_node, t_ast_node **parent);
 void			set_pl(t_ast_node **pl, t_ast_node **parent, t_token **tokens);
 t_ast_node		*parse_pipeline(t_token **tokens, t_ast_node *parent);
 t_ast_node		*parse_cmd(t_token **tokens, t_ast_node *parent);

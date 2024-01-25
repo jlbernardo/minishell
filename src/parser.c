@@ -6,17 +6,16 @@
 /*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:55:58 by iusantos          #+#    #+#             */
-/*   Updated: 2024/01/25 13:30:12 by julberna         ###   ########.fr       */
+/*   Updated: 2024/01/25 14:56:09 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
-void	*panic(char *token)
-{
-	ft_printf("Syntax error near %s", token);
-	return (NULL);
-}
+// void	panic(char *token)
+// {
+// 	ft_printf("Syntax error near %s", token);
+// }
 
 t_ast_node	*parse_pipeline(t_token **tokens, t_ast_node *parent)
 {
@@ -26,23 +25,24 @@ t_ast_node	*parse_pipeline(t_token **tokens, t_ast_node *parent)
 	if (!pl_node)
 		return (NULL);
 	pl_node->left = parse_cmd(tokens, pl_node);
+	if (pl_node->left == NULL)
+		return (NULL);
 	if (*tokens == NULL)
-		pl_node->right = NULL;
-	else if (!ft_strncmp((*tokens)->literal, "|", 1)
-		&& has_other_pipes(*tokens)
+		return (pl_node);
+	if (!ft_strncmp((*tokens)->literal, "|", 1) && has_other_pipes(*tokens)
 		&& ft_strncmp((*tokens)->next->literal, "|", 1))
 	{
 		*tokens = (*tokens)->next;
 		pl_node->right = parse_pipeline(tokens, pl_node);
 	}
 	else if (!ft_strncmp((*tokens)->literal, "|", 1)
-		&& !has_other_pipes(*tokens) && (*tokens)->next->next != NULL)
+		&& !has_other_pipes(*tokens) && (*tokens)->next != NULL)
 	{
 		*tokens = (*tokens)->next;
 		pl_node->right = parse_cmd(tokens, pl_node);
 	}
 	else
-		return (panic((*tokens)->literal));
+		ft_printf("Syntax error near %s", (*tokens)->literal);
 	return (pl_node);
 }
 
@@ -50,10 +50,7 @@ t_ast_node	*parse_cmd(t_token **tokens, t_ast_node *parent)
 {
 	t_ast_node	*cmd_node;
 
-	cmd_node = ft_calloc(1, sizeof(t_ast_node));
-	if (cmd_node == NULL)
-		return (NULL);
-	set_cmd(cmd_node, parent);
+	set_cmd(&cmd_node, &parent);
 	while (*tokens && ft_strncmp((*tokens)->literal, "|", 1))
 	{
 		if ((*tokens)->type == REDIRECT && (*tokens)->next->type == WORD)
@@ -69,6 +66,8 @@ t_ast_node	*parse_cmd(t_token **tokens, t_ast_node *parent)
 		else
 		{
 			ft_printf("Syntax error near %s", (*tokens)->literal);
+			free_data(cmd_node->data);
+			free(cmd_node);
 			return (NULL);
 		}
 	}
