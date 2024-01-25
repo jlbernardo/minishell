@@ -6,7 +6,7 @@
 /*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:49 by julberna          #+#    #+#             */
-/*   Updated: 2024/01/23 14:34:13 by julberna         ###   ########.fr       */
+/*   Updated: 2024/01/23 15:44:52 by julberna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	lexer(t_token **tokens)
 	t_lexer	lex;
 
 	*tokens = NULL;
-	input = readline("$>");
+	input = readline("$> ");
 	set_lexer(&lex, input);
 	while (lex.read_pos < lex.size)
 	{
@@ -26,7 +26,6 @@ void	lexer(t_token **tokens)
 		find_token(&lex, tokens, 1);
 	}
 	free(input);
-	finish_lexer(&lex);
 }
 
 void	set_lexer(t_lexer *lex, char *input)

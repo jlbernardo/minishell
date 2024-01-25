@@ -6,7 +6,7 @@
 /*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 20:18:04 by julberna          #+#    #+#             */
-/*   Updated: 2024/01/13 16:59:47 by julberna         ###   ########.fr       */
+/*   Updated: 2024/01/24 20:01:10 by julberna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,12 @@ char	*read_unquoted(t_lexer *lex)
 char	*read_quoted(t_lexer *l)
 {
 	char	*string;
-	char	quote;
 	size_t	len;
 
-	quote = l->ch;
 	l->read_pos++;
-	while (l->input[l->read_pos] != quote && l->input[l->read_pos] != '\0')
+	while (l->input[l->read_pos] != ' ' && !is_operand(l->input[l->read_pos])
+		&& l->input[l->read_pos] != '\0')
 		++l->read_pos;
-	l->read_pos++;
 	len = l->read_pos - l->pos;
 	string = ft_substr(l->input, l->pos, len);
 	l->pos = l->read_pos - 1;

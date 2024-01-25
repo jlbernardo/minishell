@@ -6,11 +6,13 @@
 /*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:48:46 by julberna          #+#    #+#             */
-/*   Updated: 2024/01/18 18:57:24 by julberna         ###   ########.fr       */
+/*   Updated: 2024/01/24 20:08:10 by julberna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
+
+t_token	*tk_last(t_token *tk);
 
 void	new_token(t_token **tk, int type, char *literal)
 {
@@ -37,26 +39,48 @@ t_token	*tk_last(t_token *tk)
 	return (tk);
 }
 
-void	new_pipeline(t_pipeline **head, t_list **node)
+t_wl_element	*new_wle(char *s)
 {
-	t_pipeline	*new_node;
+	t_wl_element	*wle;
 
-	new_node = (t_pipeline *)ft_calloc(1, sizeof(t_pipeline));
-	if (!new_node)
-		return ;
-	new_node->right = *node;
-	new_node->next = NULL;
-	if (!*head)
-		*head = new_node;
-	else
-		pipeline_last(*head)->next = new_node;
+	wle = malloc(sizeof(t_wl_element));
+	if (wle == NULL)
+		return (NULL);
+	wle->word = ft_strdup(s);
+	wle->next = NULL;
+	return (wle);
 }
 
-t_pipeline	*pipeline_last(t_pipeline *head)
+void	append_wle(t_wl_element *w, t_wl_element **wl)
 {
-	if (head == NULL)
-		return (NULL);
-	while (head->next != NULL)
-		head = head->next;
-	return (head);
+	t_wl_element	*og;
+
+	og = *wl;
+	if (*wl == NULL)
+	{
+		*wl = w;
+		return ;
+	}
+	while ((*wl)->next != NULL)
+		*wl = (*wl)->next;
+	(*wl)->next = w;
+	*wl = og;
+	return ;
+}
+
+void	append_redirect(t_redirect *r, t_redirect **rl)
+{
+	t_redirect	*og;
+
+	og = *rl;
+	if (*rl == NULL)
+	{
+		*rl = r;
+		return ;
+	}
+	while ((*rl)->next != NULL)
+		*rl = (*rl)->next;
+	(*rl)->next = r;
+	*rl = og;
+	return ;
 }
