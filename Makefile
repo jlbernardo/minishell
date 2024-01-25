@@ -7,22 +7,26 @@ LIBFT = ./libft/libft.a
 LIBS = -L./libft -l:libft.a -lreadline
 LIBFT_DIR = ./libft
 
-INCLUDE = ./includes
+INCLUDE = -I./includes
 
-SRC = $(addprefix src/, minishell.c lexer.c list_handler.c input_handler.c parser.c)
+SRC = $(addprefix src/, minishell.c lexer.c list_handler.c input_handler.c parser.c \
+						parser_utils.c moses.c)
 
 OBJ = $(SRC:.c=.o)
 
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJ)
-	$(CC) $(FLAGS) $(SRC) -I$(INCLUDE) -o $(NAME) $(LIBS)
+	$(CC) $(FLAGS) $(OBJ) $(INCLUDE) $(LIBS) -o $(NAME)
 
 $(LIBFT):
-	make -C $(LIBFT_DIR)
+	@make -C $(LIBFT_DIR) --no-print-directory
+
+%.o:%.c
+	$(CC) $(FLAGS) $(INCLUDE) -c $< -o $@
 
 clean: 
-	make -C $(LIBFT_DIR) clean
+	@make clean -C $(LIBFT_DIR) --no-print-directory
 	rm -f $(OBJ)
 
 fclean: clean
@@ -32,7 +36,7 @@ fclean: clean
 re: fclean $(NAME)
 
 debug: $(LIBFT) $(OBJ)
-	$(CC) $(FLAGS) -gdwarf-4 $(SRC) $(LIBFT_DIR)/*.c -o $(NAME) $(LIBS)
+	$(CC) $(FLAGS) -gdwarf-4 $(SRC) $(LIBFT_DIR)/*.c $(LIBS) -o $(NAME)
 
 rebug: clean debug
 

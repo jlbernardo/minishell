@@ -6,7 +6,7 @@
 /*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/01/24 18:15:23 by julberna         ###   ########.fr       */
+/*   Updated: 2024/01/24 20:59:07 by julberna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,17 +94,11 @@ int				has_other_pipes(t_token *tokens);
 void			append_wle(t_wl_element *w, t_wl_element **wl);
 void			append_redirect(t_redirect *r, t_redirect **rl);
 void			set_cmd(t_ast_node *cmd_node, t_ast_node *parent);
+void			set_pl(t_ast_node **pl, t_ast_node **parent, t_token **tokens);
 t_ast_node		*parse_pipeline(t_token **tokens, t_ast_node *parent);
 t_ast_node		*parse_cmd(t_token **tokens, t_ast_node *parent);
 t_redirect		*new_redirect(t_token *tokens);
 t_wl_element	*new_wle(char *s);
-
-void			free_wl(t_wl_element **wl);
-void			free_wl2(t_wl_element **wl);
-void			free_redirects(t_redirect **rl);
-void			free_redirects2(t_redirect **rl);
-void			free_data(t_cmd	*cmd);
-void			free_ast(t_ast_node *ast);
 
 /* LIST HANDLER */
 void			new_token(t_token **tk, int type, char *literal);
@@ -112,5 +106,11 @@ t_token			*tk_last(t_token *tk);
 
 /* FINISHER */
 void			finish_lexer(t_lexer *lex);
+// void			free_wl(t_wl_element **wl);
+// void			free_redirects(t_redirect **rl);
+void			free_data(t_cmd	*cmd);
+void			free_ast(t_ast_node *ast);
+void			free_wl2(t_wl_element **wl);
+void			free_redirects2(t_redirect **rl);
 
 #endif

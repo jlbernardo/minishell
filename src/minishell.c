@@ -6,7 +6,7 @@
 /*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 17:38:30 by julberna          #+#    #+#             */
-/*   Updated: 2024/01/24 18:15:43 by julberna         ###   ########.fr       */
+/*   Updated: 2024/01/24 19:47:30 by julberna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,5 @@ int	main(void)
 	lexer(&tokens);
 	ast = parse_pipeline(&tokens, NULL);
 	free_ast(ast);
-	printf("%p", ast);
 	return (0);
 }
