@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/01/26 19:50:09 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/01/26 20:28:46 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,17 +74,18 @@ typedef struct s_lexer
 	char			ch;
 	unsigned int	pos;
 	unsigned int	size;
+	unsigned int	success;
 	unsigned int	read_pos;
 }				t_lexer;
 
 /* MAIN CALLS */
-void			lexer(t_token **tokens);
-void			parser(t_token **tokens);
+int				lexer(t_token **tokens);
+void			parser(t_token **tokens, t_ast_node **ast);
 
 /* LEXER */
 int				is_operand(char ch);
-char			*read_quoted(t_lexer *l, char quote);
 char			*read_unquoted(t_lexer *l);
+char			*read_quoted(t_lexer *l, char quote, int s_open, int d_open);
 void			read_char(t_lexer *lex);
 void			set_lexer(t_lexer *lex, char *input);
 void			find_token(t_lexer *lex, t_token **tokens, int size);
@@ -96,7 +97,7 @@ void			append_redirect(t_redirect *r, t_redirect **rl);
 void			set_cmd(t_ast_node **cmd_node, t_ast_node **parent);
 void			set_pl(t_ast_node **pl, t_ast_node **parent, t_token **tokens);
 t_ast_node		*parse_pipeline(t_token **tokens, t_ast_node *parent);
-t_ast_node		*parse_cmd(t_token **tokens, t_ast_node *parent);
+t_ast_node		*parse_cmd(t_token *tokens, t_ast_node *parent);
 t_redirect		*new_redirect(t_token *tokens);
 t_wl_element	*new_wle(char *s);
 

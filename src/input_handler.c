@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 20:18:04 by julberna          #+#    #+#             */
-/*   Updated: 2024/01/26 19:54:33 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/01/26 20:19:15 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,15 +56,11 @@ void	update_quote(char ch, int *s_open, int *d_open, char *quote)
 	}
 }
 
-char	*read_quoted(t_lexer *l, char quote)
+char	*read_quoted(t_lexer *l, char quote, int s_open, int d_open)
 {
 	char	ch;
 	char	*string;
-	int		s_open;
-	int		d_open;
 
-	s_open = 0;
-	d_open = 0;
 	update_quote(l->ch, &s_open, &d_open, &quote);
 	ch = l->input[l->read_pos];
 	while (!is_operand(ch) && ch != '\0'
@@ -82,5 +78,7 @@ char	*read_quoted(t_lexer *l, char quote)
 	string = ft_substr(l->input, l->pos, l->read_pos - l->pos);
 	l->pos = l->read_pos - 1;
 	l->ch = l->input[l->read_pos];
+	if (s_open % 2 != 0 || d_open % 2 != 0)
+		l->success = LIE;
 	return (string);
 }

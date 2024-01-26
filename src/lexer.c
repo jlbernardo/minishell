@@ -6,13 +6,13 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:49 by julberna          #+#    #+#             */
-/*   Updated: 2024/01/26 19:49:30 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/01/26 20:22:31 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
-void	lexer(t_token **tokens)
+int	lexer(t_token **tokens)
 {
 	char	*input;
 	t_lexer	lex;
@@ -20,20 +20,24 @@ void	lexer(t_token **tokens)
 	*tokens = NULL;
 	input = readline("$> ");
 	set_lexer(&lex, input);
-	while (lex.read_pos < lex.size)
+	while (lex.read_pos < lex.size && lex.success == TRUTH)
 	{
 		read_char(&lex);
 		find_token(&lex, tokens, 1);
 	}
+	if (!lex.success)
+		ft_printf("Syntax error near %s", (*tokens)->literal);
 	free(input);
+	return (lex.success);
 }
 
 void	set_lexer(t_lexer *lex, char *input)
 {
 	lex->input = input;
+	lex->ch = 0;
 	lex->pos = 0;
 	lex->read_pos = 0;
-	lex->ch = 0;
+	lex->success = TRUTH;
 	lex->size = ft_strlen(input);
 }
 
@@ -57,7 +61,7 @@ void	find_token(t_lexer *lex, t_token **tokens, int size)
 	else
 	{
 		if (lex->ch == '"' || lex->ch == '\'')
-			str = read_quoted(lex, 0);
+			str = read_quoted(lex, 0, 0, 0);
 		else
 			str = read_unquoted(lex);
 		new_token(tokens, WORD, str);
