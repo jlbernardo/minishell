@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/01/25 14:56:29 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/01/26 19:50:09 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void			parser(t_token **tokens);
 
 /* LEXER */
 int				is_operand(char ch);
-char			*read_quoted(t_lexer *l);
+char			*read_quoted(t_lexer *l, char quote);
 char			*read_unquoted(t_lexer *l);
 void			read_char(t_lexer *lex);
 void			set_lexer(t_lexer *lex, char *input);

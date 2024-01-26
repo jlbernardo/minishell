@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_handler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 20:18:04 by julberna          #+#    #+#             */
-/*   Updated: 2024/01/24 20:01:10 by julberna         ###   ########.fr       */
+/*   Updated: 2024/01/26 19:54:33 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,17 +42,44 @@ char	*read_unquoted(t_lexer *lex)
 	return (string);
 }
 
-char	*read_quoted(t_lexer *l)
+void	update_quote(char ch, int *s_open, int *d_open, char *quote)
 {
-	char	*string;
-	size_t	len;
+	if (ch == '"' && *s_open % 2 == 0)
+	{
+		*d_open += 1;
+		*quote = ch;
+	}
+	else if (ch == '\'' && *d_open % 2 == 0)
+	{
+		*s_open += 1;
+		*quote = ch;
+	}
+}
 
-	l->read_pos++;
-	while (l->input[l->read_pos] != ' ' && !is_operand(l->input[l->read_pos])
-		&& l->input[l->read_pos] != '\0')
-		++l->read_pos;
-	len = l->read_pos - l->pos;
-	string = ft_substr(l->input, l->pos, len);
+char	*read_quoted(t_lexer *l, char quote)
+{
+	char	ch;
+	char	*string;
+	int		s_open;
+	int		d_open;
+
+	s_open = 0;
+	d_open = 0;
+	update_quote(l->ch, &s_open, &d_open, &quote);
+	ch = l->input[l->read_pos];
+	while (!is_operand(ch) && ch != '\0'
+		&& !((s_open % 2 == 0 && d_open % 2 == 0)
+			&& (l->input[l->read_pos + 1] == ' '
+				|| l->input[l->read_pos + 1] == '\0')))
+	{
+		if (s_open % 2 != 0 && d_open % 2 != 0)
+			update_quote(ch, &s_open, &d_open, &quote);
+		ch = l->input[++l->read_pos];
+		update_quote(ch, &s_open, &d_open, &quote);
+	}
+	if (ch == quote)
+		l->read_pos++;
+	string = ft_substr(l->input, l->pos, l->read_pos - l->pos);
 	l->pos = l->read_pos - 1;
 	l->ch = l->input[l->read_pos];
 	return (string);

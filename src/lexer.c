@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:49 by julberna          #+#    #+#             */
-/*   Updated: 2024/01/23 15:44:52 by julberna         ###   ########.fr       */
+/*   Updated: 2024/01/26 19:49:30 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	find_token(t_lexer *lex, t_token **tokens, int size)
 	else
 	{
 		if (lex->ch == '"' || lex->ch == '\'')
-			str = read_quoted(lex);
+			str = read_quoted(lex, 0);
 		else
 			str = read_unquoted(lex);
 		new_token(tokens, WORD, str);

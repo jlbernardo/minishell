@@ -6,16 +6,11 @@
 /*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:55:58 by iusantos          #+#    #+#             */
-/*   Updated: 2024/01/25 14:56:09 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/01/26 15:36:48 by julberna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
-
-// void	panic(char *token)
-// {
-// 	ft_printf("Syntax error near %s", token);
-// }
 
 t_ast_node	*parse_pipeline(t_token **tokens, t_ast_node *parent)
 {
