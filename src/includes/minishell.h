@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/01/26 20:28:46 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/01/29 17:41:31 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void			append_redirect(t_redirect *r, t_redirect **rl);
 void			set_cmd(t_ast_node **cmd_node, t_ast_node **parent);
 void			set_pl(t_ast_node **pl, t_ast_node **parent, t_token **tokens);
 t_ast_node		*parse_pipeline(t_token **tokens, t_ast_node *parent);
-t_ast_node		*parse_cmd(t_token *tokens, t_ast_node *parent);
+t_ast_node		*parse_cmd(t_token **tokens, t_ast_node *parent);
 t_redirect		*new_redirect(t_token *tokens);
 t_wl_element	*new_wle(char *s);
 
