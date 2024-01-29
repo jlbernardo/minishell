@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 17:38:30 by julberna          #+#    #+#             */
-/*   Updated: 2024/01/26 20:12:31 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/01/29 19:45:25 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ int	main(void)
 
 	while (42)
 	{
-		if (lexer(&tokens))
-			parser(&tokens, &ast);
+		if (lexer(&tokens, &ast))
+			parser(tokens, &ast);
 		free_ast(ast);
 	}
 	return (0);

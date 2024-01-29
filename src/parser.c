@@ -6,15 +6,15 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:55:58 by iusantos          #+#    #+#             */
-/*   Updated: 2024/01/29 18:01:56 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/01/29 18:49:38 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
-void	parser(t_token **tokens, t_ast_node **ast)
+void	parser(t_token *tokens, t_ast_node **ast)
 {
-	*ast = parse_pipeline(tokens, NULL);
+	*ast = parse_pipeline(&tokens, NULL);
 }
 
 t_ast_node	*parse_pipeline(t_token **tokens, t_ast_node *parent)

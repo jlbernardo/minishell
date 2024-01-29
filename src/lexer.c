@@ -6,18 +6,19 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:49 by julberna          #+#    #+#             */
-/*   Updated: 2024/01/26 20:22:31 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/01/29 19:47:08 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
-int	lexer(t_token **tokens)
+int	lexer(t_token **tokens, t_ast_node **ast)
 {
 	char	*input;
 	t_lexer	lex;
 
 	*tokens = NULL;
+	*ast = NULL;
 	input = readline("$> ");
 	set_lexer(&lex, input);
 	while (lex.read_pos < lex.size && lex.success == TRUTH)
@@ -26,7 +27,7 @@ int	lexer(t_token **tokens)
 		find_token(&lex, tokens, 1);
 	}
 	if (!lex.success)
-		ft_printf("Syntax error near %s", (*tokens)->literal);
+		ft_printf("Syntax error near token %s\n", (*tokens)->literal);
 	free(input);
 	return (lex.success);
 }
