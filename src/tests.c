@@ -101,7 +101,7 @@ int main(void)
 	ft_printf("\033[32mOK\033[0m\n");
 
 	//10
-	ft_printf("%d - Lexer - Testing input: echo text > arq1 - ", i++);
+	ft_printf("%d - Lexer - Testing input: echo texto > arq1 - ", i++);
 	lexer_test(tokens, ast, "echo texto > arq1");
 	assert((*tokens)->type == WORD);
 	assert(ft_strncmp((*tokens)->literal, "echo", 5) == 0);
@@ -111,5 +111,31 @@ int main(void)
 	assert(ft_strncmp((*tokens)->next->next->literal, ">", 1) == 0);
 	assert((*tokens)->next->next->next->type == WORD);
 	assert(ft_strncmp((*tokens)->next->next->next->literal, "arq1", 5) == 0);
+	ft_printf("\033[32mOK\033[0m\n");
+
+	//11
+	ft_printf("%d - Lexer - Testing input: echo texto | grep texto - ", i++);
+	lexer_test(tokens, ast, "echo texto | grep texto");
+	assert((*tokens)->type == WORD);
+	assert(ft_strncmp((*tokens)->literal, "echo", 5) == 0);
+	assert((*tokens)->next->type == WORD);
+	assert(ft_strncmp((*tokens)->next->literal, "texto", 6) == 0);
+	assert((*tokens)->next->next->type == REDIRECT);
+	assert(ft_strncmp((*tokens)->next->next->literal, "|", 1) == 0);
+	assert((*tokens)->next->next->next->type == WORD);
+	assert(ft_strncmp((*tokens)->next->next->next->literal, "grep", 5) == 0);
+	assert((*tokens)->next->next->next->next->type == WORD);
+	assert(ft_strncmp((*tokens)->next->next->next->next->literal, "texto", 5) == 0);
+	ft_printf("\033[32mOK\033[0m\n");
+
+	//11
+	ft_printf("%d - Lexer - Testing input:  <arq1 cat - ", i++);
+	lexer_test(tokens, ast, "<arq1 cat");
+	assert((*tokens)->type == REDIRECT);
+	assert(ft_strncmp((*tokens)->literal, "<", 5) == 0);
+	assert((*tokens)->next->type == WORD);
+	assert(ft_strncmp((*tokens)->next->literal, "arq1", 5) == 0);
+	assert((*tokens)->next->next->type == WORD);
+	assert(ft_strncmp((*tokens)->next->next->literal, "cat", 5) == 0);
 	ft_printf("\033[32mOK\033[0m\n");
 }
