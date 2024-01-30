@@ -6,7 +6,7 @@
 /*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 20:24:28 by julberna          #+#    #+#             */
-/*   Updated: 2024/01/30 11:28:37 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/01/30 17:46:50 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,13 @@
 
 void	set_pl(t_ast_node **pl, t_ast_node **parent, t_token **tokens)
 {
-	const int	len = ft_strlen((*tokens)->literal);
-	const int	is_pipe = ft_strncmp((*tokens)->literal, "|", len);
+	int	len;
+	int	is_pipe;
 
+	if (*tokens == NULL)
+		return ;
+	len = ft_strlen((*tokens)->literal);
+	is_pipe = ft_strncmp((*tokens)->literal, "|", len);
 	*pl = ft_calloc(1, sizeof(t_ast_node));
 	if (pl == NULL)
 		return ;
