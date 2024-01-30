@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:55:58 by iusantos          #+#    #+#             */
-/*   Updated: 2024/01/29 18:49:38 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/01/30 11:38:46 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_ast_node	*parse_pipeline(t_token **tokens, t_ast_node *parent)
 	pl_node->left = parse_cmd(tokens, pl_node);
 	if (pl_node->left == NULL)
 		return (NULL);
-	if ((*tokens)->next == NULL)
+	if (*tokens == NULL)
 		return (pl_node);
 	if (!ft_strncmp((*tokens)->literal, "|", 1) && has_other_pipes(*tokens)
 		&& ft_strncmp((*tokens)->next->literal, "|", 1))
@@ -36,13 +36,13 @@ t_ast_node	*parse_pipeline(t_token **tokens, t_ast_node *parent)
 		pl_node->right = parse_pipeline(tokens, pl_node);
 	}
 	else if (!ft_strncmp((*tokens)->literal, "|", 1)
-		&& !has_other_pipes(*tokens) && (*tokens)->next->next != NULL)
+		&& !has_other_pipes(*tokens) && (*tokens)->next != NULL)
 	{
 		*tokens = (*tokens)->next;
 		pl_node->right = parse_cmd(tokens, pl_node);
 	}
 	else
-		ft_printf("Syntax error near %s", (*tokens)->literal);
+		ft_printf("Syntax error near token %s\n", (*tokens)->literal);
 	return (pl_node);
 }
 
