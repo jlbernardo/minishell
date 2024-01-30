@@ -11,6 +11,8 @@ INCLUDE = -I./includes
 
 SRC = $(addprefix src/, minishell.c lexer.c list_handler.c input_handler.c parser.c \
 						parser_utils.c moses.c)
+TEST_SRC = $(addprefix src/, lexer.c list_handler.c input_handler.c parser.c \
+		   parser_utils.c moses.c tests.c)
 
 OBJ = $(SRC:.c=.o)
 
@@ -41,5 +43,8 @@ debug: $(LIBFT) $(OBJ)
 rebug: clean debug
 
 frebug: fclean debug
+
+test: clean $(LIBFT)
+	$(CC) $(FLAGS) -gdwarf-4 $(TEST_SRC) $(LIBFT_DIR)/*.c $(LIBS) -o $(NAME)
 
 .PHONY: all clean fclean re rebug frebug debug
