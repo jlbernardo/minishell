@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input_handler.c                                    :+:      :+:    :+:   */
+/*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 20:18:04 by julberna          #+#    #+#             */
-/*   Updated: 2024/01/29 19:07:31 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/01/30 15:09:31 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ char	*read_quoted(t_lexer *l, char quote, int s_open, int d_open)
 			&& (l->input[l->read_pos + 1] == ' '
 				|| l->input[l->read_pos + 1] == '\0')))
 	{
-		if (s_open % 2 != 0 && d_open % 2 != 0)
+		if (s_open % 2 != 0 || d_open % 2 != 0)
 			update_quote(ch, &s_open, &d_open, &quote);
 		ch = l->input[++l->read_pos];
 		update_quote(ch, &s_open, &d_open, &quote);

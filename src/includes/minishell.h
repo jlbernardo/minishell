@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/01/29 19:45:35 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/01/29 20:06:10 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ typedef struct s_lexer
 /* MAIN CALLS */
 int				lexer(t_token **tokens, t_ast_node **ast);
 void			parser(t_token *tokens, t_ast_node **ast);
-// void			finisher(t_token **tokens, t_ast_node **ast);
+void			finisher(t_token *tokens, t_ast_node *ast);
 
 /* LEXER */
 int				is_operand(char ch);
@@ -107,12 +107,13 @@ void			new_token(t_token **tk, int type, char *literal);
 t_token			*tk_last(t_token *tk);
 
 /* FINISHER */
-void			finish_lexer(t_lexer *lex);
-// void			free_wl(t_wl_element **wl);
-// void			free_redirects(t_redirect **rl);
 void			free_data(t_cmd	*cmd);
 void			free_ast(t_ast_node *ast);
+void			finish_lexer(t_lexer *lex);
 void			free_wl2(t_wl_element **wl);
+void			free_tokens(t_token *tokens);
 void			free_redirects2(t_redirect **rl);
+// void			free_wl(t_wl_element **wl);
+// void			free_redirects(t_redirect **rl);
 
 #endif
