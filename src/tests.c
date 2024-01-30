@@ -128,7 +128,7 @@ int main(void)
 	assert(ft_strncmp((*tokens)->next->next->next->next->literal, "texto", 5) == 0);
 	ft_printf("\033[32mOK\033[0m\n");
 
-	//11
+	//12
 	ft_printf("%d - Lexer - Testing input:  <arq1 cat - ", i++);
 	lexer_test(tokens, ast, "<arq1 cat");
 	assert((*tokens)->type == REDIRECT);
@@ -137,5 +137,28 @@ int main(void)
 	assert(ft_strncmp((*tokens)->next->literal, "arq1", 5) == 0);
 	assert((*tokens)->next->next->type == WORD);
 	assert(ft_strncmp((*tokens)->next->next->literal, "cat", 5) == 0);
+	ft_printf("\033[32mOK\033[0m\n");
+
+	//13
+	ft_printf("%d - Lexer - Testing input: < arq1 ls -al | wc -l     >arq2 - ", i++);
+	lexer_test(tokens, ast, "< arq1 ls -al | wc -l     >arq2");
+	assert((*tokens)->type == REDIRECT);
+	assert(ft_strncmp((*tokens)->literal, "<", 5) == 0);
+	assert((*tokens)->next->type == WORD);
+	assert(ft_strncmp((*tokens)->next->literal, "arq1", 5) == 0);
+	assert((*tokens)->next->next->type == WORD);
+	assert(ft_strncmp((*tokens)->next->next->literal, "ls", 5) == 0);
+	assert((*tokens)->next->next->next->type == WORD);
+	assert(ft_strncmp((*tokens)->next->next->next->literal, "-al", 5) == 0);
+	assert((*tokens)->next->next->next->next->type == REDIRECT);
+	assert(ft_strncmp((*tokens)->next->next->next->next->literal, "|", 5) == 0);
+	assert((*tokens)->next->next->next->next->next->type == WORD);
+	assert(ft_strncmp((*tokens)->next->next->next->next->next->literal, "wc", 5) == 0);
+	assert((*tokens)->next->next->next->next->next->next->type == WORD);
+	assert(ft_strncmp((*tokens)->next->next->next->next->next->next->literal, "-l", 5) == 0);
+	assert((*tokens)->next->next->next->next->next->next->next->type == REDIRECT);
+	assert(ft_strncmp((*tokens)->next->next->next->next->next->next->next->literal, ">", 5) == 0);
+	assert((*tokens)->next->next->next->next->next->next->next->next->type == WORD);
+	assert(ft_strncmp((*tokens)->next->next->next->next->next->next->next->next->literal, "arq2", 5) == 0);
 	ft_printf("\033[32mOK\033[0m\n");
 }
