@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:55:58 by iusantos          #+#    #+#             */
-/*   Updated: 2024/01/25 14:56:09 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/01/30 11:38:46 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
-// void	panic(char *token)
-// {
-// 	ft_printf("Syntax error near %s", token);
-// }
+void	parser(t_token *tokens, t_ast_node **ast)
+{
+	*ast = parse_pipeline(&tokens, NULL);
+}
 
 t_ast_node	*parse_pipeline(t_token **tokens, t_ast_node *parent)
 {
@@ -42,7 +42,7 @@ t_ast_node	*parse_pipeline(t_token **tokens, t_ast_node *parent)
 		pl_node->right = parse_cmd(tokens, pl_node);
 	}
 	else
-		ft_printf("Syntax error near %s", (*tokens)->literal);
+		ft_printf("Syntax error near token %s\n", (*tokens)->literal);
 	return (pl_node);
 }
 
@@ -51,7 +51,7 @@ t_ast_node	*parse_cmd(t_token **tokens, t_ast_node *parent)
 	t_ast_node	*cmd_node;
 
 	set_cmd(&cmd_node, &parent);
-	while (*tokens && ft_strncmp((*tokens)->literal, "|", 1))
+	while (*tokens != NULL && ft_strncmp((*tokens)->literal, "|", 1))
 	{
 		if ((*tokens)->type == REDIRECT && (*tokens)->next->type == WORD)
 		{

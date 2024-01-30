@@ -3,14 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   moses.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 19:49:32 by julberna          #+#    #+#             */
-/*   Updated: 2024/01/24 20:59:28 by julberna         ###   ########.fr       */
+/*   Updated: 2024/01/29 19:22:54 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
+
+// void	finisher(t_token **tokens, t_ast_node **ast)
+// {
+// 	free_ast(ast);
+// }
 
 //it's possible to rewrite this function with recursion -> see free_wl2
 // void	free_wl(t_wl_element **wl)

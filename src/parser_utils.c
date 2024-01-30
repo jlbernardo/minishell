@@ -6,7 +6,7 @@
 /*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 20:24:28 by julberna          #+#    #+#             */
-/*   Updated: 2024/01/25 14:57:16 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/01/30 11:28:37 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ void	set_pl(t_ast_node **pl, t_ast_node **parent, t_token **tokens)
 int	has_other_pipes(t_token *tokens)
 {
 	tokens = tokens->next;
+	if (tokens == NULL)
+		return (0);
 	while (tokens != NULL)
 	{
 		if (!ft_strncmp(tokens->literal, "|", 1))

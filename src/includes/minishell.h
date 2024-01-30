@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/01/25 14:56:29 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/01/29 19:45:35 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,17 +74,19 @@ typedef struct s_lexer
 	char			ch;
 	unsigned int	pos;
 	unsigned int	size;
+	unsigned int	success;
 	unsigned int	read_pos;
 }				t_lexer;
 
 /* MAIN CALLS */
-void			lexer(t_token **tokens);
-void			parser(t_token **tokens);
+int				lexer(t_token **tokens, t_ast_node **ast);
+void			parser(t_token *tokens, t_ast_node **ast);
+// void			finisher(t_token **tokens, t_ast_node **ast);
 
 /* LEXER */
 int				is_operand(char ch);
-char			*read_quoted(t_lexer *l);
 char			*read_unquoted(t_lexer *l);
+char			*read_quoted(t_lexer *l, char quote, int s_open, int d_open);
 void			read_char(t_lexer *lex);
 void			set_lexer(t_lexer *lex, char *input);
 void			find_token(t_lexer *lex, t_token **tokens, int size);
