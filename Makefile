@@ -9,9 +9,10 @@ LIBFT_DIR = ./libft
 
 INCLUDE = -I./includes
 
-SRC = $(addprefix src/, minishell.c lexer.c list_handler.c input_handler.c parser.c \
+SRC = $(addprefix src/, minishell.c lexer.c list_handler.c lexer_utils.c parser.c \
 						parser_utils.c moses.c)
-TEST_SRC = $(addprefix src/, lexer.c list_handler.c input_handler.c parser.c \
+
+TEST_SRC = $(addprefix src/, lexer.c list_handler.c lexer_utils.c parser.c \
 		   parser_utils.c moses.c finisher.c tests.c)
 
 OBJ = $(SRC:.c=.o)
