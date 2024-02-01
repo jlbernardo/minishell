@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 17:38:30 by julberna          #+#    #+#             */
-/*   Updated: 2024/01/30 17:28:30 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/01 18:49:57 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@ int	main(void)
 	int			control;
 	t_token		*tokens;
 	t_ast_node	*ast;
+	t_ht_entry	**env_vars;
 
+	env_vars = ft_calloc(HT_SIZE, sizeof(t_ht_entry *));
 	control = 42;
 	while (control)
 	{

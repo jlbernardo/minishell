@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/01 17:39:34 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/01 18:08:45 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,9 @@ t_wl_element	*new_wle(char *s);
 /* LIST HANDLER */
 void			new_token(t_token **tk, int type, char *literal);
 t_token			*tk_last(t_token *tk);
+
+/* HASH TABLE */
+unsigned int	hash(char *name);
 
 /* FINISHER */
 void			free_data(t_cmd	*cmd);
