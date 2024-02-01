@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/01/31 21:17:25 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/01 17:37:14 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@
 
 # define CMD 30
 # define PIPELINE 31
+
+# define HT_SIZE 1024
 
 typedef struct s_token
 {
