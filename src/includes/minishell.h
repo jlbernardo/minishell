@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/01 17:37:14 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/01 17:39:34 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,13 @@
 # define PIPELINE 31
 
 # define HT_SIZE 1024
+
+typedef struct s_ht_entry
+{
+	char				*name;
+	char				*value;
+	struct s_ht_entry	*next;
+}	t_ht_entry;
 
 typedef struct s_token
 {
