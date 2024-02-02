@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/01 18:08:45 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/02 14:09:51 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,8 @@ t_token			*tk_last(t_token *tk);
 
 /* HASH TABLE */
 unsigned int	hash(char *name);
+t_ht_entry		*create_kv_pair(char *name, char *value);
+void			add_or_upd_ht_entry(char *name, char *value, t_ht_entry **ht);
 
 /* FINISHER */
 void			free_data(t_cmd	*cmd);
