@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/02 14:37:16 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/02 17:52:01 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 # define CMD 30
 # define PIPELINE 31
 
-# define HT_SIZE 1024
+# define HT_SIZE 10
 
 typedef struct s_ht_entry
 {
@@ -125,6 +125,10 @@ unsigned int	hash(char *name);
 t_ht_entry		*create_kv_pair(char *name, char *value);
 void			add_or_upd_ht_entry(char *name, char *value, t_ht_entry **ht);
 char			*grab_value(char *name, t_ht_entry **ht);
+void			safe_free(void *p);
+void			add_env_to_ht(char **env, t_ht_entry **ht);
+void			free_ht_entry(t_ht_entry	*ht);
+void			free_ht(t_ht_entry **ht);
 
 /* FINISHER */
 void			free_data(t_cmd	*cmd);
