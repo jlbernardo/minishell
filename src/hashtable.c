@@ -56,3 +56,21 @@ void	add_or_upd_ht_entry(char *name, char *value, t_ht_entry **ht)
 	}
 	prev->next = create_kv_pair(name, value);
 }
+
+char	*grab_value(char *name, t_ht_entry **ht)
+{
+	unsigned int	index;
+	t_ht_entry		*entry;
+	t_ht_entry		*prev;
+
+	index = hash(name);
+	entry = ht[index];
+	while (entry != NULL)
+	{
+		if (ft_strcmp(entry->name, name) == 0)
+			return (ft_strdup(entry->value));
+		prev = entry;
+		entry = prev->next;
+	}
+	return (NULL);
+}
