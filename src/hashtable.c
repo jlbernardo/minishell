@@ -115,7 +115,7 @@ void	free_ht(t_ht_entry **ht)
 
 void	free_ht_entry(t_ht_entry	*ht)
 {
-	while (ht->next != NULL)
+	if (ht->next != NULL)
 		free_ht_entry(ht->next);
 	safe_free(ht->name);
 	safe_free(ht->value);
