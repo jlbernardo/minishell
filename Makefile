@@ -9,11 +9,9 @@ LIBFT_DIR = ./libft
 
 INCLUDE = -I./includes
 
-SRC = $(addprefix src/, minishell.c lexer.c list_handler.c lexer_utils.c parser.c \
-						parser_utils.c moses.c)
-
-TEST_SRC = $(addprefix src/, lexer.c list_handler.c lexer_utils.c parser.c \
-		   parser_utils.c moses.c finisher.c tests.c)
+SRC = $(addprefix src/, minishell.c lexer.c lexer_utils.c list_handler.c \
+						parser.c parser_utils.c moses.c \
+						finisher.c hashtable.c)
 
 OBJ = $(SRC:.c=.o)
 
@@ -39,7 +37,7 @@ fclean: clean
 re: fclean $(NAME)
 
 debug: $(LIBFT) $(OBJ)
-	$(CC) $(FLAGS) -gdwarf-4 $(SRC) $(LIBFT_DIR)/*.c $(LIBS) -o $(NAME)
+	$(CC) $(FLAGS) -gdwarf-4 $(SRC) $(INCLUDE) $(LIBFT_DIR)/*.c $(LIBS) -o $(NAME)
 
 rebug: clean debug
 
