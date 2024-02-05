@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:55:58 by iusantos          #+#    #+#             */
-/*   Updated: 2024/01/31 19:27:39 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/02 16:01:59 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	parser(t_token *tokens, t_ast_node **ast)
 {
-	expand_variables(&tokens);
+	// expand_variables(&tokens);
 	*ast = parse_pipeline(&tokens, NULL);
 }
 
