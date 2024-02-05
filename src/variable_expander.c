@@ -6,51 +6,55 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 18:32:55 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/01/31 21:02:58 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/05 16:36:24 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
-/* THE PLAN */
-/* - Check if literal has '$'
-   - Check if variable beginning is valid
-     - if not, replace '&x' with 'empty' and keep the rest
-   - Check if variable exists
-     - if not, replace with 'empty'
-	 - else, replace with variable value
-   - Check if current literal has more '$'
-     - if yes, recursive call with current token
-   - Recursive call with next token */
-
 void	expand_variables(t_token **tokens)
 {
 	if (!*tokens)
 		return ;
-	if ((*tokens)->type != REDIRECT && has_variable((*tokens)->literal)
-		&& valid_variable((*tokens)->literal))
+	if ((*tokens)->type != REDIRECT && has_variable((*tokens)->literal))
 	{
+		replace_variable(tokens);
 		if (has_variable((*tokens)->literal))
 			expand_variables(*tokens);
 	}
 	expand_variables((*tokens)->next);
 }
 
-int	valid_variable(char *literal)
+void	replace_variable(t_token **tokens)
 {
-	while (*literal != '$')
-		*literal++;
-	*literal++;
-	if (*literal != '_' || !ft_isalpha(*literal))
-		return (0);
-	*literal++;
-	while (*literal)
-	{
-		if (*literal != '_' || !ft_isalnum(*literal))
-			return (0);
-		*literal++;
-	}
-	return (1);
+	char	*var_name;
+	char	*var_value;
+
+	var_name = get_variable_name((*tokens)->literal);
+	var_value = get_variable_value((*tokens)->literal);
+}
+
+char	*get_variable_name(char *literal)
+{
+	int		i;
+	int		j;
+	int		len;
+	char	*var;
+
+	i = 0;
+	while (literal[i] != '$')
+		i++;
+	i++;
+	j = i;
+	if (!ft_isalpha(literal[j]) || literal[j] != '_')
+		return (NULL);
+	j++;
+	while (ft_isalnum(literal[j]) || literal[j] == '_')
+		j++;
+	len = j - i + 1;
+	var = ft_calloc(len, sizeof(char));
+	var = ft_strnstr(&literal[i], var, len);
+	return (var);
 }
 
 int	has_variable(char *literal)
