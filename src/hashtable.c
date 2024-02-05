@@ -78,15 +78,19 @@ char	*grab_value(char *name, t_ht_entry **ht)
 
 void	add_env_to_ht(char **env, t_ht_entry **ht)
 {
-	char **pair;
+	char *pair[2];
+	unsigned int len_after_equal;
+	unsigned int len_before_equal;
 
 	while (*env)
 	{
-		pair = ft_split(*env, '=');
+		len_before_equal = ft_strchr(*env, '=') - *env;
+		len_after_equal = ft_strlen(*env) - len_before_equal - 1;
+		pair[0] = ft_substr(*env, 0, len_before_equal);
+		pair[1] = ft_substr(ft_strchr(*env, '='), 1, len_after_equal); 
 		add_or_upd_ht_entry(pair[0], pair[1], ht);
 		safe_free(pair[0]);
 		safe_free(pair[1]);
-		safe_free(pair);
 		env++;
 	}
 }
