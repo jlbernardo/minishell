@@ -126,6 +126,19 @@ int main(void)
 	ft_printf("\033[32mOK\033[0m\n");
 
 	//5
+	ft_printf("%d - Lexer - Testing input: echo \"echo > arq1\" > arq1 - ", i++);
+	lexer_test(tokens, ast, "echo \"echo > arq1\" > arq1");
+	assert((*tokens)->type == WORD);
+	assert(ft_strcmp((*tokens)->literal, "echo") == 0);
+	assert((*tokens)->next->type == WORD);
+	assert(ft_strcmp((*tokens)->next->literal, "\"echo > arq1\"") == 0);
+	assert((*tokens)->next->next->type == REDIRECT);
+	assert(ft_strcmp((*tokens)->next->next->literal, ">") == 0);
+	assert((*tokens)->next->next->next->type == WORD);
+	assert(ft_strcmp((*tokens)->next->next->literal, "arq1") == 0);
+	ft_printf("\033[32mOK\033[0m\n");
+
+	//6
 	ft_printf("%d - Lexer - Testing input: \"\"texto1\" texto2\" - ", i++);
 	lexer_test(tokens, ast, "\"\"texto1\" texto2\"");
 	assert((*tokens)->type == WORD);
