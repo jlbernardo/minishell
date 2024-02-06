@@ -13,6 +13,10 @@ SRC = $(addprefix src/, minishell.c lexer.c lexer_utils.c list_handler.c \
 						parser.c parser_utils.c moses.c \
 						finisher.c hashtable.c)
 
+TEST_SRC = $(addprefix src/, tests.c lexer.c lexer_utils.c list_handler.c \
+						parser.c parser_utils.c moses.c \
+						finisher.c hashtable.c)
+
 OBJ = $(SRC:.c=.o)
 
 all: $(NAME)
