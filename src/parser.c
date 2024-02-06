@@ -6,21 +6,23 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:55:58 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/02 16:01:59 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/06 16:39:18 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
-void	parser(t_token *tokens, t_ast_node **ast)
+void	parser(t_token *tokens, t_ast **ast, t_hash ***env_vars)
 {
+	*env_vars = ft_calloc(HT_SIZE, sizeof(t_hash *));
+	add_env_to_ht(__environ, env_vars);
 	// expand_variables(&tokens);
 	*ast = parse_pipeline(&tokens, NULL);
 }
 
-t_ast_node	*parse_pipeline(t_token **tokens, t_ast_node *parent)
+t_ast	*parse_pipeline(t_token **tokens, t_ast *parent)
 {
-	t_ast_node	*pl_node;
+	t_ast	*pl_node;
 
 	set_pl(&pl_node, &parent, tokens);
 	if (!pl_node)
@@ -47,9 +49,9 @@ t_ast_node	*parse_pipeline(t_token **tokens, t_ast_node *parent)
 	return (pl_node);
 }
 
-t_ast_node	*parse_cmd(t_token **tokens, t_ast_node *parent)
+t_ast	*parse_cmd(t_token **tokens, t_ast *parent)
 {
-	t_ast_node	*cmd_node;
+	t_ast	*cmd_node;
 
 	set_cmd(&cmd_node, &parent);
 	while (*tokens != NULL && ft_strncmp((*tokens)->literal, "|", 1))

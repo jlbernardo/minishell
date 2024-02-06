@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 18:32:55 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/05 16:36:24 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/06 15:32:32 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	replace_variable(t_token **tokens)
 	char	*var_value;
 
 	var_name = get_variable_name((*tokens)->literal);
-	var_value = get_variable_value((*tokens)->literal);
+	// var_value = grab_value(var_name, ht_pointer);
 }
 
 char	*get_variable_name(char *literal)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list_handler.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:48:46 by julberna          #+#    #+#             */
-/*   Updated: 2024/01/24 20:08:10 by julberna         ###   ########.fr       */
+/*   Updated: 2024/02/06 15:13:59 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,11 @@ t_token	*tk_last(t_token *tk)
 	return (tk);
 }
 
-t_wl_element	*new_wle(char *s)
+t_word	*new_wle(char *s)
 {
-	t_wl_element	*wle;
+	t_word	*wle;
 
-	wle = malloc(sizeof(t_wl_element));
+	wle = malloc(sizeof(t_word));
 	if (wle == NULL)
 		return (NULL);
 	wle->word = ft_strdup(s);
@@ -51,9 +51,9 @@ t_wl_element	*new_wle(char *s)
 	return (wle);
 }
 
-void	append_wle(t_wl_element *w, t_wl_element **wl)
+void	append_wle(t_word *w, t_word **wl)
 {
-	t_wl_element	*og;
+	t_word	*og;
 
 	og = *wl;
 	if (*wl == NULL)
@@ -68,9 +68,9 @@ void	append_wle(t_wl_element *w, t_wl_element **wl)
 	return ;
 }
 
-void	append_redirect(t_redirect *r, t_redirect **rl)
+void	append_redirect(t_redir *r, t_redir **rl)
 {
-	t_redirect	*og;
+	t_redir	*og;
 
 	og = *rl;
 	if (*rl == NULL)

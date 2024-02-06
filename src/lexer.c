@@ -6,13 +6,13 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:49 by julberna          #+#    #+#             */
-/*   Updated: 2024/01/29 19:47:08 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/06 15:09:24 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
-int	lexer(t_token **tokens, t_ast_node **ast)
+int	lexer(t_token **tokens, t_ast **ast)
 {
 	char	*input;
 	t_lexer	lex;
