@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/06 21:26:16 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/07 16:00:57 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ typedef struct s_lexer
 
 /* MAIN CALLS */
 int				lexer(t_token **tokens, t_ast **ast);
-void			parser(t_token *tokens, t_ast **ast, t_hash ***env_vars);
+void			parser(t_token *tokens, t_ast **ast, t_hash **env_vars);
 void			finisher(t_token *tokens, t_ast *ast, t_hash **env_vars);
 
 /* LEXER */
@@ -104,8 +104,8 @@ void			read_char(t_lexer *lex);
 int				has_variable(char *literal);
 int				valid_variable(char *literal);
 char			*get_variable_name(char *literal);
-void			replace_variable(t_token **tokens, t_hash ***ht);
-void			expand_variables(t_token **tokens, t_hash ***env_vars);
+void			replace_variable(t_token **tokens, t_hash **ht);
+void			expand_variables(t_token **tokens, t_hash **ht);
 
 /* PARSER */
 int				has_other_pipes(t_token *tokens);
@@ -125,8 +125,8 @@ t_token			*tk_last(t_token *tk);
 /* HASH TABLE */
 char			*grab_value(char *name, t_hash **ht);
 t_hash			*create_kv_pair(char *name, char *value);
-void			add_or_upd_ht_entry(char *name, char *value, t_hash ***ht);
-void			add_env_to_ht(char **env, t_hash ***ht);
+void			add_or_upd_ht_entry(char *name, char *value, t_hash **ht);
+void			add_env_to_ht(char **env, t_hash **ht);
 void			free_ht_entry(t_hash *ht);
 void			free_ht(t_hash **ht);
 void			safe_free(void *p);

@@ -6,16 +6,14 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:55:58 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/06 18:56:26 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/07 15:33:33 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
-void	parser(t_token *tokens, t_ast **ast, t_hash ***env_vars)
+void	parser(t_token *tokens, t_ast **ast, t_hash **env_vars)
 {
-	*env_vars = ft_calloc(HT_SIZE, sizeof(t_hash *));
-	add_env_to_ht(__environ, env_vars);
 	expand_variables(&tokens, env_vars);
 	*ast = parse_pipeline(&tokens, NULL);
 }

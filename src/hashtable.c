@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 15:31:26 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/06 20:21:32 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/07 16:18:10 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,14 @@ t_hash	*create_kv_pair(char *name, char *value)
 	return (kv_pair);
 }
 
-void	add_or_upd_ht_entry(char *name, char *value, t_hash ***ht)
+void	add_or_upd_ht_entry(char *name, char *value, t_hash **ht)
 {
 	t_hash			**entry;
 	t_hash			**prev;
 	unsigned int	index;
 
 	index = hash(name);
-	entry = &(*ht)[index];
+	entry = &ht[index];
 	if (*entry == NULL)
 	{
 		*entry = create_kv_pair(name, value);
@@ -88,7 +88,7 @@ char	*grab_value(char *name, t_hash **ht)
 	return (NULL);
 }
 
-void	add_env_to_ht(char **env, t_hash ***ht)
+void	add_env_to_ht(char **env, t_hash **ht)
 {
 	char			*pair[2];
 	unsigned int	len_after_equal;

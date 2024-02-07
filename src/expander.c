@@ -6,13 +6,13 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 18:32:55 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/06 21:33:59 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/07 16:01:07 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
-void	expand_variables(t_token **tokens, t_hash ***ht)
+void	expand_variables(t_token **tokens, t_hash **ht)
 {
 	if (!*tokens)
 		return ;
@@ -25,7 +25,7 @@ void	expand_variables(t_token **tokens, t_hash ***ht)
 	expand_variables(&(*tokens)->next, ht);
 }
 
-void	replace_variable(t_token **tokens, t_hash ***ht)
+void	replace_variable(t_token **tokens, t_hash **ht)
 {
 	int		i;
 	int		len;
@@ -35,7 +35,7 @@ void	replace_variable(t_token **tokens, t_hash ***ht)
 
 	i = 0;
 	var_name = get_variable_name((*tokens)->literal);
-	var_value = grab_value(var_name, *ht);
+	var_value = grab_value(var_name, ht);
 	temp = ft_strdup((*tokens)->literal);
 	len = ft_strlen(temp) - ft_strlen(var_name) + ft_strlen(var_value);
 	free((*tokens)->literal);
