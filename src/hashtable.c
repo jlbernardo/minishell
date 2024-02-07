@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 15:31:26 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/06 18:32:03 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/06 20:21:32 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ unsigned int	hash(char *name)
 	i = 0;
 	while (i < size)
 	{
-		hash_value = hash_value * 37 + name[i]; 
+		hash_value = hash_value * 37 + name[i];
 		i++;
 	}
 	hash_value = hash_value % HT_SIZE;

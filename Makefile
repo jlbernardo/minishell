@@ -11,11 +11,11 @@ INCLUDE = -I./includes
 
 SRC = $(addprefix src/, minishell.c lexer.c lexer_utils.c list_handler.c \
 						parser.c parser_utils.c moses_i.c moses_ii.c \
-						finisher.c hashtable.c)
+						hashtable.c expander.c finisher.c)
 
 TEST_SRC = $(addprefix src/, tests.c lexer.c lexer_utils.c list_handler.c \
 						parser.c parser_utils.c moses.c moses_ii.c \
-						finisher.c hashtable.c)
+						hashtable.c expander.c finisher.c)
 
 OBJ = $(SRC:.c=.o)
 
