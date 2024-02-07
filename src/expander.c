@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 18:32:55 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/06 21:06:57 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/06 21:33:59 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	replace_variable(t_token **tokens, t_hash ***ht)
 	char	*var_value;
 
 	i = 0;
-	var_name = get_variable_name((*tokens)->literal, ht);
+	var_name = get_variable_name((*tokens)->literal);
 	var_value = grab_value(var_name, *ht);
 	temp = ft_strdup((*tokens)->literal);
 	len = ft_strlen(temp) - ft_strlen(var_name) + ft_strlen(var_value);
@@ -54,35 +54,24 @@ void	replace_variable(t_token **tokens, t_hash ***ht)
 	free(var_value);
 }
 
-char	*get_variable_name(char *literal, t_hash ***ht)
+char	*get_variable_name(char *literal)
 {
 	int		i;
 	int		j;
 	char	*var;
-	char	*exists;
 
 	i = 0;
 	while (literal[i] != '$')
 		i++;
 	j = ++i;
-	while (literal[j] && (ft_isalnum(literal[j]) || literal[j] == '_'))
-		j++;
-	while (j - i > 0)
+	if (literal[j] && (ft_isalpha(literal[j]) || literal[j] == '_'))
 	{
-		var = ft_substr(literal, i, j - i);
-		exists = grab_value(var, *ht);
-		if (exists)
-		{
-			free(exists);
-			break ;
-		}
-		if (j - i > 1)
-		{
-			free(var);
-			var = NULL;
-		}
-		j--;
+		while (literal[j] && (ft_isalnum(literal[j]) || literal[j] == '_'))
+			j++;
 	}
+	if (j - i < 1)
+		j++;
+	var = ft_substr(literal, i, j - i);
 	return (var);
 }
 

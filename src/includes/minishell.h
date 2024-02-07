@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/06 19:59:48 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/06 21:26:16 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void			read_char(t_lexer *lex);
 /* EXPANDER */
 int				has_variable(char *literal);
 int				valid_variable(char *literal);
-char			*get_variable_name(char *literal, t_hash ***ht);
+char			*get_variable_name(char *literal);
 void			replace_variable(t_token **tokens, t_hash ***ht);
 void			expand_variables(t_token **tokens, t_hash ***env_vars);
 
