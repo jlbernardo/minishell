@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 20:24:28 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/06 15:47:12 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/07 21:20:23 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,30 @@ t_redir	*new_redirect(t_token *tokens)
 	redir->filename = ft_strdup(tokens->next->literal);
 	redir->next = NULL;
 	return (redir);
+}
+
+void	remove_quotes(t_token **tokens)
+{
+	int		i;
+	int		len;
+	char	quote;
+
+	i = 0;
+	if (!*tokens)
+		return ;
+	while ((*tokens)->literal[i] != '\0')
+	{
+		if ((*tokens)->literal[i] == '"' || (*tokens)->literal[i] == '\'')
+		{
+			quote = (*tokens)->literal[i];
+			len = ft_strlen((*tokens)->literal) - i;
+			ft_memmove(&(*tokens)->literal[i], &(*tokens)->literal[i + 1], len);
+			while ((*tokens)->literal[i] != quote)
+				i++;
+			len = ft_strlen((*tokens)->literal) - i;
+			ft_memmove(&(*tokens)->literal[i], &(*tokens)->literal[i + 1], len);
+		}
+		i++;
+	}
+	remove_quotes(&(*tokens)->next);
 }
