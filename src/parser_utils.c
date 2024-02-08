@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 20:24:28 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/07 21:20:23 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/08 20:31:49 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,8 @@ void	set_cmd(t_ast **cmd_node, t_ast **parent)
 	(*cmd_node)->data = malloc(sizeof(t_cmd));
 	if ((*cmd_node)->data == NULL)
 		return ;
-	(*cmd_node)->data->pathname = ft_calloc(1, sizeof(char *));
-	(*cmd_node)->data->redirects = ft_calloc(1, sizeof(t_redir *));
-	(*cmd_node)->data->word_list = ft_calloc(1, sizeof(t_word *));
+	(*cmd_node)->data->redirects = NULL;
+	(*cmd_node)->data->word_list = NULL;
 }
 
 t_redir	*new_redirect(t_token *tokens)

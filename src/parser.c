@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:55:58 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/07 19:49:58 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/08 20:33:01 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	parser(t_token *tokens, t_ast **ast, t_hash **env_vars)
 	expand_variables(&tokens, env_vars);
 	remove_quotes(&tokens);
 	*ast = parse_pipeline(&tokens, NULL);
+	get_path(ast, env_vars);
 }
 
 t_ast	*parse_pipeline(t_token **tokens, t_ast *parent)
@@ -57,12 +58,12 @@ t_ast	*parse_cmd(t_token **tokens, t_ast *parent)
 	{
 		if ((*tokens)->type == REDIRECT && (*tokens)->next->type == WORD)
 		{
-			append_redirect(new_redirect(*tokens), cmd_node->data->redirects);
+			append_redirect(new_redirect(*tokens), &cmd_node->data->redirects);
 			*tokens = (*tokens)->next->next;
 		}
 		else if ((*tokens)->type == WORD)
 		{
-			append_wle(new_wle((*tokens)->literal), cmd_node->data->word_list);
+			append_wle(new_wle((*tokens)->literal), &cmd_node->data->word_list);
 			*tokens = (*tokens)->next;
 		}
 		else
@@ -74,4 +75,49 @@ t_ast	*parse_cmd(t_token **tokens, t_ast *parent)
 		}
 	}
 	return (cmd_node);
+}
+
+void	get_path(t_ast **ast, t_hash **env_vars)
+{
+	int		i;
+	char	**paths;
+	char	*full_path;
+
+	if (!*ast)
+		return ;
+	if ((*ast)->type == CMD)
+	{
+		full_path = grab_value("PATH", env_vars);
+		paths = ft_split(full_path, ':');
+		find_path(ast, paths);
+		free(full_path);
+		i = -1;
+		while (paths[++i] != NULL)
+			free(paths[i]);
+		free(paths);
+	}
+	get_path(&(*ast)->left, env_vars);
+	get_path(&(*ast)->right, env_vars);
+}
+
+void	find_path(t_ast **ast, char **paths)
+{
+	int		i;
+	char	*try;
+	char	*temp;
+
+	i = 0;
+	while (paths[i])
+	{
+		temp = ft_strjoin(paths[i], "/");
+		try = ft_strjoin(temp, (*ast)->data->word_list->word);
+		free(temp);
+		if (access(try, X_OK) == 0)
+		{
+			(*ast)->data->pathname = try;
+			break ;
+		}
+		free(try);
+		i++;
+	}
 }
