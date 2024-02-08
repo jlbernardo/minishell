@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/07 16:53:18 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/07 20:40:36 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,9 @@ int				valid_variable(char *literal);
 char			*get_variable_name(char *literal);
 void			replace_variable(t_token **tokens, t_hash **ht);
 void			expand_variables(t_token **tokens, t_hash **ht);
+
+/* QUOTE REMOVAL */
+void			remove_quotes(t_token **tokens);
 
 /* PARSER */
 int				has_other_pipes(t_token *tokens);
