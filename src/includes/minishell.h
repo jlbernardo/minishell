@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
+/*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/08 20:47:56 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/10 16:54:10 by julberna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include "../../libft/libft.h"
 # include <stdio.h>
 # include <stddef.h>
+# include <unistd.h>
+# include <linux/limits.h>
 # include <readline/readline.h>
 
 # define LIE 0
@@ -108,6 +110,7 @@ void			replace_variable(t_token **tokens, t_hash **ht);
 void			expand_variables(t_token **tokens, t_hash **ht);
 
 /* PARSER */
+int				pwd(void);
 int				not_builtin(char *cmd);
 int				has_other_pipes(t_token *tokens);
 void			remove_quotes(t_token **tokens);

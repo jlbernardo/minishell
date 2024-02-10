@@ -1,33 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/11 17:38:30 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/10 16:03:22 by julberna         ###   ########.fr       */
+/*   Created: 2024/02/10 15:30:55 by julberna          #+#    #+#             */
+/*   Updated: 2024/02/10 16:58:30 by julberna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/minishell.h"
+#include "../includes/minishell.h"
 
-int	main(void)
+int	pwd(void)
 {
-	int		control;
-	t_ast	*ast;
-	t_token	*tokens;
-	t_hash	**env_vars;
+	char	*path;
 
-	env_vars = ft_calloc(HT_SIZE, sizeof(t_hash *));
-	add_env_to_ht(__environ, env_vars);
-	control = 42;
-	while (control)
+	path = getcwd(NULL, PATH_MAX);
+	if (path)
 	{
-		if (lexer(&tokens, &ast))
-			parser(tokens, &ast, env_vars);
-		finisher(tokens, ast);
+		ft_putstr_fd(path, 1);
+		ft_putstr_fd("\n", 1);
+		free(path);
+		return (0);
 	}
-	free_ht(env_vars);
-	return (0);
+	ft_printf("bash: pwd: cannot determine current directory.\n");
+	return (1);
 }
