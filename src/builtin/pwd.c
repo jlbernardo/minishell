@@ -6,7 +6,7 @@
 /*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 15:30:55 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/10 16:58:30 by julberna         ###   ########.fr       */
+/*   Updated: 2024/02/10 18:21:07 by julberna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,10 @@ int	pwd(void)
 	path = getcwd(NULL, PATH_MAX);
 	if (path)
 	{
-		ft_putstr_fd(path, 1);
-		ft_putstr_fd("\n", 1);
+		ft_putendl_fd(path, 1);
 		free(path);
 		return (0);
 	}
-	ft_printf("bash: pwd: cannot determine current directory.\n");
+	perror("bash: pwd");
 	return (1);
 }

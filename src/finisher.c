@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   finisher.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
+/*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 20:03:39 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/07 17:00:04 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/10 17:49:50 by julberna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

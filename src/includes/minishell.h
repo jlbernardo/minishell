@@ -6,7 +6,7 @@
 /*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/10 16:54:10 by julberna         ###   ########.fr       */
+/*   Updated: 2024/02/10 17:50:50 by julberna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdio.h>
 # include <stddef.h>
 # include <unistd.h>
+# include <errno.h>
 # include <linux/limits.h>
 # include <readline/readline.h>
 
