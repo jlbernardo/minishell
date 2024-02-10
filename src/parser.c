@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:55:58 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/07 15:33:33 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/08 20:39:10 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 void	parser(t_token *tokens, t_ast **ast, t_hash **env_vars)
 {
 	expand_variables(&tokens, env_vars);
+	remove_quotes(&tokens);
 	*ast = parse_pipeline(&tokens, NULL);
+	get_path(ast, env_vars);
 }
 
 t_ast	*parse_pipeline(t_token **tokens, t_ast *parent)
@@ -56,12 +58,12 @@ t_ast	*parse_cmd(t_token **tokens, t_ast *parent)
 	{
 		if ((*tokens)->type == REDIRECT && (*tokens)->next->type == WORD)
 		{
-			append_redirect(new_redirect(*tokens), cmd_node->data->redirects);
+			append_redirect(new_redirect(*tokens), &cmd_node->data->redirects);
 			*tokens = (*tokens)->next->next;
 		}
 		else if ((*tokens)->type == WORD)
 		{
-			append_wle(new_wle((*tokens)->literal), cmd_node->data->word_list);
+			append_wle(new_wle((*tokens)->literal), &cmd_node->data->word_list);
 			*tokens = (*tokens)->next;
 		}
 		else

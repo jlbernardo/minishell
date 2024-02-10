@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/07 16:53:18 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/08 20:47:56 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ typedef struct s_ast
 typedef struct s_cmd
 {
 	char			*pathname;
-	struct s_word	**word_list;
-	struct s_redir	**redirects;
+	struct s_word	*word_list;
+	struct s_redir	*redirects;
 }				t_cmd;
 
 typedef struct s_redir
@@ -108,8 +108,12 @@ void			replace_variable(t_token **tokens, t_hash **ht);
 void			expand_variables(t_token **tokens, t_hash **ht);
 
 /* PARSER */
+int				not_builtin(char *cmd);
 int				has_other_pipes(t_token *tokens);
+void			remove_quotes(t_token **tokens);
 void			append_wle(t_word *w, t_word **wl);
+void			find_path(t_ast **ast, char **paths);
+void			get_path(t_ast **ast, t_hash **env_vars);
 void			append_redirect(t_redir *r, t_redir **rl);
 void			set_cmd(t_ast **cmd_node, t_ast **parent);
 void			set_pl(t_ast **pl, t_ast **parent, t_token **tokens);
@@ -135,10 +139,10 @@ unsigned int	hash(char *name);
 /* FINISHER */
 void			free_ast(t_ast *ast);
 void			free_data(t_cmd	*cmd);
-void			free_wl2(t_word **wl);
+void			free_wl2(t_word *wl);
 void			finish_lexer(t_lexer *lex);
 void			free_tokens(t_token *tokens);
-void			free_redirects2(t_redir **rl);
+void			free_redirects2(t_redir *rl);
 // void			free_wl(t_word **wl);
 // void			free_redirects(t_redir **rl);
 
