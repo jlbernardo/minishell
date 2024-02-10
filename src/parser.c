@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
+/*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:55:58 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/02 16:01:59 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/10 18:33:18 by julberna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	parser(t_token *tokens, t_ast_node **ast)
 {
-	// expand_variables(&tokens);
 	*ast = parse_pipeline(&tokens, NULL);
 }
 
