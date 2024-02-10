@@ -16,9 +16,9 @@ SRC = $(addprefix $(SD), minishell.c lexer.c lexer_utils.c list_handler.c \
 SRC += $(addprefix $(SD)/builtin/, pwd.c)
 
 TEST_SRC = $(addprefix $(SD), tests.c lexer.c lexer_utils.c list_handler.c \
-						parser.c parser_utils.c moses.c moses_ii.c \
+						parser.c parser_utils.c moses_i.c moses_ii.c \
 						hashtable.c expander.c path_finder.c finisher.c)
-TEST_SRC += $(addprefix $(SD)/builtin/, pwd.c)
+TEST_SRC += $(addprefix $(SD)builtin/, pwd.c)
 
 OD = obj/
 OBJ = $(SRC:$(SD)%.c=$(OD)%.o)

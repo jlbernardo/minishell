@@ -1,8 +1,9 @@
 #include "includes/minishell.h"
+#include <fcntl.h>
 #include <assert.h>
 #include <stdio.h>
 
-int	lexer_test(t_token **tokens, t_ast_node **ast, char *string)
+int	lexer_test(t_token **tokens, t_ast **ast, char *string)
 {
 	char	*input;
 	t_lexer	lex;
@@ -21,9 +22,9 @@ int	lexer_test(t_token **tokens, t_ast_node **ast, char *string)
 	return (lex.success);
 }
 
-t_ast_node	*parse_pipeline_test(t_token **tokens, t_ast_node *parent)
+t_ast	*parse_pipeline_test(t_token **tokens, t_ast *parent)
 {
-	t_ast_node	*pl_node;
+	t_ast	*pl_node;
 
 	set_pl(&pl_node, &parent, tokens);
 	if (!pl_node)
@@ -50,21 +51,21 @@ t_ast_node	*parse_pipeline_test(t_token **tokens, t_ast_node *parent)
 	return (pl_node);
 }
 
-t_ast_node	*parse_cmd_test(t_token **tokens, t_ast_node *parent)
+t_ast	*parse_cmd_test(t_token **tokens, t_ast *parent)
 {
-	t_ast_node	*cmd_node;
+	t_ast	*cmd_node;
 
 	set_cmd(&cmd_node, &parent);
 	while (*tokens != NULL && ft_strncmp((*tokens)->literal, "|", 1))
 	{
 		if ((*tokens)->type == REDIRECT && (*tokens)->next->type == WORD)
 		{
-			append_redirect(new_redirect(*tokens), cmd_node->data->redirects);
+			append_redirect(new_redirect(*tokens), &cmd_node->data->redirects);
 			*tokens = (*tokens)->next->next;
 		}
 		else if ((*tokens)->type == WORD)
 		{
-			append_wle(new_wle((*tokens)->literal), cmd_node->data->word_list);
+			append_wle(new_wle((*tokens)->literal), &cmd_node->data->word_list);
 			*tokens = (*tokens)->next;
 		}
 		else
@@ -84,10 +85,10 @@ int main(void)
 	int			j = 0;
 	t_token		*temp;
 	t_token		*tokens;
-	t_ast_node	*ast;
+	t_ast		*ast;
 
 	tokens = ft_calloc(1, sizeof(t_token));
-	ast = ft_calloc(1, sizeof(t_ast_node));
+	ast = ft_calloc(1, sizeof(t_ast));
 	temp = tokens;
 
 
@@ -276,4 +277,26 @@ int main(void)
 	ft_printf("\033[32mOK\033[0m\n");
 	tokens = temp;
 	finisher(tokens, ast);
+
+	//15
+	char	*cwd;
+	char	str[PATH_MAX];
+	int		fd = open("./pwd_test", O_RDWR | O_CREAT | O_TRUNC, 0666);
+	int		stdo = dup(1);
+	ft_bzero(str, PATH_MAX);
+	dup2(fd, 1);
+	close(fd);
+	pwd();
+	dup2(stdo, 1);
+	close(stdo);
+	fd = open("./pwd_test", O_RDWR, 0666);
+	read(fd, str, PATH_MAX);
+	close(fd);
+	ft_printf("\nBuilt-ins: PWD\n");
+	ft_printf("%d - pwd - Same return as getcwd() - ", i++);
+	cwd = getcwd(NULL, PATH_MAX);
+	ft_strlcat(cwd, "\n", PATH_MAX);
+	assert(ft_strcmp(cwd, str) == 0);
+	free(cwd);
+	ft_printf("\033[32mOK\033[0m\n");
 }
