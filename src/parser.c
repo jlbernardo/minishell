@@ -5,12 +5,10 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/02/10 19:44:13 by julberna         ###   ########.fr       */
+/*   Created: 2024/02/10 21:12:03 by julberna          #+#    #+#             */
+/*   Updated: 2024/02/10 21:12:05 by julberna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
 
 #include "includes/minishell.h"
 
