@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 20:18:04 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/06 16:28:33 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/12 22:12:24 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,19 @@ void	read_char(t_lexer *lex)
 	if (lex->read_pos >= lex->size)
 		lex->ch = 0;
 	else
-		lex->ch = lex->input[lex->read_pos];
-	lex->pos = lex->read_pos++;
+	{
+		if (lex->input[lex->read_pos] < 0)
+		{
+			lex->pos = lex->read_pos;
+			lex->ch = lex->input[lex->read_pos++];
+			lex->read_pos++;
+		}
+		else
+		{
+			lex->ch = lex->input[lex->read_pos];
+			lex->pos = lex->read_pos++;
+		}
+	}
 }
 
 int	is_operand(char ch)

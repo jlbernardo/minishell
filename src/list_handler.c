@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:48:46 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/12 19:25:05 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/12 22:20:30 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,13 @@ void	new_token(t_token **tk, int type, char *literal)
 		return ;
 	new_node->type = type;
 	new_node->literal = ft_strdup(literal);
+	// write(1, new_node->literal, ft_strlen(new_node->literal));
 	new_node->next = NULL;
 	if (!*tk)
 		*tk = new_node;
 	else
 		tk_last(*tk)->next = new_node;
+	write(1, (*tk)->literal, ft_strlen((*tk)->literal));
 }
 
 t_token	*tk_last(t_token *tk)
