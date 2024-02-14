@@ -6,29 +6,32 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 17:38:30 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/14 13:46:46 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/14 16:21:13 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
+void	set_meta(t_meta *meta, char **__environ)
+{
+	meta->env_vars = ft_calloc(HT_SIZE, sizeof(t_hash *));
+	add_env_to_ht(__environ, meta->env_vars);
+}
+
 int	main(void)
 {
+	t_meta	meta;
 	int		control;
-	t_ast	*ast;
-	t_token	*tokens;
-	t_hash	**env_vars;
 
-	env_vars = ft_calloc(HT_SIZE, sizeof(t_hash *));
-	add_env_to_ht(__environ, env_vars);
+	set_meta(&meta, __environ);
 	control = 42;
 	while (control)
 	{
-		if (lexer(&tokens, &ast))
-			if (parser(tokens, &ast, env_vars))
-				executor(ast);
-		finisher(tokens, ast);
+		if (lexer(&meta.tokens, &meta.ast))
+			if (parser(meta.tokens, &meta.ast, meta.env_vars))
+				executor(meta.ast, &meta);
+		finisher(meta.tokens, meta.ast);
 	}
-	free_ht(env_vars);
+	free_ht(meta.env_vars);
 	return (0);
 }

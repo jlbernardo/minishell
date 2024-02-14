@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/14 14:52:10 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/14 17:03:09 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,13 @@
 # define PIPELINE 31
 
 # define HT_SIZE 10
+
+typedef struct s_meta
+{
+	struct s_token *tokens;
+	struct s_ast	*ast;
+	struct s_hash	**env_vars;
+}				t_meta;
 
 typedef struct s_hash
 {
@@ -94,9 +101,10 @@ typedef struct s_lexer
 }				t_lexer;
 
 /* MAIN CALLS */
+void			set_meta(t_meta *meta, char **__environ);
 int				lexer(t_token **tokens, t_ast **ast);
 int				parser(t_token *tokens, t_ast **ast, t_hash **env_vars);
-void			executor(t_ast *ast);
+void			executor(t_ast *ast, t_meta *meta);
 void			finisher(t_token *tokens, t_ast *ast);
 
 /* LEXER */
@@ -130,12 +138,13 @@ t_redir			*new_redirect(t_token *tokens);
 t_word			*new_wle(char *s);
 
 /* EXECUTOR */
-void			run_simple_command(t_ast *cmd_node);
+void			run_simple_command(t_ast *cmd_node, t_meta *meta);
 int				is_builtin(char *cmd_name);
 void			run_builtin(t_word	*wl);
-void			run_executable(t_cmd *data);
+void			run_executable(t_cmd *data, t_meta *meta);
 char			**stringfy(t_word *wl);
 int				get_size(t_word *wl);
+void			free_array_of_strings(char **array, int size);
 
 /* LIST HANDLER */
 void			new_token(t_token **tk, int type, char *literal);
