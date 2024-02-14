@@ -6,18 +6,22 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 21:12:03 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/14 11:45:31 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/14 11:54:03 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
-void	parser(t_token *tokens, t_ast **ast, t_hash **env_vars)
+int	parser(t_token *tokens, t_ast **ast, t_hash **env_vars)
 {
 	expand_variables(&tokens, env_vars);
 	remove_quotes(&tokens);
 	*ast = parse_pipeline(&tokens, NULL);
 	get_path(ast, env_vars);
+	if ((*ast)->success == 1)
+		return (1);
+	else
+		return (0);
 }
 
 t_ast	*parse_pipeline(t_token **tokens, t_ast *parent)

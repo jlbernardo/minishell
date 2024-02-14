@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/14 11:38:36 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/14 11:53:30 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ typedef struct s_lexer
 
 /* MAIN CALLS */
 int				lexer(t_token **tokens, t_ast **ast);
-void			parser(t_token *tokens, t_ast **ast, t_hash **env_vars);
+int				parser(t_token *tokens, t_ast **ast, t_hash **env_vars);
 void			finisher(t_token *tokens, t_ast *ast);
 
 /* LEXER */
