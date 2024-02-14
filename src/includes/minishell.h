@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/12 21:12:10 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/14 14:35:00 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,7 @@ unsigned int	hash(char *name);
 int				pwd(void);
 int				env(t_hash **ht);
 int				echo(t_token *tokens);
+int				cd(t_token *tokens, t_hash **ht);
 
 /* FINISHER */
 void			free_ast(t_ast *ast);
