@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/12 21:12:10 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/14 11:38:36 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef struct s_token
 typedef struct s_ast
 {
 	int				type;
+	int				success;
 	struct s_ast	*parent;
 	struct s_ast	*left;
 	struct s_ast	*right;
