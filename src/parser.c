@@ -5,21 +5,24 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/17 17:55:58 by iusantos          #+#    #+#             */
-/*   Updated: 2024/01/30 15:04:10 by Juliany Ber      ###   ########.fr       */
+/*   Created: 2024/02/10 21:12:03 by julberna          #+#    #+#             */
+/*   Updated: 2024/02/12 20:23:40 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
-void	parser(t_token *tokens, t_ast_node **ast)
+void	parser(t_token *tokens, t_ast **ast, t_hash **env_vars)
 {
+	expand_variables(&tokens, env_vars);
+	remove_quotes(&tokens);
 	*ast = parse_pipeline(&tokens, NULL);
+	get_path(ast, env_vars);
 }
 
-t_ast_node	*parse_pipeline(t_token **tokens, t_ast_node *parent)
+t_ast	*parse_pipeline(t_token **tokens, t_ast *parent)
 {
-	t_ast_node	*pl_node;
+	t_ast	*pl_node;
 
 	set_pl(&pl_node, &parent, tokens);
 	if (!pl_node)
@@ -46,21 +49,21 @@ t_ast_node	*parse_pipeline(t_token **tokens, t_ast_node *parent)
 	return (pl_node);
 }
 
-t_ast_node	*parse_cmd(t_token **tokens, t_ast_node *parent)
+t_ast	*parse_cmd(t_token **tokens, t_ast *parent)
 {
-	t_ast_node	*cmd_node;
+	t_ast	*cmd_node;
 
 	set_cmd(&cmd_node, &parent);
 	while (*tokens != NULL && ft_strncmp((*tokens)->literal, "|", 1))
 	{
 		if ((*tokens)->type == REDIRECT && (*tokens)->next->type == WORD)
 		{
-			append_redirect(new_redirect(*tokens), cmd_node->data->redirects);
+			append_redirect(new_redirect(*tokens), &cmd_node->data->redirects);
 			*tokens = (*tokens)->next->next;
 		}
 		else if ((*tokens)->type == WORD)
 		{
-			append_wle(new_wle((*tokens)->literal), cmd_node->data->word_list);
+			append_wle(new_wle((*tokens)->literal), &cmd_node->data->word_list);
 			*tokens = (*tokens)->next;
 		}
 		else

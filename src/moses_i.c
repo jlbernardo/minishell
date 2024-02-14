@@ -1,33 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   moses.c                                            :+:      :+:    :+:   */
+/*   moses_i.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 19:49:32 by julberna          #+#    #+#             */
-/*   Updated: 2024/01/29 20:03:15 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/08 20:33:46 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
-void	free_wl2(t_wl_element **wl)
+void	free_wl2(t_word *wl)
 {
-	if (wl == NULL || *wl == NULL)
+	if (wl == NULL)
 		return ;
-	free_wl2(&(*wl)->next);
-	free((*wl)->word);
-	free(*wl);
+	free_wl2(wl->next);
+	free(wl->next);
+	free(wl->word);
 }
 
-void	free_redirects2(t_redirect **rl)
+void	free_redirects2(t_redir *rl)
 {
-	if (rl == NULL || *rl == NULL)
+	if (rl == NULL)
 		return ;
-	free_redirects2(&(*rl)->next);
-	free((*rl)->filename);
-	free(*rl);
+	free_redirects2(rl->next);
+	free(rl->filename);
 }
 
 void	free_data(t_cmd	*cmd)
@@ -55,7 +54,7 @@ void	free_tokens(t_token *tokens)
 	}
 }
 
-void	free_ast(t_ast_node *ast)
+void	free_ast(t_ast *ast)
 {
 	if (ast == NULL)
 		return ;
@@ -66,15 +65,15 @@ void	free_ast(t_ast_node *ast)
 	free(ast);
 }
 
-// void	finisher(t_token **tokens, t_ast_node **ast)
+// void	finisher(t_token **tokens, t_ast **ast)
 // {
 // 	free_ast(ast);
 // }
 
 //it's possible to rewrite this function with recursion -> see free_wl2
-// void	free_wl(t_wl_element **wl)
+// void	free_wl(t_word **wl)
 // {
-// 	t_wl_element	*next_word;
+// 	t_word	*next_word;
 
 // 	if (wl == NULL)
 // 		return ;
@@ -90,9 +89,9 @@ void	free_ast(t_ast_node *ast)
 // }
 
 //for recursive implementation see free_redirects2 below
-// void	free_redirects(t_redirect **rl)
+// void	free_redirects(t_redir **rl)
 // {
-// 	t_redirect	*next_redirect;
+// 	t_redir	*next_redirect;
 
 // 	if (rl == NULL)
 // 		return ;
