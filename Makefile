@@ -57,7 +57,7 @@ re: fclean $(NAME)
 
 debug: $(LIBFT) $(OBJ)
 	@echo "$(BLUE) Compiling...$(WHITE)"
-	@$(CC) $(FLAGS) -gdwarf-4 $(OBJ) $(INCLUDE) $(LIBFT_DIR)/*.c $(LIBS) -o $(NAME)
+	@$(CC) $(FLAGS) -gdwarf-4 $(SRC) $(INCLUDE) $(LIBFT_DIR)/*.c $(LIBS) -o $(NAME)
 	@echo "$(BLUE) All done!$(WHITE)"
 
 rebug: clean debug
