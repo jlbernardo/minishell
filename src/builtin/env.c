@@ -1,34 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/11 17:38:30 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/13 21:37:44 by Juliany Ber      ###   ########.fr       */
+/*   Created: 2024/02/12 13:22:09 by Juliany Ber       #+#    #+#             */
+/*   Updated: 2024/02/12 14:34:12 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/minishell.h"
+#include "../includes/minishell.h"
 
-int	main(void)
+int	env(t_hash **ht)
 {
-	int		control;
-	t_ast	*ast;
-	t_token	*tokens;
-	t_hash	**env_vars;
+	int		i;
+	t_hash	*temp;
 
-	env_vars = ft_calloc(HT_SIZE, sizeof(t_hash *));
-	add_env_to_ht(__environ, env_vars);
-	control = 42;
-	while (control)
+	i = 0;
+	while (i < HT_SIZE)
 	{
-		if (lexer(&tokens, &ast))
-			parser(tokens, &ast, env_vars);
-		echo(tokens);
-		finisher(tokens, ast);
+		temp = ht[i];
+		while (ht[i])
+		{
+			ft_putstr_fd(ht[i]->name, 1);
+			ft_putchar_fd('=', 1);
+			ft_putendl_fd(ht[i]->value, 1);
+			ht[i] = ht[i]->next;
+		}
+		ht[i] = temp;
+		i++;
 	}
-	free_ht(env_vars);
 	return (0);
 }

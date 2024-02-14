@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/10 17:50:50 by julberna         ###   ########.fr       */
+/*   Updated: 2024/02/12 21:12:10 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,6 @@ void			replace_variable(t_token **tokens, t_hash **ht);
 void			expand_variables(t_token **tokens, t_hash **ht);
 
 /* PARSER */
-int				pwd(void);
 int				not_builtin(char *cmd);
 int				has_other_pipes(t_token *tokens);
 void			remove_quotes(t_token **tokens);
@@ -139,6 +138,11 @@ void			free_ht_entry(t_hash *ht);
 void			free_ht(t_hash **ht);
 void			safe_free(void *p);
 unsigned int	hash(char *name);
+
+/* BUILTINS */
+int				pwd(void);
+int				env(t_hash **ht);
+int				echo(t_token *tokens);
 
 /* FINISHER */
 void			free_ast(t_ast *ast);
