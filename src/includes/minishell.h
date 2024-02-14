@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/14 11:53:30 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/14 14:52:10 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 # include <errno.h>
 # include <linux/limits.h>
 # include <readline/readline.h>
+# include <sys/wait.h>
+# include <sys/types.h>
 
 # define LIE 0
 # define TRUTH 1
@@ -94,6 +96,7 @@ typedef struct s_lexer
 /* MAIN CALLS */
 int				lexer(t_token **tokens, t_ast **ast);
 int				parser(t_token *tokens, t_ast **ast, t_hash **env_vars);
+void			executor(t_ast *ast);
 void			finisher(t_token *tokens, t_ast *ast);
 
 /* LEXER */
@@ -125,6 +128,14 @@ t_ast			*parse_pipeline(t_token **tokens, t_ast *parent);
 t_ast			*parse_cmd(t_token **tokens, t_ast *parent);
 t_redir			*new_redirect(t_token *tokens);
 t_word			*new_wle(char *s);
+
+/* EXECUTOR */
+void			run_simple_command(t_ast *cmd_node);
+int				is_builtin(char *cmd_name);
+void			run_builtin(t_word	*wl);
+void			run_executable(t_cmd *data);
+char			**stringfy(t_word *wl);
+int				get_size(t_word *wl);
 
 /* LIST HANDLER */
 void			new_token(t_token **tk, int type, char *literal);

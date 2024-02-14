@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 17:38:30 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/14 00:30:24 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/14 13:46:46 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ int	main(void)
 	while (control)
 	{
 		if (lexer(&tokens, &ast))
-			parser(tokens, &ast, env_vars);
+			if (parser(tokens, &ast, env_vars))
+				executor(ast);
 		finisher(tokens, ast);
 	}
 	free_ht(env_vars);

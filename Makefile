@@ -12,12 +12,14 @@ INCLUDE = -I./includes
 SD = src/
 SRC = $(addprefix $(SD), minishell.c lexer.c lexer_utils.c list_handler.c \
 						parser.c parser_utils.c moses_i.c moses_ii.c \
-						hashtable.c expander.c path_finder.c finisher.c)
+						hashtable.c expander.c path_finder.c finisher.c \
+						executor.c)
 SRC += $(addprefix $(SD)builtin/, pwd.c)
 
 TEST_SRC = $(addprefix $(SD), tests.c lexer.c lexer_utils.c list_handler.c \
 						parser.c parser_utils.c moses_i.c moses_ii.c \
-						hashtable.c expander.c path_finder.c finisher.c)
+						hashtable.c expander.c path_finder.c finisher.c \
+						executor.c)
 TEST_SRC += $(addprefix $(SD)builtin/, pwd.c env.c echo.c)
 
 OD = obj/
