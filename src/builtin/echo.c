@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 18:47:27 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/14 00:02:38 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/14 00:08:59 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	check_flag(t_token *tokens);
 
 int	echo(t_token *tokens)
 {
-	int	ret;
+	int			ret;
 	const int	flag = check_flag(tokens);
 
 	tokens = tokens->next;
