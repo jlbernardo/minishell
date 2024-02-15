@@ -6,7 +6,7 @@
 /*   By: iusantos <iusantos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/15 14:21:58 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/15 16:43:54 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,18 @@ void	run_pipeline(t_ast *ast, int in_fd, t_meta *meta)
 	pid_t	child_pid;
 	int	exit_status;
 
+	//precisa checar de pipe deu errado
 	pipe(pipe_fd);
 	if (ast->right->type == CMD) //ultimo node pipeline
 	{
+		//run last pipe()
 		child_pid = fork();
 		if (child_pid == 0)
 		{
 			if (in_fd != 0)
 			{
-				dup2(pipe_fd[0], STDIN_FILENO);
+				dup2(in_fd, STDIN_FILENO);
+				close(in_fd);
 				close(pipe_fd[0]);
 			}
 			dup2(pipe_fd[1], STDOUT_FILENO);
@@ -51,18 +54,35 @@ void	run_pipeline(t_ast *ast, int in_fd, t_meta *meta)
 			if (child_pid == 0)
 			{
 				dup2(pipe_fd[0], STDIN_FILENO);
-				close(pipe_fd[1]);
 				close(pipe_fd[0]);
+				close(pipe_fd[1]);
 				run_executable_here(ast->right->data, meta);
 			}
 		}
 	}
 	else 
 	{
-		return ;
+		child_pid = fork();
+		if (child_pid == 0) //node à esquerda
+		{
+			if (in_fd != 0) //nao é primeiro comando
+			{
+				dup2(in_fd, STDIN_FILENO);
+				close(in_fd);
+				close(pipe_fd[0]);
+			}
+			dup2(pipe_fd[1], STDOUT_FILENO);
+			close(pipe_fd[1]);
+			close(pipe_fd[0]);
+			run_executable_here(ast->left->data, meta);
+		}
+		close(pipe_fd[1]);
+		run_pipeline(ast->right, pipe_fd[0], meta);
+		close(pipe_fd[0]);
 	}
-	close(pipe_fd[0]);
+	close(in_fd);
 	close(pipe_fd[1]);
+	close(pipe_fd[0]);
 	while(wait(&exit_status) > 0);
 	return ;
 }
