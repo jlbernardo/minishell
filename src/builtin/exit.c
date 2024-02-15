@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 19:35:43 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/14 23:00:00 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/14 23:11:24 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	ft_exit(t_token *tk, t_ast *ast, t_hash **ht, int last_exit)
 	exit_code = last_exit;
 	ft_putendl_fd(tk->literal, 1);
 	if ((tk->next
-		&& (!ft_isdigit(*tk->next->literal) && *tk->next->literal != '-'))
+			&& (!ft_isdigit(*tk->next->literal) && *tk->next->literal != '-'))
 		|| (tk->next && check_ll(tk->next->literal)))
 	{
 		ft_putstr_fd("bash: exit: ", 2);
