@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: julberna <julberna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 15:30:55 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/10 18:21:07 by julberna         ###   ########.fr       */
+/*   Updated: 2024/02/14 20:19:55 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ int	pwd(void)
 	{
 		ft_putendl_fd(path, 1);
 		free(path);
-		return (0);
+		return (EXIT_SUCCESS);
 	}
 	perror("bash: pwd");
-	return (1);
+	return (EXIT_FAILURE);
 }
