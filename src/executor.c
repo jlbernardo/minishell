@@ -6,7 +6,7 @@
 /*   By: iusantos <iusantos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/14 17:17:37 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/15 14:21:58 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,57 @@ void	executor(t_ast *ast, t_meta *meta)
 		run_simple_command(ast->left, meta);
 	}
 	else 
-		return;
-	// {
-	// 	run_pipeline(ast);
-	// }
+	{
+		run_pipeline(ast, 0, meta);
+	}
+}
+
+void	run_pipeline(t_ast *ast, int in_fd, t_meta *meta)
+{
+	int pipe_fd[2];
+	pid_t	child_pid;
+	int	exit_status;
+
+	pipe(pipe_fd);
+	if (ast->right->type == CMD) //ultimo node pipeline
+	{
+		child_pid = fork();
+		if (child_pid == 0)
+		{
+			if (in_fd != 0)
+			{
+				dup2(pipe_fd[0], STDIN_FILENO);
+				close(pipe_fd[0]);
+			}
+			dup2(pipe_fd[1], STDOUT_FILENO);
+			close(pipe_fd[1]);
+			run_executable_here(ast->left->data, meta);
+		}
+		else 
+		{
+			child_pid = fork();
+			if (child_pid == 0)
+			{
+				dup2(pipe_fd[0], STDIN_FILENO);
+				close(pipe_fd[1]);
+				close(pipe_fd[0]);
+				run_executable_here(ast->right->data, meta);
+			}
+		}
+	}
+	else 
+	{
+		return ;
+	}
+	close(pipe_fd[0]);
+	close(pipe_fd[1]);
+	while(wait(&exit_status) > 0);
+	return ;
 }
 
 void	run_simple_command(t_ast *cmd_node, t_meta *meta)
 {
-	//deal with redirects
+	//TODO: deal with redirects
 	if	(is_builtin(cmd_node->data->word_list[0].word))
 		run_builtin(cmd_node->data->word_list);
 	else
@@ -66,7 +108,6 @@ void	run_executable(t_cmd *data, t_meta *meta)
 		return ;
 	if (child_pid == 0)
 	{
-		sleep(10);
 		array_of_strings = stringfy(data->word_list);
 		exec_return = execve(data->pathname, array_of_strings, NULL);
 		if (exec_return == -1)
@@ -82,6 +123,26 @@ void	run_executable(t_cmd *data, t_meta *meta)
 		}
 	}
 	waitpid(child_pid, &exit_status, 0); 
+}
+
+void	run_executable_here(t_cmd *data, t_meta *meta)
+{
+	int		exec_return;
+	char	**array_of_strings;
+
+		array_of_strings = stringfy(data->word_list);
+		exec_return = execve(data->pathname, array_of_strings, NULL);
+		if (exec_return == -1)
+		{
+			// modificar para printar no fd 2
+			ft_printf("Command not found\n");
+			finisher(meta->tokens, meta->ast);
+			free_ht(meta->env_vars);
+			//liberar array_of_strings
+			free_array_of_strings(array_of_strings, get_size(data->word_list));
+			free(array_of_strings);
+			exit(2);
+		}
 }
 
 void	free_array_of_strings(char **array, int size)
