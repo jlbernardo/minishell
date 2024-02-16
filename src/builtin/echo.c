@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 18:47:27 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/14 00:08:59 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/14 20:09:07 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	echo(t_token *tokens)
 	}
 	if (!flag)
 		write(1, "\n", 1);
-	return (0);
+	return (EXIT_SUCCESS);
 }
 
 int	echo_err(void)
