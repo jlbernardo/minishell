@@ -6,7 +6,7 @@
 /*   By: iusantos <iusantos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/16 14:25:15 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/16 14:43:17 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,11 @@
 
 void	executor(t_ast *ast, t_meta *meta)
 {
+	int	og_stdin;
+	int	og_stdout;
+
+	og_stdin = dup(STDIN_FILENO);
+	og_stdout = dup(STDOUT_FILENO);
 	if (ast->right == NULL)
 	{
 		run_simple_command(ast->left, meta);
@@ -22,6 +27,8 @@ void	executor(t_ast *ast, t_meta *meta)
 	{
 		run_pipeline(ast, 0, meta);
 	}
+	dup2(og_stdin, STDIN_FILENO);
+	dup2(og_stdout, STDOUT_FILENO);
 }
 
 void	run_pipeline(t_ast *ast, int in_fd, t_meta *meta)
@@ -34,9 +41,8 @@ void	run_pipeline(t_ast *ast, int in_fd, t_meta *meta)
 	pipe(pipe_fd);
 	if (ast->right->type == CMD) //ultimo node pipeline
 	{
-		//run last pipe()
 		child_pid = fork();
-		if (child_pid == 0)
+		if (child_pid == 0) //lowest left node
 		{
 			if (in_fd != 0)
 			{
@@ -51,7 +57,7 @@ void	run_pipeline(t_ast *ast, int in_fd, t_meta *meta)
 		}
 		else 
 		{
-			child_pid = fork();
+			child_pid = fork(); //lowest right node
 			if (child_pid == 0)
 			{
 				dup2(pipe_fd[0], STDIN_FILENO);
@@ -64,9 +70,9 @@ void	run_pipeline(t_ast *ast, int in_fd, t_meta *meta)
 	else 
 	{
 		child_pid = fork();
-		if (child_pid == 0) //node à esquerda
+		if (child_pid == 0) //left node
 		{
-			if (in_fd != 0) //nao é primeiro comando
+			if (in_fd != 0) //not first command
 			{
 				dup2(in_fd, STDIN_FILENO);
 				close(in_fd);
@@ -126,34 +132,6 @@ void	run_builtin(t_word *wl)
 	wl = NULL;
 	return ;
 }
-
-// void	run_executable(t_cmd *data, t_meta *meta)
-// {
-// 	pid_t	child_pid;
-// 	int		exit_status;
-// 	int		exec_return;
-// 	char	**array_of_strings;
-//
-// 	if ((child_pid = fork()) == -1)
-// 		return ;
-// 	if (child_pid == 0)
-// 	{
-// 		array_of_strings = stringfy(data->word_list);
-// 		exec_return = execve(data->pathname, array_of_strings, NULL);
-// 		if (exec_return == -1)
-// 		{
-// 			// modificar para printar no fd 2
-// 			ft_printf("Command not found\n");
-// 			finisher(meta->tokens, meta->ast);
-// 			free_ht(meta->env_vars);
-// 			//liberar array_of_strings
-// 			free_array_of_strings(array_of_strings, get_size(data->word_list));
-// 			free(array_of_strings);
-// 			exit(2);
-// 		}
-// 	}
-// 	waitpid(child_pid, &exit_status, 0); 
-// }
 
 void	run_executable(t_cmd *data, t_meta *meta)
 {
