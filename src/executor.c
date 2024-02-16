@@ -6,7 +6,7 @@
 /*   By: iusantos <iusantos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/16 14:43:17 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/16 18:30:19 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,6 @@
 
 void	executor(t_ast *ast, t_meta *meta)
 {
-	int	og_stdin;
-	int	og_stdout;
-
-	og_stdin = dup(STDIN_FILENO);
-	og_stdout = dup(STDOUT_FILENO);
 	if (ast->right == NULL)
 	{
 		run_simple_command(ast->left, meta);
@@ -27,15 +22,13 @@ void	executor(t_ast *ast, t_meta *meta)
 	{
 		run_pipeline(ast, 0, meta);
 	}
-	dup2(og_stdin, STDIN_FILENO);
-	dup2(og_stdout, STDOUT_FILENO);
 }
 
 void	run_pipeline(t_ast *ast, int in_fd, t_meta *meta)
 {
-	int pipe_fd[2];
+	int		pipe_fd[2];
+	int		exit_status;
 	pid_t	child_pid;
-	int	exit_status;
 
 	//precisa checar de pipe deu errado
 	pipe(pipe_fd);
@@ -84,13 +77,16 @@ void	run_pipeline(t_ast *ast, int in_fd, t_meta *meta)
 			run_executable(ast->left->data, meta);
 		}
 		close(pipe_fd[1]);
-		run_pipeline(ast->right, pipe_fd[0], meta);
-		close(pipe_fd[0]);
+		run_pipeline(ast->right, pipe_fd[0], meta); //recursion
+		close(pipe_fd[0]); //only closes fd after it is passed to recursion
 	}
 	close(in_fd);
 	close(pipe_fd[1]);
 	close(pipe_fd[0]);
-	while(wait(&exit_status) > 0);
+	while(wait(&exit_status) > 0)
+	{
+	}
+	//recover STDIN & STDOUT if necessary
 	return ;
 }
 
@@ -98,6 +94,7 @@ void	run_simple_command(t_ast *cmd_node, t_meta *meta)
 {
 	pid_t	child_pid;
 	int		exit_status;
+
 	//TODO: deal with redirects
 	if	(is_builtin(cmd_node->data->word_list[0].word))
 		run_builtin(cmd_node->data->word_list);
@@ -107,9 +104,12 @@ void	run_simple_command(t_ast *cmd_node, t_meta *meta)
 			return ;
 		if (child_pid == 0)
 			run_executable(cmd_node->data, meta);
-		else
-			waitpid(child_pid, &exit_status, 0); 
+		waitpid(child_pid, &exit_status, 0); 
+		printf("%d\n", exit_status);
+		add_or_upd_ht_entry("?", ft_itoa(exit_status), meta->env_vars);
 	}
+	//save exit status
+	//recover original STDIN, STDOUT if necessary
 }
 
 int	is_builtin(char *cmd_name)
@@ -138,6 +138,7 @@ void	run_executable(t_cmd *data, t_meta *meta)
 	int		exec_return;
 	char	**array_of_strings;
 
+
 		array_of_strings = stringfy(data->word_list);
 		exec_return = execve(data->pathname, array_of_strings, NULL);
 		if (exec_return == -1)
@@ -149,7 +150,7 @@ void	run_executable(t_cmd *data, t_meta *meta)
 			//liberar array_of_strings
 			free_array_of_strings(array_of_strings, get_size(data->word_list));
 			free(array_of_strings);
-			exit(2);
+			exit(127);
 		}
 }
 
