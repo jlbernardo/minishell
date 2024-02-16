@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/15 14:08:13 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/16 14:33:49 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <readline/readline.h>
 # include <sys/wait.h>
 # include <sys/types.h>
+# include <fcntl.h>
 
 # define LIE 0
 # define TRUTH 1
@@ -142,7 +143,6 @@ void			run_simple_command(t_ast *cmd_node, t_meta *meta);
 int				is_builtin(char *cmd_name);
 void			run_builtin(t_word	*wl);
 void			run_executable(t_cmd *data, t_meta *meta);
-void			run_executable_here(t_cmd *data, t_meta *meta);
 void			run_pipeline(t_ast *ast, int in_fd, t_meta *meta);
 char			**stringfy(t_word *wl);
 int				get_size(t_word *wl);
