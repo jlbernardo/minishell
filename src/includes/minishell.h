@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/14 22:19:27 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/15 20:10:35 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,7 @@ int				pwd(void);
 int				env(t_hash **ht);
 int				echo(t_token *tokens);
 int				cd(t_token *tokens, t_hash **ht);
+int				unset(t_token *tokens, t_hash **ht);
 void			ft_exit(t_token *tk, t_ast *ast, t_hash **ht, int exit_code);
 
 /* FINISHER */
