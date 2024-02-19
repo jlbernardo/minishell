@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/19 11:24:14 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/19 17:24:58 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,7 @@ void			run_pipeline(t_ast *ast, int in_fd, t_meta *meta);
 char			**stringfy(t_word *wl);
 int				get_size(t_word *wl);
 void			free_array_of_strings(char **array, int size);
+void			waitncapt_exit_status(t_meta *meta);
 
 /* LIST HANDLER */
 void			new_token(t_token **tk, int type, char *literal);

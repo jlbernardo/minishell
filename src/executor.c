@@ -6,7 +6,7 @@
 /*   By: iusantos <iusantos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/19 15:57:40 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/19 17:28:10 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,6 @@ void	run_pipeline(t_ast *ast, int in_fd, t_meta *meta)
 void	run_simple_command(t_ast *cmd_node, t_meta *meta)
 {
 	pid_t	child_pid;
-	int		exit_status;
-	char	*exit_string;
 
 	//TODO: deal with redirects
 	if	(is_builtin(cmd_node->data->word_list[0].word))
@@ -113,13 +111,30 @@ void	run_simple_command(t_ast *cmd_node, t_meta *meta)
 			return ;
 		if (child_pid == 0)
 			run_executable(cmd_node->data, meta);
-		waitpid(-1 ,&exit_status, 0);
-		exit_string = ft_itoa(WEXITSTATUS(exit_status));
-		add_or_upd_ht_entry("?", exit_string, meta->env_vars);
-		free(exit_string);
+		//wait & capture exit_status
+		waitncapt_exit_status(meta);
+		// ft_printf("errno: %d, exit_status: %s", errno, grab_value("?", meta->env_vars));
 	}
-	//save exit status
 	//recover original STDIN, STDOUT if necessary
+}
+
+void	waitncapt_exit_status(t_meta *meta)
+{
+	char	*exit_string;
+	int		exit_status;
+
+	waitpid(-1, &exit_status, 0);
+	exit_status = WEXITSTATUS(exit_status);
+	exit_string = ft_itoa(exit_status);
+	if (exit_status == 13)
+	{
+		add_or_upd_ht_entry("?", "126", meta->env_vars);
+	}
+	else
+	{
+		add_or_upd_ht_entry("?", exit_string, meta->env_vars);
+	}
+	free(exit_string);
 }
 
 void	run_executable(t_cmd *data, t_meta *meta)
@@ -133,6 +148,7 @@ void	run_executable(t_cmd *data, t_meta *meta)
 	if (exec_return == -1)
 	{
 		// modificar para printar no fd 2
+		
 		ft_printf("execve errror\n");
 		free_array_of_strings(array_of_strings, get_size(data->word_list));
 		free(array_of_strings);

@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 20:38:49 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/08 20:50:03 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/19 17:03:03 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	find_path(t_ast **ast, char **paths)
 		temp = ft_strjoin(paths[i], "/");
 		try = ft_strjoin(temp, (*ast)->data->word_list->word);
 		free(temp);
-		if (access(try, X_OK) == 0)
+		if (access(try, F_OK) == 0)
 		{
 			(*ast)->data->pathname = try;
 			break ;
