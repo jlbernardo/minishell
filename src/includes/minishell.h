@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/16 17:37:05 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/19 11:24:14 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <sys/wait.h>
 # include <sys/types.h>
 # include <fcntl.h>
+# include <string.h>
 
 # define LIE 0
 # define TRUTH 1

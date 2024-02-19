@@ -6,7 +6,7 @@
 /*   By: iusantos <iusantos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/16 18:30:19 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/19 15:57:40 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,64 +94,52 @@ void	run_simple_command(t_ast *cmd_node, t_meta *meta)
 {
 	pid_t	child_pid;
 	int		exit_status;
+	char	*exit_string;
 
 	//TODO: deal with redirects
 	if	(is_builtin(cmd_node->data->word_list[0].word))
 		run_builtin(cmd_node->data->word_list);
 	else
 	{
-		if ((child_pid = fork()) == -1)
+		if (cmd_node->data->pathname == NULL)
+		{
+			//nem tenta executar o comando
+			//printar para fd2
+			ft_printf("Minishell: command not found\n");
+			add_or_upd_ht_entry("?", "127", meta->env_vars);
+			return ;
+		}
+		else if ((child_pid = fork()) == -1)
 			return ;
 		if (child_pid == 0)
 			run_executable(cmd_node->data, meta);
-		waitpid(child_pid, &exit_status, 0); 
-		printf("%d\n", exit_status);
-		add_or_upd_ht_entry("?", ft_itoa(exit_status), meta->env_vars);
+		waitpid(-1 ,&exit_status, 0);
+		exit_string = ft_itoa(WEXITSTATUS(exit_status));
+		add_or_upd_ht_entry("?", exit_string, meta->env_vars);
+		free(exit_string);
 	}
 	//save exit status
 	//recover original STDIN, STDOUT if necessary
 }
 
-int	is_builtin(char *cmd_name)
-{
-	if (ft_strcmp(cmd_name, "echo") == 0
-	|| ft_strcmp(cmd_name, "cd") == 0
-	|| ft_strcmp(cmd_name, "pwd") == 0
-	|| ft_strcmp(cmd_name, "export") == 0
-	|| ft_strcmp(cmd_name, "unset") == 0
-	|| ft_strcmp(cmd_name, "env") == 0
-	|| ft_strcmp(cmd_name, "exit") == 0)
-		return (1);
-	else
-		return (0);
-}
-
-void	run_builtin(t_word *wl)
-{
-	//TODO
-	wl = NULL;
-	return ;
-}
-
 void	run_executable(t_cmd *data, t_meta *meta)
 {
 	int		exec_return;
-	char	**array_of_strings;
+	char	**array_of_strings = NULL;
 
 
-		array_of_strings = stringfy(data->word_list);
-		exec_return = execve(data->pathname, array_of_strings, NULL);
-		if (exec_return == -1)
-		{
-			// modificar para printar no fd 2
-			ft_printf("Command not found\n");
-			finisher(meta->tokens, meta->ast);
-			free_ht(meta->env_vars);
-			//liberar array_of_strings
-			free_array_of_strings(array_of_strings, get_size(data->word_list));
-			free(array_of_strings);
-			exit(127);
-		}
+	array_of_strings = stringfy(data->word_list);
+	exec_return = execve(data->pathname, array_of_strings, NULL);
+	if (exec_return == -1)
+	{
+		// modificar para printar no fd 2
+		ft_printf("execve errror\n");
+		free_array_of_strings(array_of_strings, get_size(data->word_list));
+		free(array_of_strings);
+		finisher(meta->tokens, meta->ast);
+		free_ht(meta->env_vars);
+		exit(errno);
+	}
 }
 
 void	free_array_of_strings(char **array, int size)
@@ -199,3 +187,25 @@ int	get_size(t_word *wl)
 	}
 	return (nelem);
 }
+
+int	is_builtin(char *cmd_name)
+{
+	if (ft_strcmp(cmd_name, "echo") == 0
+	|| ft_strcmp(cmd_name, "cd") == 0
+	|| ft_strcmp(cmd_name, "pwd") == 0
+	|| ft_strcmp(cmd_name, "export") == 0
+	|| ft_strcmp(cmd_name, "unset") == 0
+	|| ft_strcmp(cmd_name, "env") == 0
+	|| ft_strcmp(cmd_name, "exit") == 0)
+		return (1);
+	else
+		return (0);
+}
+
+void	run_builtin(t_word *wl)
+{
+	//TODO
+	wl = NULL;
+	return ;
+}
+
