@@ -6,7 +6,7 @@
 /*   By: iusantos <iusantos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/19 17:28:10 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/20 13:05:59 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	run_pipeline(t_ast *ast, int in_fd, t_meta *meta)
 	int		pipe_fd[2];
 	int		exit_status;
 	pid_t	child_pid;
+	pid_t	current_child_pid;
 
 	//precisa checar de pipe deu errado
 	pipe(pipe_fd);
@@ -83,9 +84,9 @@ void	run_pipeline(t_ast *ast, int in_fd, t_meta *meta)
 	close(in_fd);
 	close(pipe_fd[1]);
 	close(pipe_fd[0]);
-	while(wait(&exit_status) > 0)
-	{
-	}
+	while((current_child_pid = waitpid(-1, &exit_status, 0)) > 0)
+		capture_exit_status(current_child_pid, exit_status, meta);
+	ft_printf("errno: %d, exit_status: %s", errno, grab_value("?", meta->env_vars));
 	//recover STDIN & STDOUT if necessary
 	return ;
 }
@@ -93,6 +94,8 @@ void	run_pipeline(t_ast *ast, int in_fd, t_meta *meta)
 void	run_simple_command(t_ast *cmd_node, t_meta *meta)
 {
 	pid_t	child_pid;
+	pid_t	current_child_pid;
+	int		exit_status;
 
 	//TODO: deal with redirects
 	if	(is_builtin(cmd_node->data->word_list[0].word))
@@ -111,30 +114,33 @@ void	run_simple_command(t_ast *cmd_node, t_meta *meta)
 			return ;
 		if (child_pid == 0)
 			run_executable(cmd_node->data, meta);
-		//wait & capture exit_status
-		waitncapt_exit_status(meta);
-		// ft_printf("errno: %d, exit_status: %s", errno, grab_value("?", meta->env_vars));
+	while((current_child_pid = waitpid(-1, &exit_status, 0)) > 0)
+		capture_exit_status(current_child_pid, exit_status, meta);
+	ft_printf("errno: %d, exit_status: %s", errno, grab_value("?", meta->env_vars));
 	}
 	//recover original STDIN, STDOUT if necessary
 }
 
-void	waitncapt_exit_status(t_meta *meta)
+void	capture_exit_status(pid_t current_child_pid, int exit_status, t_meta *meta)
 {
+	static pid_t	last_child_pid;
 	char	*exit_string;
-	int		exit_status;
 
-	waitpid(-1, &exit_status, 0);
-	exit_status = WEXITSTATUS(exit_status);
-	exit_string = ft_itoa(exit_status);
-	if (exit_status == 13)
+	if (current_child_pid > last_child_pid)
 	{
-		add_or_upd_ht_entry("?", "126", meta->env_vars);
+		exit_status = WEXITSTATUS(exit_status);
+		exit_string = ft_itoa(exit_status);
+		if (exit_status == 13)
+		{
+			add_or_upd_ht_entry("?", "126", meta->env_vars);
+		}
+		else
+		{
+			add_or_upd_ht_entry("?", exit_string, meta->env_vars);
+		}
+		free(exit_string);
 	}
-	else
-	{
-		add_or_upd_ht_entry("?", exit_string, meta->env_vars);
-	}
-	free(exit_string);
+	last_child_pid = current_child_pid;
 }
 
 void	run_executable(t_cmd *data, t_meta *meta)
@@ -148,7 +154,6 @@ void	run_executable(t_cmd *data, t_meta *meta)
 	if (exec_return == -1)
 	{
 		// modificar para printar no fd 2
-		
 		ft_printf("execve errror\n");
 		free_array_of_strings(array_of_strings, get_size(data->word_list));
 		free(array_of_strings);
