@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 17:38:30 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/15 21:46:56 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/19 21:02:11 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ int	main(void)
 	{
 		if (lexer(&tokens, &ast))
 			parser(tokens, &ast, ht);
+		export(tokens, ht);
+		env(ht);
 		finisher(tokens, ast);
 	}
 	free_ht(ht);
