@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 15:31:26 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/07 16:18:10 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/20 20:27:05 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,10 @@ t_hash	*create_kv_pair(char *name, char *value)
 	if (kv_pair == NULL)
 		return (NULL);
 	kv_pair->name = ft_strdup(name);
-	kv_pair->value = ft_strdup(value);
+	if (value)
+		kv_pair->value = ft_strdup(value);
+	else
+		kv_pair->value = NULL;
 	kv_pair->next = NULL;
 	return (kv_pair);
 }
@@ -81,7 +84,11 @@ char	*grab_value(char *name, t_hash **ht)
 	while (entry != NULL)
 	{
 		if (ft_strcmp(entry->name, name) == 0)
-			return (ft_strdup(entry->value));
+		{
+			if (entry->value)
+				return (ft_strdup(entry->value));
+			break ;
+		}
 		prev = entry;
 		entry = prev->next;
 	}

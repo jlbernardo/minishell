@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/19 18:34:52 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/20 18:37:01 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,6 @@ void			read_char(t_lexer *lex);
 
 /* EXPANDER */
 int				has_variable(char *literal);
-int				valid_variable(char *literal);
 char			*get_variable_name(char *literal);
 void			replace_variable(t_token **tokens, t_hash **ht);
 void			expand_variables(t_token **tokens, t_hash **ht);
@@ -127,9 +126,9 @@ t_word			*new_wle(char *s);
 
 /* LIST HANDLERS */
 int				sorted(t_word *vars);
-void			sort_vars(t_word **vars, t_word *first);
 void			populate_sort_vars(t_hash **ht, t_word **vars);
 void			new_token(t_token **tk, int type, char *literal);
+void			sort_vars(t_word **vars, t_word *first, t_word *first_p);
 t_token			*tk_last(t_token *tk);
 
 /* HASH TABLE */
@@ -149,6 +148,8 @@ int				echo(t_token *tokens);
 int				cd(t_token *tokens, t_hash **ht);
 int				unset(t_token *tokens, t_hash **ht);
 int				export(t_token *tokens, t_hash **ht);
+void			print_export(t_word *vars, t_hash **ht);
+int				valid_variable(char *literal);
 void			ft_exit(t_token *tk, t_ast *ast, t_hash **ht, int exit_code);
 
 /* FINISHER */

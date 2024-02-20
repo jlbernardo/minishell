@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:11:53 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/14 14:54:31 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/20 18:04:23 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char	*set_error(char *path)
 
 	size = ft_strlen(path) + 11;
 	err_str = ft_calloc(size, sizeof(char));
-	ft_strlcat(err_str, "bash: cd: ", size);
+	ft_strlcat(err_str, "minishell: cd: ", size);
 	ft_strlcat(err_str, path, size);
 	return (err_str);
 }

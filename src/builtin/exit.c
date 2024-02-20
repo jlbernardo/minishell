@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 19:35:43 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/14 23:11:24 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/20 18:04:23 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,14 @@ void	ft_exit(t_token *tk, t_ast *ast, t_hash **ht, int last_exit)
 			&& (!ft_isdigit(*tk->next->literal) && *tk->next->literal != '-'))
 		|| (tk->next && check_ll(tk->next->literal)))
 	{
-		ft_putstr_fd("bash: exit: ", 2);
+		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(tk->next->literal, 2);
 		ft_putendl_fd(": numeric argument required", 2);
 		exit_code = 2;
 	}
 	else if (tk->next && tk->next->next)
 	{
-		ft_putendl_fd("bash: exit: too many arguments", 2);
+		ft_putendl_fd("minishell: exit: too many arguments", 2);
 		return ;
 	}
 	else if (tk->next)
