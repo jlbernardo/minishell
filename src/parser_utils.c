@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 20:24:28 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/08 20:57:33 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/14 11:42:20 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	set_pl(t_ast **pl, t_ast **parent, t_token **tokens)
 		return ;
 	(*pl)->type = PIPELINE;
 	(*pl)->parent = *parent;
+	(*pl)->success = 0;
 	if ((*pl)->parent == NULL && !is_pipe)
 	{
 		ft_printf("Syntax error near token %s\n", (*tokens)->literal);
