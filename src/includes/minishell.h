@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/20 12:51:27 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/20 17:28:11 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,9 @@ void			run_pipeline(t_ast *ast, int in_fd, t_meta *meta);
 char			**stringfy(t_word *wl);
 int				get_size(t_word *wl);
 void			free_array_of_strings(char **array, int size);
-void	capture_exit_status(pid_t current_child_pid, int exit_status, t_meta *meta);
+void			upd_simple_exit_status(int exit_status, t_meta	*meta);
+void			capture_exit_status(pid_t current_child_pid, int exit_status, t_meta *meta);
+void			handle_null_pathname(t_meta *meta);
 
 /* LIST HANDLER */
 void			new_token(t_token **tk, int type, char *literal);
