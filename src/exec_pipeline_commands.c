@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipeline_commands.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iusantos <iusantos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 11:36:19 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/21 14:47:22 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/21 18:04:50 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
-void	exec_left_node(t_cmd *data, int in_fd, int pipe_fd[2], t_meta *meta)
+void	exec_left(t_cmd *data, int in_fd, int pipe_fd[2], t_meta *meta)
 {
 	//TODO: change run_executable to run_command(can be builtin or executable)
 	if (in_fd != 0)
@@ -27,7 +27,7 @@ void	exec_left_node(t_cmd *data, int in_fd, int pipe_fd[2], t_meta *meta)
 	exec_forked_command(data, meta);
 }
 
-void	exec_right_node(t_cmd *data, int pipe_fd[2], t_meta *meta)
+void	exec_right(t_cmd *data, int pipe_fd[2], t_meta *meta)
 {
 	//TODO: change run_executable to run_command(can be builtin or executable)
 	dup2(pipe_fd[0], STDIN_FILENO);

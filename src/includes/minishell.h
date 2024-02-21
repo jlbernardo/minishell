@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/21 16:12:12 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/21 18:04:50 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@
 
 typedef struct s_meta
 {
-	struct s_token *tokens;
+	struct s_token	*tokens;
 	struct s_ast	*ast;
 	struct s_hash	**env_vars;
 }				t_meta;
@@ -119,7 +119,6 @@ void			read_char(t_lexer *lex);
 
 /* EXPANDER */
 int				has_variable(char *literal);
-int				valid_variable(char *literal);
 char			*get_variable_name(char *literal);
 void			replace_variable(t_token **tokens, t_hash **ht);
 void			expand_variables(t_token **tokens, t_hash **ht);
@@ -145,8 +144,8 @@ int				is_builtin(char *cmd_name);
 void			run_builtin(t_word	*wl);
 void			run_executable(t_cmd *data, t_meta *meta);
 void			run_pipeline(t_ast *ast, int in_fd, t_meta *meta);
-void			exec_left_node(t_cmd *data, int in_fd, int pipe_fd[2], t_meta *meta);
-void			exec_right_node(t_cmd *data, int pipe_fd[2], t_meta *meta);
+void			exec_left(t_cmd *data, int in_fd, int pipe_fd[2], t_meta *meta);
+void			exec_right(t_cmd *data, int pipe_fd[2], t_meta *meta);
 void			exec_forked_command(t_cmd *data, t_meta *meta);
 char			**stringfy(t_word *wl);
 int				get_size(t_word *wl);
@@ -159,6 +158,7 @@ void			close_all_fds(void);
 
 /* LIST HANDLER */
 void			new_token(t_token **tk, int type, char *literal);
+void			sort_vars(t_word **vars, t_word *first, t_word *first_p);
 t_token			*tk_last(t_token *tk);
 
 /* HASH TABLE */
@@ -177,6 +177,10 @@ int				env(t_hash **ht);
 int				echo(t_token *tokens);
 int				cd(t_token *tokens, t_hash **ht);
 int				unset(t_token *tokens, t_hash **ht);
+int				export(t_token *tokens, t_hash **ht);
+void			print_export(t_word *vars, t_hash **ht);
+int				valid_variable(char *literal);
+int				is_readonly(char *literal);
 void			ft_exit(t_token *tk, t_ast *ast, t_hash **ht, int exit_code);
 
 /* FINISHER */

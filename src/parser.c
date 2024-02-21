@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 21:12:03 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/14 17:29:43 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/21 18:05:07 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	parser(t_token *tokens, t_ast **ast, t_hash **env_vars)
 		if ((*ast)->success == 1)
 			return (1);
 		else
-			 return (0);
+			return (0);
 	}
 	else
 		return (0);
@@ -56,7 +56,7 @@ t_ast	*parse_pipeline(t_token **tokens, t_ast *parent)
 		*tokens = (*tokens)->next;
 		pl_node->right = parse_cmd(tokens, pl_node);
 		if (pl_node->right == NULL)
-		return (pl_node);
+			return (pl_node);
 	}
 	else
 	{

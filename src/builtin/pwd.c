@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 15:30:55 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/14 20:19:55 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/20 18:04:23 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,6 @@ int	pwd(void)
 		free(path);
 		return (EXIT_SUCCESS);
 	}
-	perror("bash: pwd");
+	perror("minishell: pwd");
 	return (EXIT_FAILURE);
 }

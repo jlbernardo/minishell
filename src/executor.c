@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iusantos <iusantos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/21 14:49:01 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/21 18:04:50 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	executor(t_ast *ast, t_meta *meta)
 	{
 		run_simple_command(ast->left, meta);
 	}
-	else 
+	else
 	{
 		run_pipeline(ast, 0, meta);
 	}
@@ -39,22 +39,22 @@ void	run_pipeline(t_ast *ast, int in_fd, t_meta *meta)
 		child_pid = fork();
 		if (child_pid == 0) //lowest left node
 		{
-			exec_left_node(ast->left->data, in_fd, pipe_fd, meta);
+			exec_left(ast->left->data, in_fd, pipe_fd, meta);
 		}
 		//apply redirects before fork?
 		child_pid = fork(); //lowest right node
 		if (child_pid == 0)
 		{
-			exec_right_node(ast->right->data, pipe_fd, meta);
+			exec_right(ast->right->data, pipe_fd, meta);
 		}
 	}
-	else 
+	else
 	{
 		//apply redirects before fork?
 		child_pid = fork();
 		if (child_pid == 0) //left node
 		{
-			exec_left_node(ast->left->data, in_fd, pipe_fd, meta);
+			exec_left(ast->left->data, in_fd, pipe_fd, meta);
 		}
 		close(pipe_fd[1]);
 		run_pipeline(ast->right, pipe_fd[0], meta); //recursion
@@ -106,7 +106,7 @@ char **stringfy(t_word *wl)
 	char	**array;
 	int		size;
 	int		index;
-	
+
 	size = get_size(wl) + 1;
 	array = ft_calloc(size, sizeof(char *));
 	index = 0;
@@ -163,7 +163,7 @@ void handle_null_pathname(t_meta *meta)
 void	close_all_fds(void)
 {
 	int	i;
-	
+
 	i = 0;
 	while(i < 1024)
 	{
