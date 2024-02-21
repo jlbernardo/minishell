@@ -6,7 +6,7 @@
 /*   By: iusantos <iusantos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 11:36:19 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/21 12:00:10 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/21 14:47:22 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	exec_left_node(t_cmd *data, int in_fd, int pipe_fd[2], t_meta *meta)
 	dup2(pipe_fd[1], STDOUT_FILENO);
 	close(pipe_fd[1]);
 	close(pipe_fd[0]);
-	run_executable(data, meta);
+	exec_forked_command(data, meta);
 }
 
 void	exec_right_node(t_cmd *data, int pipe_fd[2], t_meta *meta)
@@ -33,7 +33,39 @@ void	exec_right_node(t_cmd *data, int pipe_fd[2], t_meta *meta)
 	dup2(pipe_fd[0], STDIN_FILENO);
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);
-	run_executable(data, meta);
+	exec_forked_command(data, meta);
+}
+
+void	exec_forked_command(t_cmd *data, t_meta *meta)
+{
+	if (is_builtin(data->word_list[0].word))
+	{
+		run_builtin(data->word_list);
+		//collect exit_status
+	}
+	else
+	{
+		if (data->pathname == NULL)
+		{
+			//change to handle_forked_pathname
+			handle_forked_null_pathname(meta);
+			return ;
+		}
+		else
+		{
+			run_executable(data, meta);
+		}
+	}
+}
+
+void	handle_forked_null_pathname(t_meta *meta)
+{
+	ft_putstr_fd("Minishell: Command not found\n", 2);
+	// add_or_upd_ht_entry("?", "127", meta->env_vars);
+	finisher(meta->tokens, meta->ast);
+	free_ht(meta->env_vars);
+	close_all_fds();
+	exit(127);
 }
 
 int	cap_n_upd_exit_status(t_meta *meta)
@@ -61,3 +93,4 @@ int	cap_n_upd_exit_status(t_meta *meta)
 	last_child_pid = current_child_pid;
 	return (current_child_pid);
 }
+

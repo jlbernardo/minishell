@@ -6,7 +6,7 @@
 /*   By: iusantos <iusantos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 10:42:52 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/21 10:48:41 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/21 14:50:51 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,10 @@ void	upd_simple_exit_status(int exit_status, t_meta	*meta)
 		add_or_upd_ht_entry("?", exit_string , meta->env_vars);
 		free(exit_string);
 	}
+}
+
+void handle_null_pathname(t_meta *meta)
+{
+	ft_putstr_fd("Minishell: command not found\n", 2);
+	add_or_upd_ht_entry("?", "127", meta->env_vars);
 }

@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/21 12:01:17 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/21 14:44:13 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,13 +147,15 @@ void			run_executable(t_cmd *data, t_meta *meta);
 void			run_pipeline(t_ast *ast, int in_fd, t_meta *meta);
 void			exec_left_node(t_cmd *data, int in_fd, int pipe_fd[2], t_meta *meta);
 void			exec_right_node(t_cmd *data, int pipe_fd[2], t_meta *meta);
+void			exec_forked_command(t_cmd *data, t_meta *meta);
 char			**stringfy(t_word *wl);
 int				get_size(t_word *wl);
 void			free_array_of_strings(char **array, int size);
 void			upd_simple_exit_status(int exit_status, t_meta	*meta);
-void			capture_exit_status(pid_t current_child_pid, int exit_status, t_meta *meta);
 int				cap_n_upd_exit_status(t_meta *meta);
 void			handle_null_pathname(t_meta *meta);
+void			handle_forked_null_pathname(t_meta *meta);
+void			close_all_fds(void);
 
 /* LIST HANDLER */
 void			new_token(t_token **tk, int type, char *literal);

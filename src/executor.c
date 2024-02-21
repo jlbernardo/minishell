@@ -6,7 +6,7 @@
 /*   By: iusantos <iusantos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/21 12:07:06 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/21 14:49:01 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,28 +66,6 @@ void	run_pipeline(t_ast *ast, int in_fd, t_meta *meta)
 	while(cap_n_upd_exit_status(meta) != -1);
 	//recover STDIN & STDOUT if necessary?
 	return ;
-}
-
-void	capture_exit_status(pid_t current_child_pid, int exit_status, t_meta *meta)
-{
-	static pid_t	last_child_pid;
-	char	*exit_string;
-
-	if (current_child_pid > last_child_pid)
-	{
-		exit_status = WEXITSTATUS(exit_status);
-		exit_string = ft_itoa(exit_status);
-		if (exit_status == 13)
-		{
-			add_or_upd_ht_entry("?", "126", meta->env_vars);
-		}
-		else
-		{
-			add_or_upd_ht_entry("?", exit_string, meta->env_vars);
-		}
-		free(exit_string);
-	}
-	last_child_pid = current_child_pid;
 }
 
 void	run_executable(t_cmd *data, t_meta *meta)
@@ -180,4 +158,16 @@ void handle_null_pathname(t_meta *meta)
 {
 	ft_putstr_fd("Minishell: command not found\n", 2);
 	add_or_upd_ht_entry("?", "127", meta->env_vars);
+}
+
+void	close_all_fds(void)
+{
+	int	i;
+	
+	i = 0;
+	while(i < 1024)
+	{
+		close(i);
+		i++;
+	}
 }
