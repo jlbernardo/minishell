@@ -6,18 +6,27 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 21:12:03 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/12 20:23:40 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/14 17:29:43 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
-void	parser(t_token *tokens, t_ast **ast, t_hash **env_vars)
+int	parser(t_token *tokens, t_ast **ast, t_hash **env_vars)
 {
 	expand_variables(&tokens, env_vars);
 	remove_quotes(&tokens);
 	*ast = parse_pipeline(&tokens, NULL);
 	get_path(ast, env_vars);
+	if (*ast != NULL)
+	{
+		if ((*ast)->success == 1)
+			return (1);
+		else
+			 return (0);
+	}
+	else
+		return (0);
 }
 
 t_ast	*parse_pipeline(t_token **tokens, t_ast *parent)
@@ -29,9 +38,12 @@ t_ast	*parse_pipeline(t_token **tokens, t_ast *parent)
 		return (NULL);
 	pl_node->left = parse_cmd(tokens, pl_node);
 	if (pl_node->left == NULL)
-		return (NULL);
-	if (*tokens == NULL)
 		return (pl_node);
+	if (*tokens == NULL)
+	{
+		pl_node->success = 1;
+		return (pl_node);
+	}
 	else if (!ft_strncmp((*tokens)->literal, "|", 1) && has_other_pipes(*tokens)
 		&& ft_strncmp((*tokens)->next->literal, "|", 1))
 	{
@@ -43,9 +55,15 @@ t_ast	*parse_pipeline(t_token **tokens, t_ast *parent)
 	{
 		*tokens = (*tokens)->next;
 		pl_node->right = parse_cmd(tokens, pl_node);
+		if (pl_node->right == NULL)
+		return (pl_node);
 	}
 	else
+	{
 		ft_printf("Syntax error near token %s\n", (*tokens)->literal);
+		return (pl_node);
+	}
+	pl_node->success = 1;
 	return (pl_node);
 }
 
