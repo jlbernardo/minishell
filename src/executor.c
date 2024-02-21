@@ -6,12 +6,11 @@
 /*   By: iusantos <iusantos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/21 10:29:18 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/21 10:45:59 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
-#include <unistd.h>
 
 void	executor(t_ast *ast, t_meta *meta)
 {
@@ -23,6 +22,7 @@ void	executor(t_ast *ast, t_meta *meta)
 	{
 		run_pipeline(ast, 0, meta);
 	}
+	//debugging statement below
 	ft_printf("errno: %d, exit_status: %s\n", errno, grab_value("?", meta->env_vars));
 }
 
@@ -91,56 +91,6 @@ void	run_pipeline(t_ast *ast, int in_fd, t_meta *meta)
 	ft_printf("errno: %d, exit_status: %s", errno, grab_value("?", meta->env_vars));
 	//recover STDIN & STDOUT if necessary
 	return ;
-}
-
-void	run_simple_command(t_ast *cmd_node, t_meta *meta)
-{
-	pid_t	child_pid;
-	int		exit_status;
-
-	//TODO: deal with redirects
-	if	(is_builtin(cmd_node->data->word_list[0].word))
-		run_builtin(cmd_node->data->word_list);
-	else
-	{
-		if (cmd_node->data->pathname == NULL)
-		{
-			handle_null_pathname(meta);
-			return ;
-		}
-		else
-		{
-			if ((child_pid = fork()) == -1)
-				return ;
-			if (child_pid == 0)
-			{
-				run_executable(cmd_node->data, meta);
-			}
-			wait(&exit_status);
-			upd_simple_exit_status(exit_status, meta);
-		}
-	}
-	//recover original STDIN, STDOUT if necessary
-}
-
-void handle_null_pathname(t_meta *meta)
-{
-	ft_putstr_fd("Minishell: command not found\n", 2);
-	add_or_upd_ht_entry("?", "127", meta->env_vars);
-}
-
-void	upd_simple_exit_status(int exit_status, t_meta	*meta)
-{
-	char *exit_string;
-
-	if (exit_status == 13)
-		add_or_upd_ht_entry("?", "126", meta->env_vars);
-	else
-	{
-		exit_string = ft_itoa(WEXITSTATUS(exit_status));
-		add_or_upd_ht_entry("?", exit_string , meta->env_vars);
-		free(exit_string);
-	}
 }
 
 void	capture_exit_status(pid_t current_child_pid, int exit_status, t_meta *meta)
@@ -251,3 +201,8 @@ void	run_builtin(t_word *wl)
 	return ;
 }
 
+void handle_null_pathname(t_meta *meta)
+{
+	ft_putstr_fd("Minishell: command not found\n", 2);
+	add_or_upd_ht_entry("?", "127", meta->env_vars);
+}
