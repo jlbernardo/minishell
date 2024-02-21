@@ -6,7 +6,7 @@
 /*   By: iusantos <iusantos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/21 10:45:59 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/21 11:30:36 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,34 +33,19 @@ void	run_pipeline(t_ast *ast, int in_fd, t_meta *meta)
 	pid_t	child_pid;
 	pid_t	current_child_pid;
 
-	//precisa checar de pipe deu errado
-	pipe(pipe_fd);
-	if (ast->right->type == CMD) //ultimo node pipeline
+	if(pipe(pipe_fd) == -1)
+		return;
+	if (ast->right->type == CMD) //last pipeline node
 	{
 		child_pid = fork();
 		if (child_pid == 0) //lowest left node
 		{
-			if (in_fd != 0)
-			{
-				dup2(in_fd, STDIN_FILENO);
-				close(in_fd);
-				close(pipe_fd[0]);
-			}
-			dup2(pipe_fd[1], STDOUT_FILENO);
-			close(pipe_fd[1]);
-			close(pipe_fd[0]);
-			run_executable(ast->left->data, meta);
+			exec_left_node(ast->left->data, in_fd, pipe_fd, meta);
 		}
-		else 
+		child_pid = fork(); //lowest right node
+		if (child_pid == 0)
 		{
-			child_pid = fork(); //lowest right node
-			if (child_pid == 0)
-			{
-				dup2(pipe_fd[0], STDIN_FILENO);
-				close(pipe_fd[0]);
-				close(pipe_fd[1]);
-				run_executable(ast->right->data, meta);
-			}
+			exec_right_node(ast->right->data, pipe_fd, meta);
 		}
 	}
 	else 
@@ -68,16 +53,7 @@ void	run_pipeline(t_ast *ast, int in_fd, t_meta *meta)
 		child_pid = fork();
 		if (child_pid == 0) //left node
 		{
-			if (in_fd != 0) //not first command
-			{
-				dup2(in_fd, STDIN_FILENO);
-				close(in_fd);
-				close(pipe_fd[0]);
-			}
-			dup2(pipe_fd[1], STDOUT_FILENO);
-			close(pipe_fd[1]);
-			close(pipe_fd[0]);
-			run_executable(ast->left->data, meta);
+			exec_left_node(ast->left->data, in_fd, pipe_fd, meta);
 		}
 		close(pipe_fd[1]);
 		run_pipeline(ast->right, pipe_fd[0], meta); //recursion
@@ -88,10 +64,33 @@ void	run_pipeline(t_ast *ast, int in_fd, t_meta *meta)
 	close(pipe_fd[0]);
 	while((current_child_pid = waitpid(-1, &exit_status, 0)) > 0)
 		capture_exit_status(current_child_pid, exit_status, meta);
-	ft_printf("errno: %d, exit_status: %s", errno, grab_value("?", meta->env_vars));
 	//recover STDIN & STDOUT if necessary
 	return ;
 }
+
+void	exec_left_node(t_cmd *data, int in_fd, int pipe_fd[2], t_meta *meta)
+{
+	//TODO: change run_executable to run_command(can be builtin or executable)
+	if (in_fd != 0)
+	{
+		dup2(in_fd, STDIN_FILENO);
+		close(in_fd);
+		close(pipe_fd[0]);
+	}
+	dup2(pipe_fd[1], STDOUT_FILENO);
+	close(pipe_fd[1]);
+	close(pipe_fd[0]);
+	run_executable(data, meta);
+}
+
+void	exec_right_node(t_cmd *data, int pipe_fd[2], t_meta *meta)
+{
+	dup2(pipe_fd[0], STDIN_FILENO);
+	close(pipe_fd[0]);
+	close(pipe_fd[1]);
+	run_executable(data, meta);
+}
+
 
 void	capture_exit_status(pid_t current_child_pid, int exit_status, t_meta *meta)
 {

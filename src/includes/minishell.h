@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/20 17:28:11 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/21 11:25:48 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,8 @@ int				is_builtin(char *cmd_name);
 void			run_builtin(t_word	*wl);
 void			run_executable(t_cmd *data, t_meta *meta);
 void			run_pipeline(t_ast *ast, int in_fd, t_meta *meta);
+void			exec_left_node(t_cmd *data, int in_fd, int pipe_fd[2], t_meta *meta);
+void			exec_right_node(t_cmd *data, int pipe_fd[2], t_meta *meta);
 char			**stringfy(t_word *wl);
 int				get_size(t_word *wl);
 void			free_array_of_strings(char **array, int size);
