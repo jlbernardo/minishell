@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/21 18:04:50 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/21 18:32:11 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,12 +152,6 @@ void	run_builtin(t_word *wl)
 	//TODO
 	wl = NULL;
 	return ;
-}
-
-void handle_null_pathname(t_meta *meta)
-{
-	ft_putstr_fd("Minishell: command not found\n", 2);
-	add_or_upd_ht_entry("?", "127", meta->env_vars);
 }
 
 void	close_all_fds(void)

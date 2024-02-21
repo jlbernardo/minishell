@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/21 18:04:50 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/21 18:30:55 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,11 +103,11 @@ typedef struct s_lexer
 }				t_lexer;
 
 /* MAIN CALLS */
-void			set_meta(t_meta *meta, char **__environ);
 int				lexer(t_token **tokens, t_ast **ast);
 int				parser(t_token *tokens, t_ast **ast, t_hash **env_vars);
 void			executor(t_ast *ast, t_meta *meta);
 void			finisher(t_token *tokens, t_ast *ast);
+void			set_meta(t_meta *meta, char **__environ);
 
 /* LEXER */
 int				is_operand(char ch);
@@ -139,24 +139,25 @@ t_redir			*new_redirect(t_token *tokens);
 t_word			*new_wle(char *s);
 
 /* EXECUTOR */
-void			run_simple_command(t_ast *cmd_node, t_meta *meta);
-int				is_builtin(char *cmd_name);
-void			run_builtin(t_word	*wl);
-void			run_executable(t_cmd *data, t_meta *meta);
-void			run_pipeline(t_ast *ast, int in_fd, t_meta *meta);
-void			exec_left(t_cmd *data, int in_fd, int pipe_fd[2], t_meta *meta);
-void			exec_right(t_cmd *data, int pipe_fd[2], t_meta *meta);
-void			exec_forked_command(t_cmd *data, t_meta *meta);
-char			**stringfy(t_word *wl);
 int				get_size(t_word *wl);
-void			free_array_of_strings(char **array, int size);
-void			upd_simple_exit_status(int exit_status, t_meta	*meta);
+int				is_builtin(char *cmd_name);
 int				cap_n_upd_exit_status(t_meta *meta);
-void			handle_null_pathname(t_meta *meta);
-void			handle_forked_null_pathname(t_meta *meta);
 void			close_all_fds(void);
+void			run_builtin(t_word	*wl);
+void			handle_null_pathname(t_meta *meta);
+void			run_executable(t_cmd *data, t_meta *meta);
+void			handle_forked_null_pathname(t_meta *meta);
+void			free_array_of_strings(char **array, int size);
+void			exec_forked_command(t_cmd *data, t_meta *meta);
+void			run_simple_command(t_ast *cmd_node, t_meta *meta);
+void			run_pipeline(t_ast *ast, int in_fd, t_meta *meta);
+void			exec_right(t_cmd *data, int pipe_fd[2], t_meta *meta);
+void			upd_simple_exit_status(int exit_status, t_meta	*meta);
+void			exec_left(t_cmd *data, int in_fd, int pipe_fd[2], t_meta *meta);
+char			**stringfy(t_word *wl);
 
 /* LIST HANDLER */
+void			populate_sort_vars(t_hash **ht, t_word **vars);
 void			new_token(t_token **tk, int type, char *literal);
 void			sort_vars(t_word **vars, t_word *first, t_word *first_p);
 t_token			*tk_last(t_token *tk);
@@ -178,15 +179,16 @@ int				echo(t_token *tokens);
 int				cd(t_token *tokens, t_hash **ht);
 int				unset(t_token *tokens, t_hash **ht);
 int				export(t_token *tokens, t_hash **ht);
-void			print_export(t_word *vars, t_hash **ht);
-int				valid_variable(char *literal);
+int				sorted(t_word *vars);
 int				is_readonly(char *literal);
+int				valid_variable(char *literal);
+void			print_export(t_word *vars, t_hash **ht);
 void			ft_exit(t_token *tk, t_ast *ast, t_hash **ht, int exit_code);
 
 /* FINISHER */
 void			free_ast(t_ast *ast);
-void			free_data(t_cmd	*cmd);
 void			free_wl2(t_word *wl);
+void			free_data(t_cmd	*cmd);
 void			finish_lexer(t_lexer *lex);
 void			free_tokens(t_token *tokens);
 void			free_redirects2(t_redir *rl);
