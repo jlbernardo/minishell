@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/20 18:37:01 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/21 16:29:31 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,7 @@ int				unset(t_token *tokens, t_hash **ht);
 int				export(t_token *tokens, t_hash **ht);
 void			print_export(t_word *vars, t_hash **ht);
 int				valid_variable(char *literal);
+int				is_readonly(char *literal);
 void			ft_exit(t_token *tk, t_ast *ast, t_hash **ht, int exit_code);
 
 /* FINISHER */
