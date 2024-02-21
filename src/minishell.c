@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 17:38:30 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/21 18:33:22 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/21 20:31:15 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,11 @@ int	main(void)
 	while (control)
 	{
 		if (lexer(&meta.tokens, &meta.ast))
-			if (parser(meta.tokens, &meta.ast, meta.env_vars))
+			if (parser(&meta))
 				executor(meta.ast, &meta);
+		if (ft_strcmp("exit", meta.tokens->literal) == 0)
+			ft_exit(meta.tokens, meta.ast, meta.env_vars, 0);
 		finisher(meta.tokens, meta.ast);
-		control = 0;
 	}
 	free_ht(meta.env_vars);
 	return (0);
