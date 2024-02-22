@@ -6,20 +6,18 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 21:12:03 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/21 20:29:08 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/21 21:35:52 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
-
-void	remove_empty_tokens(t_token **tokens);
 
 int	parser(t_meta *meta)
 {
 	t_token	*temp;
 
 	if (!meta->tokens)
-		return (0);
+		return (LIE);
 	expand_variables(&meta->tokens, meta->env_vars);
 	remove_quotes(&meta->tokens);
 	remove_empty_tokens(&meta->tokens);
@@ -28,8 +26,8 @@ int	parser(t_meta *meta)
 	get_path(&meta->ast, meta->env_vars);
 	meta->tokens = temp;
 	if (meta->ast != NULL && meta->ast->success)
-		return (1);
-	return (0);
+		return (TRUTH);
+	return (LIE);
 }
 
 t_ast	*parse_pipeline(t_token **tokens, t_ast *parent)
@@ -44,16 +42,16 @@ t_ast	*parse_pipeline(t_token **tokens, t_ast *parent)
 		return (pl_node);
 	if (*tokens == NULL)
 	{
-		pl_node->success = 1;
+		pl_node->success = TRUTH;
 		return (pl_node);
 	}
-	else if (!ft_strncmp((*tokens)->literal, "|", 1) && has_other_pipes(*tokens)
-		&& ft_strncmp((*tokens)->next->literal, "|", 1))
+	else if (!ft_strcmp((*tokens)->literal, "|") && has_other_pipes(*tokens)
+		&& ft_strcmp((*tokens)->next->literal, "|"))
 	{
 		*tokens = (*tokens)->next;
 		pl_node->right = parse_pipeline(tokens, pl_node);
 	}
-	else if (!ft_strncmp((*tokens)->literal, "|", 1)
+	else if (!ft_strcmp((*tokens)->literal, "|")
 		&& !has_other_pipes(*tokens) && (*tokens)->next != NULL)
 	{
 		*tokens = (*tokens)->next;
@@ -63,7 +61,7 @@ t_ast	*parse_pipeline(t_token **tokens, t_ast *parent)
 	}
 	else
 	{
-		ft_printf("Syntax error near token %s\n", (*tokens)->literal);
+		syntax_error((*tokens)->literal);
 		return (pl_node);
 	}
 	pl_node->success = 1;
@@ -89,7 +87,7 @@ t_ast	*parse_cmd(t_token **tokens, t_ast *parent)
 		}
 		else
 		{
-			ft_printf("Syntax error near token %s\n", (*tokens)->literal);
+			syntax_error((*tokens)->literal);
 			free_data(cmd_node->data);
 			free(cmd_node);
 			return (NULL);
@@ -114,4 +112,11 @@ void	remove_empty_tokens(t_token **tokens)
 	}
 	else
 		remove_empty_tokens(&curr->next);
+}
+
+void	syntax_error(char *token)
+{
+	ft_putstr_fd("minishell: syntax error near unexpected token '", 2);
+	ft_putstr_fd(token, 2);
+	ft_putendl_fd("'", 2);
 }
