@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 11:36:19 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/21 23:43:22 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/22 13:20:23 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	exec_forked_command(t_cmd *data, t_meta *meta)
 {
 	if (is_builtin(data->word_list[0].word))
 	{
-		run_builtin(data->word_list);
+		run_builtin(meta, data->word_list);
 		//collect exit_status
 	}
 	else

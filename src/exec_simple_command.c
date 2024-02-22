@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 10:42:52 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/21 23:34:32 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/22 13:35:43 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	run_simple_command(t_ast *cmd_node, t_meta *meta)
 
 	//TODO: deal with redirects
 	if (is_builtin(cmd_node->data->word_list[0].word))
-		run_builtin(cmd_node->data->word_list);
+		run_builtin(meta, cmd_node->data->word_list);
 	else
 	{
 		if (cmd_node->data->pathname == NULL)
@@ -56,9 +56,8 @@ void	upd_simple_exit_status(int exit_status, t_meta	*meta)
 	}
 }
 
-void	handle_null_pathname(t_meta *meta)
+void handle_null_pathname(t_meta *meta)
 {
-	ft_putstr_fd(meta->tokens->literal, 2);
-	ft_putendl_fd(": command not found", 2);
+	ft_putstr_fd("minishell: command not found\n", 2);
 	add_or_upd_ht_entry("?", "127", meta->hash);
 }
