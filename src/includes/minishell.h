@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/22 11:39:45 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/22 15:04:21 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,26 +72,6 @@ typedef struct s_ast
 	struct s_cmd	*data;
 }				t_ast;
 
-typedef struct s_cmd
-{
-	char			*pathname;
-	struct s_word	*word_list;
-	struct s_redir	*redirects;
-}				t_cmd;
-
-typedef struct s_redir
-{
-	int				type;
-	char			*filename;
-	struct s_redir	*next;
-}				t_redir;
-
-typedef struct s_word
-{
-	char			*word;
-	struct s_word	*next;
-}				t_word;
-
 typedef struct s_lexer
 {
 	char			*input;
@@ -101,6 +81,32 @@ typedef struct s_lexer
 	unsigned int	success;
 	unsigned int	read_pos;
 }				t_lexer;
+
+typedef struct s_cmd
+{
+	char			*pathname;
+	struct s_word	*word_list;
+	struct s_redir	*redirects;
+}				t_cmd;
+
+typedef struct s_word
+{
+	char			*word;
+	struct s_word	*next;
+}				t_word;
+
+typedef struct s_redir
+{
+	int				type;
+	char			*filename;
+	struct s_redir	*next;
+}				t_redir;
+
+typedef struct s_builtin
+{
+	char	*cmd_name;
+	int		(*function)(t_meta *, t_word *);
+}				t_builtin;
 
 /* MAIN CALLS */
 int				lexer(t_meta *meta);
@@ -144,8 +150,8 @@ t_word			*new_wle(char *s);
 int				get_size(t_word *wl);
 int				cap_n_upd_exit_status(t_meta *meta);
 void			close_all_fds(void);
-void			run_builtin(t_word	*wl);
 void			handle_null_pathname(t_meta *meta);
+void			run_builtin(t_meta *meta, t_word *wl);
 void			run_executable(t_cmd *data, t_meta *meta);
 void			handle_forked_null_pathname(t_meta *meta);
 void			free_array_of_strings(char **array, int size);
@@ -174,17 +180,17 @@ void			safe_free(void *p);
 unsigned int	hash(char *name);
 
 /* BUILTINS */
-int				pwd(void);
-int				env(t_hash **ht);
-int				echo(t_token *tokens);
-int				cd(t_token *tokens, t_hash **ht);
-int				unset(t_token *tokens, t_hash **ht);
-int				export(t_token *tokens, t_hash **ht);
 int				sorted(t_word *vars);
 int				is_readonly(char *literal);
 int				valid_variable(char *literal);
 void			print_export(t_word *vars, t_hash **ht);
-void			ft_exit(t_meta *meta, int exit_code);
+int				pwd(t_meta *meta, t_word *wl);
+int				env(t_meta *meta, t_word *wl);
+int				echo(t_meta *meta, t_word *wl);
+int				cd(t_meta *meta, t_word *wl);
+int				unset(t_meta *meta, t_word *wl);
+int				export(t_meta *meta, t_word *wl);
+int				ft_exit(t_meta *meta, t_word *wl);
 
 /* FINISHER */
 void			free_ast(t_ast *ast);

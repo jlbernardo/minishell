@@ -6,58 +6,64 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:11:53 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/20 18:04:23 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/22 15:12:53 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*set_error(char *path);
-char	*set_path(t_token *node, t_hash **ht);
+int		give_error(char *path, int len);
+char	*set_path(t_word *wl, t_hash **ht);
 
-int	cd(t_token *tokens, t_hash **ht)
+int	cd(t_meta *meta, t_word *wl)
 {
 	int		ret;
+	int		len;
 	char	*cwd;
 	char	*path;
 	char	*old_cwd;
-	char	*err_str;
 
-	old_cwd = grab_value("PWD", ht);
-	path = set_path(tokens->next, ht);
-	err_str = set_error(path);
+	path = set_path(wl->next, meta->hash);
 	ret = chdir(path);
-	if (ret == -1)
-		perror(err_str);
+	len = get_size(wl);
+	if (ret == -1 || len > 2)
+		ret = give_error(path, len);
 	else
 	{
+		old_cwd = grab_value("PWD", meta->hash);
 		cwd = getcwd(NULL, PATH_MAX);
-		add_or_upd_ht_entry("PWD", cwd, ht);
-		add_or_upd_ht_entry("OLDPWD", old_cwd, ht);
+		add_or_upd_ht_entry("PWD", cwd, meta->hash);
+		add_or_upd_ht_entry("OLDPWD", old_cwd, meta->hash);
 		free(cwd);
+		free(old_cwd);
 	}
 	free(path);
-	free(err_str);
-	free(old_cwd);
 	return (ret);
 }
 
-char	*set_path(t_token *node, t_hash **ht)
+char	*set_path(t_word *wl, t_hash **ht)
 {
-	if (node)
-		return (ft_strdup(node->literal));
+	if (wl)
+		return (ft_strdup(wl->word));
 	else
 		return (grab_value("HOME", ht));
 }
 
-char	*set_error(char *path)
+int	give_error(char *path, int len)
 {
 	int		size;
 	char	*err_str;
 
-	size = ft_strlen(path) + 11;
-	err_str = ft_calloc(size, sizeof(char));
-	ft_strlcat(err_str, "minishell: cd: ", size);
-	ft_strlcat(err_str, path, size);
-	return (err_str);
+	if (len > 2)
+		ft_putendl_fd("minishell: cd: too many arguments", 2);
+	else
+	{
+		size = ft_strlen(path) + 16;
+		err_str = ft_calloc(size, sizeof(char));
+		ft_strlcat(err_str, "minishell: cd: ", size);
+		ft_strlcat(err_str, path, size);
+		perror(err_str);
+		free(err_str);
+	}
+	return (EXIT_FAILURE);
 }

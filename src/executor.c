@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/21 23:50:43 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/22 15:28:26 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,11 +134,26 @@ int	get_size(t_word *wl)
 	return (nelem);
 }
 
-void	run_builtin(t_word *wl)
+void	run_builtin(t_meta *meta, t_word *wl)
 {
-	//TODO
-	wl = NULL;
-	return ;
+	int				i;
+	char			*exit_str;
+	const t_builtin	builtin_dict[] = {{"cd", cd}, {"echo", echo}, \
+			{"env", env}, {"exit", ft_exit}, {"export", export}, \
+			{"pwd", pwd}, {"unset", unset}};
+
+	i = -1;
+	exit_str = NULL;
+	while (++i < 8)
+	{
+		if (ft_strcmp(builtin_dict[i].cmd_name, wl->word) == 0)
+			exit_str = ft_itoa(builtin_dict[i].function(meta, wl));
+	}
+	if (!exit_str)
+		handle_null_pathname(meta);
+	else
+		add_or_upd_ht_entry("?", exit_str, meta->hash);
+	free(exit_str);
 }
 
 void	close_all_fds(void)

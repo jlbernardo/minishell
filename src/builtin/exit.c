@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 19:35:43 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/21 23:45:28 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/22 14:52:23 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,14 @@
 int		check_ll(char *nbr);
 char	*trim_prefix(const char *s1, const char *set);
 
-void	ft_exit(t_meta *meta, int last_exit)
+int	ft_exit(t_meta *meta, t_word *wl)
 {
+	char		*exit_str;
 	long int	exit_code;
 
-	exit_code = last_exit;
+	(void)wl;
+	exit_str = grab_value("?", meta->hash);
+	exit_code = ft_atoi(exit_str);
 	ft_putendl_fd(meta->tokens->literal, 1);
 	if ((meta->tokens->next
 			&& (!ft_isdigit(*meta->tokens->next->literal)
@@ -34,7 +37,7 @@ void	ft_exit(t_meta *meta, int last_exit)
 	else if (meta->tokens->next && meta->tokens->next->next)
 	{
 		ft_putendl_fd("minishell: exit: too many arguments", 2);
-		return ;
+		return (exit_code);
 	}
 	else if (meta->tokens->next)
 		exit_code = ft_atol(meta->tokens->next->literal);
