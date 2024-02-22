@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/21 21:35:26 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/21 22:02:08 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ typedef struct s_meta
 {
 	struct s_token	*tokens;
 	struct s_ast	*ast;
-	struct s_hash	**env_vars;
+	struct s_hash	**hash;
 }				t_meta;
 
 typedef struct s_hash
@@ -120,8 +120,8 @@ void			read_char(t_lexer *lex);
 /* EXPANDER */
 int				has_variable(char *literal);
 char			*get_variable_name(char *literal);
-void			replace_variable(t_token **tokens, t_hash **ht);
-void			expand_variables(t_token **tokens, t_hash **ht);
+void			replace_variable(t_meta *meta);
+void			expand_variables(t_token **tokens, t_meta *meta);
 
 /* PARSER */
 int				not_builtin(char *cmd);
@@ -131,7 +131,7 @@ void			remove_quotes(t_token **tokens);
 void			append_wle(t_word *w, t_word **wl);
 void			find_path(t_ast **ast, char **paths);
 void			remove_empty_tokens(t_token **tokens);
-void			get_path(t_ast **ast, t_hash **env_vars);
+void			get_path(t_ast **ast, t_hash **hash);
 void			append_redirect(t_redir *r, t_redir **rl);
 void			set_cmd(t_ast **cmd_node, t_ast **parent);
 void			set_pl(t_ast **pl, t_ast **parent, t_token **tokens);

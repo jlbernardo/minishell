@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 11:36:19 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/21 18:04:50 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/21 21:40:18 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,9 @@ void	exec_forked_command(t_cmd *data, t_meta *meta)
 void	handle_forked_null_pathname(t_meta *meta)
 {
 	ft_putstr_fd("Minishell: Command not found\n", 2);
-	// add_or_upd_ht_entry("?", "127", meta->env_vars);
+	// add_or_upd_ht_entry("?", "127", meta->hash);
 	finisher(meta->tokens, meta->ast);
-	free_ht(meta->env_vars);
+	free_ht(meta->hash);
 	close_all_fds();
 	exit(127);
 }
@@ -82,11 +82,11 @@ int	cap_n_upd_exit_status(t_meta *meta)
 		exit_string = ft_itoa(exit_status);
 		if (exit_status == 13)
 		{
-			add_or_upd_ht_entry("?", "126", meta->env_vars);
+			add_or_upd_ht_entry("?", "126", meta->hash);
 		}
 		else
 		{
-			add_or_upd_ht_entry("?", exit_string, meta->env_vars);
+			add_or_upd_ht_entry("?", exit_string, meta->hash);
 		}
 		free(exit_string);
 	}

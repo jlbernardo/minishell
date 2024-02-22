@@ -6,13 +6,13 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 20:38:49 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/21 21:12:39 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/21 21:40:18 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
-void	get_path(t_ast **ast, t_hash **env_vars)
+void	get_path(t_ast **ast, t_hash **hash)
 {
 	int		i;
 	char	**paths;
@@ -26,7 +26,7 @@ void	get_path(t_ast **ast, t_hash **env_vars)
 			(*ast)->data->pathname = ft_strdup((*ast)->data->word_list->word);
 		else
 		{
-			full_path = grab_value("PATH", env_vars);
+			full_path = grab_value("PATH", hash);
 			paths = ft_split(full_path, ':');
 			find_path(ast, paths);
 			free(full_path);
@@ -36,8 +36,8 @@ void	get_path(t_ast **ast, t_hash **env_vars)
 			free(paths);
 		}
 	}
-	get_path(&(*ast)->left, env_vars);
-	get_path(&(*ast)->right, env_vars);
+	get_path(&(*ast)->left, hash);
+	get_path(&(*ast)->right, hash);
 }
 
 void	find_path(t_ast **ast, char **paths)

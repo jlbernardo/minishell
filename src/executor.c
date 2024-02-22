@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/21 20:32:42 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/21 21:40:18 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	executor(t_ast *ast, t_meta *meta)
 		run_pipeline(ast, 0, meta);
 	}
 	//debugging statement below
-	// ft_printf("errno: %d, exit_status: %s\n", errno, grab_value("?", meta->env_vars));
+	// ft_printf("errno: %d, exit_status: %s\n", errno, grab_value("?", meta->hash));
 }
 
 void	run_pipeline(t_ast *ast, int in_fd, t_meta *meta)
@@ -82,7 +82,7 @@ void	run_executable(t_cmd *data, t_meta *meta)
 		free_array_of_strings(array_of_strings, get_size(data->word_list));
 		free(array_of_strings);
 		finisher(meta->tokens, meta->ast);
-		free_ht(meta->env_vars);
+		free_ht(meta->hash);
 		exit(errno);
 	}
 }

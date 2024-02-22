@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_simple_command.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iusantos <iusantos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 10:42:52 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/21 14:50:51 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/21 21:40:18 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,11 @@ void	upd_simple_exit_status(int exit_status, t_meta	*meta)
 	char *exit_string;
 
 	if (exit_status == 13)
-		add_or_upd_ht_entry("?", "126", meta->env_vars);
+		add_or_upd_ht_entry("?", "126", meta->hash);
 	else
 	{
 		exit_string = ft_itoa(WEXITSTATUS(exit_status));
-		add_or_upd_ht_entry("?", exit_string , meta->env_vars);
+		add_or_upd_ht_entry("?", exit_string , meta->hash);
 		free(exit_string);
 	}
 }
@@ -59,5 +59,5 @@ void	upd_simple_exit_status(int exit_status, t_meta	*meta)
 void handle_null_pathname(t_meta *meta)
 {
 	ft_putstr_fd("Minishell: command not found\n", 2);
-	add_or_upd_ht_entry("?", "127", meta->env_vars);
+	add_or_upd_ht_entry("?", "127", meta->hash);
 }

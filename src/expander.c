@@ -6,26 +6,26 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 18:32:55 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/20 17:06:25 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/21 21:43:23 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
-void	expand_variables(t_token **tokens, t_hash **ht)
+void	expand_variables(t_token **tokens, t_meta *meta)
 {
 	if (!*tokens)
 		return ;
 	if ((*tokens)->type != REDIRECT && has_variable((*tokens)->literal))
 	{
-		replace_variable(tokens, ht);
+		replace_variable(meta);
 		if (has_variable((*tokens)->literal))
-			expand_variables(tokens, ht);
+			expand_variables(tokens, meta);
 	}
-	expand_variables(&(*tokens)->next, ht);
+	expand_variables(&(*tokens)->next, meta);
 }
 
-void	replace_variable(t_token **tokens, t_hash **ht)
+void	replace_variable(t_meta *meta)
 {
 	int		i;
 	int		len;
@@ -34,21 +34,21 @@ void	replace_variable(t_token **tokens, t_hash **ht)
 	char	*var_value;
 
 	i = 0;
-	var_name = get_variable_name((*tokens)->literal);
-	var_value = grab_value(var_name, ht);
-	temp = ft_strdup((*tokens)->literal);
+	var_name = get_variable_name(meta->tokens->literal);
+	var_value = grab_value(var_name, meta->hash);
+	temp = ft_strdup(meta->tokens->literal);
 	len = ft_strlen(temp) - ft_strlen(var_name) + ft_strlen(var_value);
-	free((*tokens)->literal);
+	free(meta->tokens->literal);
 	while (temp[i] != '$')
 		i++;
-	(*tokens)->literal = ft_calloc(len, sizeof(char));
-	ft_strlcat((*tokens)->literal, temp, i + 1);
+	meta->tokens->literal = ft_calloc(len, sizeof(char));
+	ft_strlcat(meta->tokens->literal, temp, i + 1);
 	if (var_value)
-		ft_strlcat((*tokens)->literal, var_value, ft_strlen((*tokens)->literal)
-			+ ft_strlen(var_value) + 1);
+		ft_strlcat(meta->tokens->literal, var_value, \
+			ft_strlen(meta->tokens->literal) + ft_strlen(var_value) + 1);
 	len = i + ft_strlen(var_name) + 1;
-	ft_strlcat((*tokens)->literal, &temp[i + ft_strlen(var_name) + 1], \
-		ft_strlen((*tokens)->literal) + ft_strlen(&temp[len]) + 1);
+	ft_strlcat(meta->tokens->literal, &temp[i + ft_strlen(var_name) + 1], \
+		ft_strlen(meta->tokens->literal) + ft_strlen(&temp[len]) + 1);
 	free(temp);
 	free(var_name);
 	free(var_value);
