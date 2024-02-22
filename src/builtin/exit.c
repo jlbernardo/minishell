@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 19:35:43 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/20 18:04:23 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/21 23:45:28 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,30 +15,31 @@
 int		check_ll(char *nbr);
 char	*trim_prefix(const char *s1, const char *set);
 
-void	ft_exit(t_token *tk, t_ast *ast, t_hash **ht, int last_exit)
+void	ft_exit(t_meta *meta, int last_exit)
 {
 	long int	exit_code;
 
 	exit_code = last_exit;
-	ft_putendl_fd(tk->literal, 1);
-	if ((tk->next
-			&& (!ft_isdigit(*tk->next->literal) && *tk->next->literal != '-'))
-		|| (tk->next && check_ll(tk->next->literal)))
+	ft_putendl_fd(meta->tokens->literal, 1);
+	if ((meta->tokens->next
+			&& (!ft_isdigit(*meta->tokens->next->literal)
+				&& *meta->tokens->next->literal != '-'))
+		|| (meta->tokens->next && check_ll(meta->tokens->next->literal)))
 	{
 		ft_putstr_fd("minishell: exit: ", 2);
-		ft_putstr_fd(tk->next->literal, 2);
+		ft_putstr_fd(meta->tokens->next->literal, 2);
 		ft_putendl_fd(": numeric argument required", 2);
 		exit_code = 2;
 	}
-	else if (tk->next && tk->next->next)
+	else if (meta->tokens->next && meta->tokens->next->next)
 	{
 		ft_putendl_fd("minishell: exit: too many arguments", 2);
 		return ;
 	}
-	else if (tk->next)
-		exit_code = ft_atol(tk->next->literal);
-	free_ht(ht);
-	finisher(tk, ast);
+	else if (meta->tokens->next)
+		exit_code = ft_atol(meta->tokens->next->literal);
+	free_ht(meta->hash);
+	finisher(*meta);
 	exit(exit_code);
 }
 

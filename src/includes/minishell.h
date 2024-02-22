@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/21 23:16:03 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/21 23:45:45 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ typedef struct s_lexer
 int				lexer(t_meta *meta);
 int				parser(t_meta *meta);
 void			executor(t_ast *ast, t_meta *meta);
-void			finisher(t_token *tokens, t_ast *ast);
+void			finisher(t_meta meta);
 void			set_meta(t_meta *meta, char **__environ);
 
 /* LEXER */
@@ -184,7 +184,7 @@ int				sorted(t_word *vars);
 int				is_readonly(char *literal);
 int				valid_variable(char *literal);
 void			print_export(t_word *vars, t_hash **ht);
-void			ft_exit(t_token *tk, t_ast *ast, t_hash **ht, int exit_code);
+void			ft_exit(t_meta *meta, int exit_code);
 
 /* FINISHER */
 void			free_ast(t_ast *ast);
