@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/22 15:28:26 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/22 18:49:31 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,9 @@
 void	executor(t_meta *meta)
 {
 	if (meta->ast->right == NULL)
-	{
 		run_simple_command(meta->ast->left, meta);
-	}
 	else
-	{
 		run_pipeline(meta->ast, 0, meta);
-	}
-	//debugging statement below
-	// ft_printf("errno: %d, exit_status: %s\n", errno, grab_value("?", meta->hash));
 }
 
 void	run_pipeline(t_ast *ast, int in_fd, t_meta *meta)
@@ -33,39 +27,29 @@ void	run_pipeline(t_ast *ast, int in_fd, t_meta *meta)
 
 	if (pipe(pipe_fd) == -1)
 		return ;
-	if (ast->right->type == CMD) //last pipeline node
+	if (ast->right->type == CMD)
 	{
-		//apply redirects before fork?
 		child_pid = fork();
-		if (child_pid == 0) //lowest left node
-		{
-			exec_left(ast->left->data, in_fd, pipe_fd, meta);
-		}
-		//apply redirects before fork?
-		child_pid = fork(); //lowest right node
 		if (child_pid == 0)
-		{
+			exec_left(ast->left->data, in_fd, pipe_fd, meta);
+		child_pid = fork();
+		if (child_pid == 0)
 			exec_right(ast->right->data, pipe_fd, meta);
-		}
 	}
 	else
 	{
-		//apply redirects before fork?
 		child_pid = fork();
-		if (child_pid == 0) //left node
-		{
+		if (child_pid == 0)
 			exec_left(ast->left->data, in_fd, pipe_fd, meta);
-		}
 		close(pipe_fd[1]);
-		run_pipeline(ast->right, pipe_fd[0], meta); //recursion
-		close(pipe_fd[0]); //only closes fd after it is passed to recursion
+		run_pipeline(ast->right, pipe_fd[0], meta);
+		close(pipe_fd[0]);
 	}
 	close(in_fd);
 	close(pipe_fd[1]);
 	close(pipe_fd[0]);
 	while (cap_n_upd_exit_status(meta) != -1)
 		;
-	//recover STDIN & STDOUT if necessary?
 	return ;
 }
 
