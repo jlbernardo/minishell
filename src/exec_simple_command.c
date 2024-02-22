@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 10:42:52 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/21 23:32:52 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/21 23:34:32 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	run_simple_command(t_ast *cmd_node, t_meta *meta)
 	int		exit_status;
 
 	//TODO: deal with redirects
-	if	(is_builtin(cmd_node->data->word_list[0].word))
+	if (is_builtin(cmd_node->data->word_list[0].word))
 		run_builtin(cmd_node->data->word_list);
 	else
 	{
@@ -44,19 +44,19 @@ void	run_simple_command(t_ast *cmd_node, t_meta *meta)
 
 void	upd_simple_exit_status(int exit_status, t_meta	*meta)
 {
-	char *exit_string;
+	char	*exit_string;
 
 	if (exit_status == 13)
 		add_or_upd_ht_entry("?", "126", meta->hash);
 	else
 	{
 		exit_string = ft_itoa(WEXITSTATUS(exit_status));
-		add_or_upd_ht_entry("?", exit_string , meta->hash);
+		add_or_upd_ht_entry("?", exit_string, meta->hash);
 		free(exit_string);
 	}
 }
 
-void handle_null_pathname(t_meta *meta)
+void	handle_null_pathname(t_meta *meta)
 {
 	ft_putstr_fd(meta->tokens->literal, 2);
 	ft_putendl_fd(": command not found", 2);

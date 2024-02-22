@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 11:36:19 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/21 23:32:11 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/21 23:34:38 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,4 +94,3 @@ int	cap_n_upd_exit_status(t_meta *meta)
 	last_child_pid = current_child_pid;
 	return (current_child_pid);
 }
-
