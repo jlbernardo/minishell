@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 20:38:49 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/19 17:03:03 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/21 21:12:39 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,19 @@ void	get_path(t_ast **ast, t_hash **env_vars)
 		return ;
 	if ((*ast)->type == CMD && not_builtin((*ast)->data->word_list->word))
 	{
-		full_path = grab_value("PATH", env_vars);
-		paths = ft_split(full_path, ':');
-		find_path(ast, paths);
-		free(full_path);
-		i = -1;
-		while (paths[++i] != NULL)
-			free(paths[i]);
-		free(paths);
+		if (ft_strchr((*ast)->data->word_list->word, '/'))
+			(*ast)->data->pathname = ft_strdup((*ast)->data->word_list->word);
+		else
+		{
+			full_path = grab_value("PATH", env_vars);
+			paths = ft_split(full_path, ':');
+			find_path(ast, paths);
+			free(full_path);
+			i = -1;
+			while (paths[++i] != NULL)
+				free(paths[i]);
+			free(paths);
+		}
 	}
 	get_path(&(*ast)->left, env_vars);
 	get_path(&(*ast)->right, env_vars);
