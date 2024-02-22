@@ -29,7 +29,7 @@ void	set_pl(t_ast **pl, t_ast **parent, t_token **tokens)
 	(*pl)->success = 0;
 	if ((*pl)->parent == NULL && !is_pipe)
 	{
-		ft_printf("Syntax error near token %s\n", (*tokens)->literal);
+		syntax_error((*tokens)->literal);
 		free(*pl);
 		*pl = NULL;
 	}

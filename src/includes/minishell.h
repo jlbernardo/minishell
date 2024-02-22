@@ -103,7 +103,7 @@ typedef struct s_lexer
 }				t_lexer;
 
 /* MAIN CALLS */
-int				lexer(t_token **tokens, t_ast **ast);
+int				lexer(t_meta *meta);
 int				parser(t_meta *meta);
 void			executor(t_ast *ast, t_meta *meta);
 void			finisher(t_token *tokens, t_ast *ast);

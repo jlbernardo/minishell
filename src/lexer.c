@@ -6,28 +6,28 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:49 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/12 22:17:31 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/21 23:07:27 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
-int	lexer(t_token **tokens, t_ast **ast)
+int	lexer(t_meta *meta)
 {
 	char	*input;
 	t_lexer	lex;
 
-	*tokens = NULL;
-	*ast = NULL;
+	meta->tokens = NULL;
+	meta->ast = NULL;
 	input = readline("$> ");
 	set_lexer(&lex, input);
 	while (lex.read_pos < lex.size && lex.success == TRUTH)
 	{
 		read_char(&lex);
-		find_token(&lex, tokens, 1);
+		find_token(&lex, &meta->tokens, 1);
 	}
 	if (!lex.success)
-		ft_printf("Syntax error near token %s\n", (*tokens)->literal);
+		syntax_error(meta->tokens->literal);
 	free(input);
 	return (lex.success);
 }

@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 17:38:30 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/21 22:47:28 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/21 23:05:23 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	main(void)
 	control = 42;
 	while (control)
 	{
-		if (lexer(&meta.tokens, &meta.ast))
+		if (lexer(&meta))
 			if (parser(&meta))
 				executor(meta.ast, &meta);
 		finisher(meta.tokens, meta.ast);
