@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 20:38:49 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/21 21:40:18 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/21 23:15:37 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	get_path(t_ast **ast, t_hash **hash)
 
 	if (!*ast)
 		return ;
-	if ((*ast)->type == CMD && not_builtin((*ast)->data->word_list->word))
+	if ((*ast)->type == CMD && !is_builtin((*ast)->data->word_list->word))
 	{
 		if (ft_strchr((*ast)->data->word_list->word, '/'))
 			(*ast)->data->pathname = ft_strdup((*ast)->data->word_list->word);
@@ -62,7 +62,7 @@ void	find_path(t_ast **ast, char **paths)
 	}
 }
 
-int	not_builtin(char *cmd)
+int	is_builtin(char *cmd)
 {
 	int					i;
 	static const char	*builtins[7] = {
@@ -79,8 +79,8 @@ int	not_builtin(char *cmd)
 	while (i < 7)
 	{
 		if (!ft_strcmp(cmd, builtins[i]))
-			return (0);
+			return (TRUTH);
 		i++;
 	}
-	return (1);
+	return (LIE);
 }

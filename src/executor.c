@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/21 21:40:18 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/21 23:14:57 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,20 +131,6 @@ int	get_size(t_word *wl)
 		wl = wl->next;
 	}
 	return (nelem);
-}
-
-int	is_builtin(char *cmd_name)
-{
-	if (ft_strcmp(cmd_name, "echo") == 0
-	|| ft_strcmp(cmd_name, "cd") == 0
-	|| ft_strcmp(cmd_name, "pwd") == 0
-	|| ft_strcmp(cmd_name, "export") == 0
-	|| ft_strcmp(cmd_name, "unset") == 0
-	|| ft_strcmp(cmd_name, "env") == 0
-	|| ft_strcmp(cmd_name, "exit") == 0)
-		return (1);
-	else
-		return (0);
 }
 
 void	run_builtin(t_word *wl)

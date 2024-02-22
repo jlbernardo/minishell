@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/21 22:02:08 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/21 23:16:03 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ void			replace_variable(t_meta *meta);
 void			expand_variables(t_token **tokens, t_meta *meta);
 
 /* PARSER */
-int				not_builtin(char *cmd);
+int				is_builtin(char *cmd);
 int				has_other_pipes(t_token *tokens);
 void			syntax_error(char *token);
 void			remove_quotes(t_token **tokens);
@@ -142,7 +142,6 @@ t_word			*new_wle(char *s);
 
 /* EXECUTOR */
 int				get_size(t_word *wl);
-int				is_builtin(char *cmd_name);
 int				cap_n_upd_exit_status(t_meta *meta);
 void			close_all_fds(void);
 void			run_builtin(t_word	*wl);
