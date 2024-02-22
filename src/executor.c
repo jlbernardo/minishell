@@ -6,21 +6,21 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/21 23:43:05 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/21 23:50:43 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
-void	executor(t_ast *ast, t_meta *meta)
+void	executor(t_meta *meta)
 {
-	if (ast->right == NULL)
+	if (meta->ast->right == NULL)
 	{
-		run_simple_command(ast->left, meta);
+		run_simple_command(meta->ast->left, meta);
 	}
 	else
 	{
-		run_pipeline(ast, 0, meta);
+		run_pipeline(meta->ast, 0, meta);
 	}
 	//debugging statement below
 	// ft_printf("errno: %d, exit_status: %s\n", errno, grab_value("?", meta->hash));

@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 17:38:30 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/21 23:41:39 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/21 23:50:23 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	main(void)
 	{
 		if (lexer(&meta))
 			if (parser(&meta))
-				executor(meta.ast, &meta);
+				executor(&meta);
 		finisher(meta);
 		control = 0;
 	}
