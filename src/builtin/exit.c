@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 19:35:43 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/23 19:05:18 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/23 20:40:39 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 int		check_ll(char *nbr);
 char	*trim_prefix(const char *s1, const char *set);
+int		exit_error(char *literal, char *reason, int exit_code);
 
 int	ft_exit(t_meta *meta, t_word *wl)
 {
