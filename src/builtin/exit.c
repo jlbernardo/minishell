@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 19:35:43 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/23 17:07:05 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/23 19:05:18 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,22 +28,28 @@ int	ft_exit(t_meta *meta, t_word *wl)
 			&& (!ft_isdigit(*meta->tokens->next->literal)
 				&& *meta->tokens->next->literal != '-'))
 		|| (meta->tokens->next && check_ll(meta->tokens->next->literal)))
-	{
-		ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
-		ft_putstr_fd(meta->tokens->next->literal, STDERR_FILENO);
-		ft_putendl_fd(": numeric argument required", STDERR_FILENO);
-		exit_code = 2;
-	}
+		exit_code = exit_error(meta->tokens->next->literal,
+				"numeric argument required", exit_code);
 	else if (meta->tokens->next && meta->tokens->next->next)
-	{
-		ft_putendl_fd("minishell: exit: too many arguments", STDERR_FILENO);
-		return (exit_code);
-	}
+		return (exit_error(NULL, "too many arguments", exit_code));
 	else if (meta->tokens->next)
 		exit_code = ft_atol(meta->tokens->next->literal);
 	free_ht(meta->hash);
 	finisher(*meta);
 	exit(exit_code);
+}
+
+int	exit_error(char *literal, char *reason, int exit_code)
+{
+	ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
+	if (literal)
+	{
+		ft_putstr_fd(literal, STDERR_FILENO);
+		ft_putstr_fd(": ", STDERR_FILENO);
+		exit_code = 2;
+	}
+	ft_putendl_fd(reason, STDERR_FILENO);
+	return (exit_code);
 }
 
 int	check_ll(char *exit_code)
