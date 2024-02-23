@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/22 21:19:57 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/23 16:06:45 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,10 @@
 
 void	executor(t_meta *meta)
 {
-	run_pipeline(meta->ast, 0, meta);
+	if (meta->ast->right == NULL)
+		run_simple_command(meta->ast->left, meta);
+	else
+		run_pipeline(meta->ast, 0, meta);
 }
 
 void	run_pipeline(t_ast *ast, int in_fd, t_meta *meta)
@@ -128,25 +131,26 @@ int	get_size(t_word *wl)
 void	run_builtin(t_meta *meta, t_word *wl)
 {
 	int				i;
-	int				exit_code;
+	char			*exit_code;
 	const t_builtin	builtin[] = {{"cd", cd}, {"echo", echo}, \
 			{"env", env}, {"exit", ft_exit}, {"export", export}, \
 			{"pwd", pwd}, {"unset", unset}};
 
 	i = -1;
-	exit_code = 127;
+	exit_code = NULL;
 	while (++i < 8)
 	{
 		if (ft_strcmp(builtin[i].cmd_name, wl->word) == 0)
 		{
-			exit_code = builtin[i].function(meta, wl);
+			exit_code = ft_itoa(builtin[i].function(meta, wl));
 			break ;
 		}
 	}
-	finisher(*meta);
-	free_ht(meta->hash);
-	close_all_fds();
-	exit(exit_code);
+	if (!exit_code)
+		handle_null_pathname(meta);
+	else
+		add_or_upd_ht_entry("?", exit_code, meta->hash);
+	free(exit_code);
 }
 
 void	close_all_fds(void)
@@ -159,10 +163,4 @@ void	close_all_fds(void)
 		close(i);
 		i++;
 	}
-}
-
-void	handle_null_pathname(t_meta *meta)
-{
-	ft_putstr_fd("minishell: command not found\n", 2);
-	add_or_upd_ht_entry("?", "127", meta->hash);
 }

@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 11:36:19 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/22 21:12:27 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/23 15:50:12 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,10 @@ void	exec_forked_command(t_cmd *data, t_meta *meta)
 {
 	if (is_builtin(data->word_list[0].word))
 		run_builtin(meta, data->word_list);
+	else if (data->pathname == NULL)
+		handle_forked_null_pathname(data, meta);
 	else
-	{
-		if (data->pathname == NULL)
-			handle_forked_null_pathname(data, meta);
-		else
-			run_executable(data, meta);
-	}
+		run_executable(data, meta);
 }
 
 void	handle_forked_null_pathname(t_cmd *data, t_meta *meta)
