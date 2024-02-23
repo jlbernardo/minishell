@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 13:22:09 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/22 20:07:51 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/23 16:11:42 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	env(t_meta *meta, t_word *wl)
 		temp = meta->hash[i];
 		while (meta->hash[i])
 		{
-			if (meta->hash[i]->value)
+			if (meta->hash[i]->value && ft_strcmp(meta->hash[i]->name, "?"))
 			{
 				ft_putstr_fd(meta->hash[i]->name, 1);
 				ft_putchar_fd('=', 1);

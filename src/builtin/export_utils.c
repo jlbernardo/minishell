@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 18:32:01 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/21 17:32:43 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/23 16:09:14 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	print_export(t_word *vars, t_hash **ht)
 
 	while (vars)
 	{
-		if (ft_strcmp(vars->word, "_") == 0)
+		if (ft_strcmp(vars->word, "_") == 0 || ft_strcmp(vars->word, "?") == 0)
 		{
 			vars = vars->next;
 			continue ;
