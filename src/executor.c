@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/22 18:49:31 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/22 21:19:57 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,20 @@
 
 void	executor(t_meta *meta)
 {
-	if (meta->ast->right == NULL)
-		run_simple_command(meta->ast->left, meta);
-	else
-		run_pipeline(meta->ast, 0, meta);
+	run_pipeline(meta->ast, 0, meta);
 }
 
 void	run_pipeline(t_ast *ast, int in_fd, t_meta *meta)
 {
 	int		pipe_fd[2];
+	int		test_fd[2];
 	pid_t	child_pid;
 
-	if (pipe(pipe_fd) == -1)
+	test_fd[0] = 42;
+	test_fd[1] = 43;
+	if (pipe(pipe_fd) == -1 || !ast)
 		return ;
-	if (ast->right->type == CMD)
+	if (ast->right && ast->right->type == CMD)
 	{
 		child_pid = fork();
 		if (child_pid == 0)
@@ -36,7 +36,7 @@ void	run_pipeline(t_ast *ast, int in_fd, t_meta *meta)
 		if (child_pid == 0)
 			exec_right(ast->right->data, pipe_fd, meta);
 	}
-	else
+	else if (ast->right && ast->right->type == PIPELINE)
 	{
 		child_pid = fork();
 		if (child_pid == 0)
@@ -45,7 +45,14 @@ void	run_pipeline(t_ast *ast, int in_fd, t_meta *meta)
 		run_pipeline(ast->right, pipe_fd[0], meta);
 		close(pipe_fd[0]);
 	}
-	close(in_fd);
+	else
+	{
+		child_pid = fork();
+		if (child_pid == 0)
+			exec_left(ast->left->data, in_fd, test_fd, meta);
+	}
+	if (in_fd != 0)
+		close(in_fd);
 	close(pipe_fd[1]);
 	close(pipe_fd[0]);
 	while (cap_n_upd_exit_status(meta) != -1)
@@ -121,23 +128,25 @@ int	get_size(t_word *wl)
 void	run_builtin(t_meta *meta, t_word *wl)
 {
 	int				i;
-	char			*exit_str;
-	const t_builtin	builtin_dict[] = {{"cd", cd}, {"echo", echo}, \
+	int				exit_code;
+	const t_builtin	builtin[] = {{"cd", cd}, {"echo", echo}, \
 			{"env", env}, {"exit", ft_exit}, {"export", export}, \
 			{"pwd", pwd}, {"unset", unset}};
 
 	i = -1;
-	exit_str = NULL;
+	exit_code = 127;
 	while (++i < 8)
 	{
-		if (ft_strcmp(builtin_dict[i].cmd_name, wl->word) == 0)
-			exit_str = ft_itoa(builtin_dict[i].function(meta, wl));
+		if (ft_strcmp(builtin[i].cmd_name, wl->word) == 0)
+		{
+			exit_code = builtin[i].function(meta, wl);
+			break ;
+		}
 	}
-	if (!exit_str)
-		handle_null_pathname(meta);
-	else
-		add_or_upd_ht_entry("?", exit_str, meta->hash);
-	free(exit_str);
+	finisher(*meta);
+	free_ht(meta->hash);
+	close_all_fds();
+	exit(exit_code);
 }
 
 void	close_all_fds(void)
@@ -150,4 +159,10 @@ void	close_all_fds(void)
 		close(i);
 		i++;
 	}
+}
+
+void	handle_null_pathname(t_meta *meta)
+{
+	ft_putstr_fd("minishell: command not found\n", 2);
+	add_or_upd_ht_entry("?", "127", meta->hash);
 }

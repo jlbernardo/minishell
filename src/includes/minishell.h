@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/22 15:04:21 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/22 21:12:56 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,12 +153,12 @@ void			close_all_fds(void);
 void			handle_null_pathname(t_meta *meta);
 void			run_builtin(t_meta *meta, t_word *wl);
 void			run_executable(t_cmd *data, t_meta *meta);
-void			handle_forked_null_pathname(t_meta *meta);
 void			free_array_of_strings(char **array, int size);
 void			exec_forked_command(t_cmd *data, t_meta *meta);
 void			run_simple_command(t_ast *cmd_node, t_meta *meta);
 void			run_pipeline(t_ast *ast, int in_fd, t_meta *meta);
 void			exec_right(t_cmd *data, int pipe_fd[2], t_meta *meta);
+void			handle_forked_null_pathname(t_cmd *data, t_meta *meta);
 void			upd_simple_exit_status(int exit_status, t_meta	*meta);
 void			exec_left(t_cmd *data, int in_fd, int pipe_fd[2], t_meta *meta);
 char			**stringfy(t_word *wl);

@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 11:36:19 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/22 18:50:22 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/22 21:12:27 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,12 @@ void	exec_left(t_cmd *data, int in_fd, int pipe_fd[2], t_meta *meta)
 		close(in_fd);
 		close(pipe_fd[0]);
 	}
-	dup2(pipe_fd[1], STDOUT_FILENO);
-	close(pipe_fd[1]);
-	close(pipe_fd[0]);
+	if (pipe_fd[0] != 42)
+	{
+		dup2(pipe_fd[1], STDOUT_FILENO);
+		close(pipe_fd[1]);
+		close(pipe_fd[0]);
+	}
 	exec_forked_command(data, meta);
 }
 
@@ -41,18 +44,15 @@ void	exec_forked_command(t_cmd *data, t_meta *meta)
 	else
 	{
 		if (data->pathname == NULL)
-		{
-			handle_forked_null_pathname(meta);
-			return ;
-		}
+			handle_forked_null_pathname(data, meta);
 		else
 			run_executable(data, meta);
 	}
 }
 
-void	handle_forked_null_pathname(t_meta *meta)
+void	handle_forked_null_pathname(t_cmd *data, t_meta *meta)
 {
-	ft_putstr_fd(meta->tokens->literal, 2);
+	ft_putstr_fd(data->word_list->word, 2);
 	ft_putendl_fd(": command not found", 2);
 	finisher(*meta);
 	free_ht(meta->hash);
@@ -73,13 +73,9 @@ int	cap_n_upd_exit_status(t_meta *meta)
 		exit_status = WEXITSTATUS(exit_status);
 		exit_string = ft_itoa(exit_status);
 		if (exit_status == 13)
-		{
 			add_or_upd_ht_entry("?", "126", meta->hash);
-		}
 		else
-		{
 			add_or_upd_ht_entry("?", exit_string, meta->hash);
-		}
 		free(exit_string);
 	}
 	last_child_pid = current_child_pid;

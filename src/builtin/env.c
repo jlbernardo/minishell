@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 13:22:09 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/22 14:48:35 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/22 20:07:51 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,5 @@ int	env(t_meta *meta, t_word *wl)
 		meta->hash[i] = temp;
 		i++;
 	}
-	return (0);
+	return (EXIT_SUCCESS);
 }
