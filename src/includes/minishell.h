@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/22 11:39:45 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/23 10:43:10 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,6 +156,13 @@ void			exec_right(t_cmd *data, int pipe_fd[2], t_meta *meta);
 void			upd_simple_exit_status(int exit_status, t_meta	*meta);
 void			exec_left(t_cmd *data, int in_fd, int pipe_fd[2], t_meta *meta);
 char			**stringfy(t_word *wl);
+
+/* EXECUTING HEREDOC */
+
+int				execute_heredocs(t_ast *ast);
+void			capture_content(t_redir *rl);
+char			*gen_tmpfile_name(int cmd_nbr);
+void			fill_tmpfile(int fd, t_redir *r);
 
 /* LIST HANDLER */
 void			populate_sort_vars(t_hash **ht, t_word **vars);

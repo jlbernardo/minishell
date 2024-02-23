@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 10:42:52 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/21 23:34:32 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/22 14:56:08 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	run_simple_command(t_ast *cmd_node, t_meta *meta)
 	int		exit_status;
 
 	//TODO: deal with redirects
+	//execute_heredoc(cmd_node->data->redirects, meta);
 	if (is_builtin(cmd_node->data->word_list[0].word))
 		run_builtin(cmd_node->data->word_list);
 	else

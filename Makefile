@@ -14,7 +14,8 @@ COMMON = $(addprefix $(SD), lexer.c lexer_utils.c list_handler.c \
 						parser.c parser_utils.c create_pipeline.c moses_i.c \
 						moses_ii.c hashtable.c expander.c path_finder.c \
 						finisher.c executor.c exec_simple_command.c \
-						exec_pipeline_commands.c)
+						exec_pipeline_commands.c \
+						heredoc.c)
 COMMON += $(addprefix $(SD)builtin/, pwd.c env.c echo.c cd.c exit.c \
 						export.c export_utils.c unset.c)
 SRC = $(COMMON) $(SD)minishell.c
