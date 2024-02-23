@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:11:53 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/22 15:12:53 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/23 16:53:09 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	give_error(char *path, int len)
 	char	*err_str;
 
 	if (len > 2)
-		ft_putendl_fd("minishell: cd: too many arguments", 2);
+		ft_putendl_fd("minishell: cd: too many arguments", STDERR_FILENO);
 	else
 	{
 		size = ft_strlen(path) + 16;

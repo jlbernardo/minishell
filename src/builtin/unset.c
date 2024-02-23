@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:16:16 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/22 14:44:50 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/23 16:51:20 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ int	unset(t_meta *meta, t_word *wl)
 	{
 		if (is_readonly(temp->word))
 		{
-			ft_putstr_fd("minishell: unset: ", 2);
-			ft_putstr_fd(temp->word, 2);
-			ft_putendl_fd(": cannot unset: readonly variable", 2);
+			ft_putstr_fd("minishell: unset: ", STDERR_FILENO);
+			ft_putstr_fd(temp->word, STDERR_FILENO);
+			ft_putendl_fd(": cannot unset: readonly variable", STDERR_FILENO);
 			ret = EXIT_FAILURE;
 			temp = temp->next;
 			continue ;
