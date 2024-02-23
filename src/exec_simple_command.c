@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 10:42:52 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/23 17:04:30 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/23 17:12:15 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,4 @@ void	upd_simple_exit_status(int exit_status, t_meta *meta)
 	exit_string = ft_itoa(WEXITSTATUS(exit_status));
 	add_or_upd_ht_entry("?", exit_string, meta->hash);
 	free(exit_string);
-}
-
-void	handle_null_pathname(t_meta *meta)
-{
-	ft_putstr_fd("minishell: command not found\n", STDERR_FILENO);
-	add_or_upd_ht_entry("?", "127", meta->hash);
 }

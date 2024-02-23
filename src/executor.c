@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/23 16:59:00 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/23 17:20:43 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,23 @@ void	executor(t_meta *meta)
 void	run_pipeline(t_ast *ast, int in_fd, t_meta *meta)
 {
 	int		pipe_fd[2];
-	pid_t	child_pid;
-	int		stdi;
-	int		stdo;
 
-	stdi = dup(STDIN_FILENO);
-	stdo = dup(STDOUT_FILENO);
 	if (pipe(pipe_fd) == -1)
 		return ;
+	fork_maker(ast, in_fd, meta, pipe_fd);
+	if (in_fd != 0)
+		close(in_fd);
+	close(pipe_fd[1]);
+	close(pipe_fd[0]);
+	while (cap_n_upd_exit_status(meta) != -1)
+		;
+	return ;
+}
+
+void	fork_maker(t_ast *ast, int in_fd, t_meta *meta, int pipe_fd[2])
+{
+	pid_t	child_pid;
+
 	if (ast->right->type == CMD)
 	{
 		child_pid = fork();
@@ -49,16 +58,6 @@ void	run_pipeline(t_ast *ast, int in_fd, t_meta *meta)
 		run_pipeline(ast->right, pipe_fd[0], meta);
 		close(pipe_fd[0]);
 	}
-	close(in_fd);
-	close(pipe_fd[1]);
-	close(pipe_fd[0]);
-	dup2(stdi, STDIN_FILENO);
-	dup2(stdo, STDOUT_FILENO);
-	close(stdi);
-	close(stdo);
-	while (cap_n_upd_exit_status(meta) != -1)
-		;
-	return ;
 }
 
 void	run_executable(t_cmd *data, t_meta *meta)
@@ -78,52 +77,6 @@ void	run_executable(t_cmd *data, t_meta *meta)
 		free_ht(meta->hash);
 		exit(errno);
 	}
-}
-
-void	free_array_of_strings(char **array, int size)
-{
-	int	index;
-
-	if (array == NULL)
-		return ;
-	index = 0;
-	while (index <= size)
-	{
-		free(array[index]);
-		index++;
-	}
-}
-
-char	**stringfy(t_word *wl)
-{
-	char	**array;
-	int		size;
-	int		index;
-
-	size = get_size(wl) + 1;
-	array = ft_calloc(size, sizeof(char *));
-	index = 0;
-	while (wl->next != NULL)
-	{
-		array[index] = ft_strdup(wl->word);
-		index++;
-		wl = wl->next;
-	}
-	array[index] = ft_strdup(wl->word);
-	return (array);
-}
-
-int	get_size(t_word *wl)
-{
-	int	nelem;
-
-	nelem = 1;
-	while (wl->next != NULL)
-	{
-		nelem++;
-		wl = wl->next;
-	}
-	return (nelem);
 }
 
 void	run_builtin(t_meta *meta, t_word *wl)
@@ -149,16 +102,4 @@ void	run_builtin(t_meta *meta, t_word *wl)
 	else
 		add_or_upd_ht_entry("?", exit_code, meta->hash);
 	free(exit_code);
-}
-
-void	close_all_fds(void)
-{
-	int	i;
-
-	i = 0;
-	while (i < 1024)
-	{
-		close(i);
-		i++;
-	}
 }

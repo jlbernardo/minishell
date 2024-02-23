@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/22 21:12:56 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/23 17:17:49 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,7 @@ void			run_pipeline(t_ast *ast, int in_fd, t_meta *meta);
 void			exec_right(t_cmd *data, int pipe_fd[2], t_meta *meta);
 void			handle_forked_null_pathname(t_cmd *data, t_meta *meta);
 void			upd_simple_exit_status(int exit_status, t_meta	*meta);
+void			fork_maker(t_ast *ast, int in_fd, t_meta *meta, int pipe_fd[2]);
 void			exec_left(t_cmd *data, int in_fd, int pipe_fd[2], t_meta *meta);
 char			**stringfy(t_word *wl);
 

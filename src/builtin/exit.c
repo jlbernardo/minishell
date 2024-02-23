@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 19:35:43 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/23 16:54:09 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/23 17:07:05 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ char	*trim_prefix(const char *s1, const char *set);
 
 int	ft_exit(t_meta *meta, t_word *wl)
 {
-	char		*exit_str;
-	long int	exit_code;
+	char			*exit_str;
+	long long int	exit_code;
 
 	(void)wl;
 	exit_str = grab_value("?", meta->hash);
