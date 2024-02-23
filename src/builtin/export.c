@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:52:24 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/22 14:54:00 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/23 16:50:04 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,9 @@ void	with_value(t_word *wl, t_hash **ht, int *ret)
 	value = ft_substr(ft_strchr(wl->word, '='), 1, len);
 	if (is_readonly(name))
 	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(name, 2);
-		ft_putendl_fd(": readonly variable", 2);
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(name, STDERR_FILENO);
+		ft_putendl_fd(": readonly variable", STDERR_FILENO);
 		*ret = EXIT_FAILURE;
 	}
 	else
@@ -80,9 +80,9 @@ void	without_value(t_word*wl, t_hash **ht)
 
 void	export_error(char *literal, int *ret)
 {
-	ft_putstr_fd("minishell: export: '", 2);
-	ft_putstr_fd(literal, 2);
-	ft_putendl_fd("': not a valid identifier", 2);
+	ft_putstr_fd("minishell: export: '", STDERR_FILENO);
+	ft_putstr_fd(literal, STDERR_FILENO);
+	ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
 	*ret = EXIT_FAILURE;
 }
 

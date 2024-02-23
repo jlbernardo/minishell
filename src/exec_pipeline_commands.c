@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 11:36:19 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/22 13:20:23 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/23 18:14:08 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	exec_left(t_cmd *data, int in_fd, int pipe_fd[2], t_meta *meta)
 {
-	//TODO: change run_executable to run_command(can be builtin or executable)
 	if (in_fd != 0)
 	{
 		dup2(in_fd, STDIN_FILENO);
@@ -29,7 +28,6 @@ void	exec_left(t_cmd *data, int in_fd, int pipe_fd[2], t_meta *meta)
 
 void	exec_right(t_cmd *data, int pipe_fd[2], t_meta *meta)
 {
-	//TODO: change run_executable to run_command(can be builtin or executable)
 	dup2(pipe_fd[0], STDIN_FILENO);
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);
@@ -38,31 +36,26 @@ void	exec_right(t_cmd *data, int pipe_fd[2], t_meta *meta)
 
 void	exec_forked_command(t_cmd *data, t_meta *meta)
 {
+	int	exit_code;
+
 	if (is_builtin(data->word_list[0].word))
 	{
-		run_builtin(meta, data->word_list);
-		//collect exit_status
+		exit_code = run_builtin(meta, data->word_list);
+		close_all_fds();
+		finisher(*meta);
+		free_ht(meta->hash);
+		exit(exit_code);
 	}
+	else if (data->pathname == NULL)
+		handle_forked_null_pathname(data, meta);
 	else
-	{
-		if (data->pathname == NULL)
-		{
-			//change to handle_forked_pathname
-			handle_forked_null_pathname(meta);
-			return ;
-		}
-		else
-		{
-			run_executable(data, meta);
-		}
-	}
+		run_executable(data, meta);
 }
 
-void	handle_forked_null_pathname(t_meta *meta)
+void	handle_forked_null_pathname(t_cmd *data, t_meta *meta)
 {
-	ft_putstr_fd(meta->tokens->literal, 2);
-	ft_putendl_fd(": command not found", 2);
-	// add_or_upd_ht_entry("?", "127", meta->hash);
+	ft_putstr_fd(data->word_list->word, STDERR_FILENO);
+	ft_putendl_fd(": command not found", STDERR_FILENO);
 	finisher(*meta);
 	free_ht(meta->hash);
 	close_all_fds();
@@ -82,13 +75,9 @@ int	cap_n_upd_exit_status(t_meta *meta)
 		exit_status = WEXITSTATUS(exit_status);
 		exit_string = ft_itoa(exit_status);
 		if (exit_status == 13)
-		{
 			add_or_upd_ht_entry("?", "126", meta->hash);
-		}
 		else
-		{
 			add_or_upd_ht_entry("?", exit_string, meta->hash);
-		}
 		free(exit_string);
 	}
 	last_child_pid = current_child_pid;
