@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/23 17:17:49 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/23 20:40:13 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,9 +149,9 @@ t_word			*new_wle(char *s);
 /* EXECUTOR */
 int				get_size(t_word *wl);
 int				cap_n_upd_exit_status(t_meta *meta);
+int				run_builtin(t_meta *meta, t_word *wl);
 void			close_all_fds(void);
 void			handle_null_pathname(t_meta *meta);
-void			run_builtin(t_meta *meta, t_word *wl);
 void			run_executable(t_cmd *data, t_meta *meta);
 void			free_array_of_strings(char **array, int size);
 void			exec_forked_command(t_cmd *data, t_meta *meta);
