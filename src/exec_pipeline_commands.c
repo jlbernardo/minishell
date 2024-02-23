@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 11:36:19 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/23 17:00:00 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/23 18:14:08 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,16 @@ void	exec_right(t_cmd *data, int pipe_fd[2], t_meta *meta)
 
 void	exec_forked_command(t_cmd *data, t_meta *meta)
 {
+	int	exit_code;
+
 	if (is_builtin(data->word_list[0].word))
-		run_builtin(meta, data->word_list);
+	{
+		exit_code = run_builtin(meta, data->word_list);
+		close_all_fds();
+		finisher(*meta);
+		free_ht(meta->hash);
+		exit(exit_code);
+	}
 	else if (data->pathname == NULL)
 		handle_forked_null_pathname(data, meta);
 	else

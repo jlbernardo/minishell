@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/23 17:20:43 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/23 18:13:10 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,27 +79,31 @@ void	run_executable(t_cmd *data, t_meta *meta)
 	}
 }
 
-void	run_builtin(t_meta *meta, t_word *wl)
+int	run_builtin(t_meta *meta, t_word *wl)
 {
 	int				i;
-	char			*exit_code;
+	int				exit_code;
+	char			*exit_str;
 	const t_builtin	builtin[] = {{"cd", cd}, {"echo", echo}, \
 			{"env", env}, {"exit", ft_exit}, {"export", export}, \
 			{"pwd", pwd}, {"unset", unset}};
 
 	i = -1;
-	exit_code = NULL;
+	exit_code = 0;
+	exit_str = NULL;
 	while (++i < 8)
 	{
 		if (ft_strcmp(builtin[i].cmd_name, wl->word) == 0)
 		{
-			exit_code = ft_itoa(builtin[i].function(meta, wl));
+			exit_code = builtin[i].function(meta, wl);
 			break ;
 		}
 	}
-	if (!exit_code)
+	exit_str = ft_itoa(exit_code);
+	if (!exit_str)
 		handle_null_pathname(meta);
 	else
-		add_or_upd_ht_entry("?", exit_code, meta->hash);
-	free(exit_code);
+		add_or_upd_ht_entry("?", exit_str, meta->hash);
+	free(exit_str);
+	return (exit_code);
 }
