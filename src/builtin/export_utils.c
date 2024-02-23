@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 18:32:01 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/21 17:32:43 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/23 16:50:45 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,21 +66,21 @@ void	print_export(t_word *vars, t_hash **ht)
 
 	while (vars)
 	{
-		if (ft_strcmp(vars->word, "_") == 0)
+		if (ft_strcmp(vars->word, "_") == 0 || ft_strcmp(vars->word, "?") == 0)
 		{
 			vars = vars->next;
 			continue ;
 		}
 		value = grab_value(vars->word, ht);
-		ft_putstr_fd("declare -x ", 1);
-		ft_putstr_fd(vars->word, 1);
+		ft_putstr_fd("declare -x ", STDOUT_FILENO);
+		ft_putstr_fd(vars->word, STDOUT_FILENO);
 		if (value)
 		{
-			ft_putstr_fd("=\"", 1);
-			ft_putstr_fd(value, 1);
-			ft_putstr_fd("\"", 1);
+			ft_putstr_fd("=\"", STDOUT_FILENO);
+			ft_putstr_fd(value, STDOUT_FILENO);
+			ft_putstr_fd("\"", STDOUT_FILENO);
 		}
-		ft_putstr_fd("\n", 1);
+		ft_putstr_fd("\n", STDOUT_FILENO);
 		free(value);
 		vars = vars->next;
 	}
@@ -103,13 +103,13 @@ int	valid_variable(char *literal)
 
 	i = 0;
 	if (literal[i] != '_' && !ft_isalpha(literal[i]))
-		return (0);
+		return (LIE);
 	i++;
 	while (literal[i] && literal[i] != '=')
 	{
 		if (literal[i] != '_' && !ft_isalnum(literal[i]))
-			return (0);
+			return (LIE);
 		i++;
 	}
-	return (1);
+	return (TRUTH);
 }

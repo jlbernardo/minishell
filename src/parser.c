@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 21:12:03 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/22 11:43:59 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/23 17:01:30 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ void	remove_empty_tokens(t_token **tokens)
 
 void	syntax_error(char *token)
 {
-	ft_putstr_fd("minishell: syntax error near unexpected token '", 2);
-	ft_putstr_fd(token, 2);
-	ft_putendl_fd("'", 2);
+	ft_putstr_fd("minishell: syntax error near unexpected token '", \
+		STDERR_FILENO);
+	ft_putstr_fd(token, STDERR_FILENO);
+	ft_putendl_fd("'", STDERR_FILENO);
 }
