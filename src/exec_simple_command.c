@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 10:42:52 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/23 17:00:15 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/23 17:04:30 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ void	run_simple_command(t_ast *cmd_node, t_meta *meta)
 			handle_null_pathname(meta);
 		else
 		{
-			if ((child_pid = fork()) == -1)
+			child_pid = fork();
+			if (child_pid == -1)
 				return ;
 			if (child_pid == 0)
 				run_executable(cmd_node->data, meta);
