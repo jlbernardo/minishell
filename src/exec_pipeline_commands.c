@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 11:36:19 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/23 15:50:12 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/23 17:00:00 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,9 @@ void	exec_left(t_cmd *data, int in_fd, int pipe_fd[2], t_meta *meta)
 		close(in_fd);
 		close(pipe_fd[0]);
 	}
-	if (pipe_fd[0] != 42)
-	{
-		dup2(pipe_fd[1], STDOUT_FILENO);
-		close(pipe_fd[1]);
-		close(pipe_fd[0]);
-	}
+	dup2(pipe_fd[1], STDOUT_FILENO);
+	close(pipe_fd[1]);
+	close(pipe_fd[0]);
 	exec_forked_command(data, meta);
 }
 
@@ -49,8 +46,8 @@ void	exec_forked_command(t_cmd *data, t_meta *meta)
 
 void	handle_forked_null_pathname(t_cmd *data, t_meta *meta)
 {
-	ft_putstr_fd(data->word_list->word, 2);
-	ft_putendl_fd(": command not found", 2);
+	ft_putstr_fd(data->word_list->word, STDERR_FILENO);
+	ft_putendl_fd(": command not found", STDERR_FILENO);
 	finisher(*meta);
 	free_ht(meta->hash);
 	close_all_fds();

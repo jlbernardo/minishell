@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/23 16:06:45 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/23 16:59:00 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,15 @@ void	executor(t_meta *meta)
 void	run_pipeline(t_ast *ast, int in_fd, t_meta *meta)
 {
 	int		pipe_fd[2];
-	int		test_fd[2];
 	pid_t	child_pid;
+	int		stdi;
+	int		stdo;
 
-	test_fd[0] = 42;
-	test_fd[1] = 43;
-	if (pipe(pipe_fd) == -1 || !ast)
+	stdi = dup(STDIN_FILENO);
+	stdo = dup(STDOUT_FILENO);
+	if (pipe(pipe_fd) == -1)
 		return ;
-	if (ast->right && ast->right->type == CMD)
+	if (ast->right->type == CMD)
 	{
 		child_pid = fork();
 		if (child_pid == 0)
@@ -39,7 +40,7 @@ void	run_pipeline(t_ast *ast, int in_fd, t_meta *meta)
 		if (child_pid == 0)
 			exec_right(ast->right->data, pipe_fd, meta);
 	}
-	else if (ast->right && ast->right->type == PIPELINE)
+	else
 	{
 		child_pid = fork();
 		if (child_pid == 0)
@@ -48,16 +49,13 @@ void	run_pipeline(t_ast *ast, int in_fd, t_meta *meta)
 		run_pipeline(ast->right, pipe_fd[0], meta);
 		close(pipe_fd[0]);
 	}
-	else
-	{
-		child_pid = fork();
-		if (child_pid == 0)
-			exec_left(ast->left->data, in_fd, test_fd, meta);
-	}
-	if (in_fd != 0)
-		close(in_fd);
+	close(in_fd);
 	close(pipe_fd[1]);
 	close(pipe_fd[0]);
+	dup2(stdi, STDIN_FILENO);
+	dup2(stdo, STDOUT_FILENO);
+	close(stdi);
+	close(stdo);
 	while (cap_n_upd_exit_status(meta) != -1)
 		;
 	return ;
