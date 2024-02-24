@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/23 18:13:10 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/23 21:06:59 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int	run_builtin(t_meta *meta, t_word *wl)
 	}
 	exit_str = ft_itoa(exit_code);
 	if (!exit_str)
-		handle_null_pathname(meta);
+		handle_null_pathname(wl->word, meta);
 	else
 		add_or_upd_ht_entry("?", exit_str, meta->hash);
 	free(exit_str);

@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 17:09:16 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/23 17:12:19 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/23 21:08:03 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,9 @@ void	close_all_fds(void)
 	}
 }
 
-void	handle_null_pathname(t_meta *meta)
+void	handle_null_pathname(char *cmd, t_meta *meta)
 {
-	ft_putstr_fd("minishell: command not found\n", STDERR_FILENO);
+	ft_putstr_fd(cmd, STDERR_FILENO);
+	ft_putendl_fd(": command not found", STDERR_FILENO);
 	add_or_upd_ht_entry("?", "127", meta->hash);
 }

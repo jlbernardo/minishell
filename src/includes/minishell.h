@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/23 20:40:13 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/23 21:07:40 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ void			set_meta(t_meta *meta, char **__environ);
 
 /* LEXER */
 int				is_operand(char ch);
-char			*read_unquoted(t_lexer *l);
+char			*read_unquoted(t_lexer *l, char quote, int s_open, int d_open);
 char			*read_quoted(t_lexer *l, char quote, int s_open, int d_open);
 void			find_token(t_lexer *lex, t_token **tokens, int size);
 void			set_lexer(t_lexer *lex, char *input);
@@ -151,11 +151,11 @@ int				get_size(t_word *wl);
 int				cap_n_upd_exit_status(t_meta *meta);
 int				run_builtin(t_meta *meta, t_word *wl);
 void			close_all_fds(void);
-void			handle_null_pathname(t_meta *meta);
+void			handle_null_pathname(char *cmd, t_meta *meta);
 void			run_executable(t_cmd *data, t_meta *meta);
 void			free_array_of_strings(char **array, int size);
 void			exec_forked_command(t_cmd *data, t_meta *meta);
-void			run_simple_command(t_ast *cmd_node, t_meta *meta);
+void			run_simple_command(t_ast *cmd, t_meta *meta);
 void			run_pipeline(t_ast *ast, int in_fd, t_meta *meta);
 void			exec_right(t_cmd *data, int pipe_fd[2], t_meta *meta);
 void			handle_forked_null_pathname(t_cmd *data, t_meta *meta);

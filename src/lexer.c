@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:49 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/21 23:07:27 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/23 20:54:12 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	find_token(t_lexer *lex, t_token **tokens, int size)
 		if (lex->ch == '"' || lex->ch == '\'')
 			str = read_quoted(lex, 0, 0, 0);
 		else
-			str = read_unquoted(lex);
+			str = read_unquoted(lex, 0, 0, 0);
 		new_token(tokens, WORD, str);
 	}
 	return (free(str));

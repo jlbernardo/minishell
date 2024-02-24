@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 20:24:28 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/21 23:08:09 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/24 00:35:32 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,10 @@ void	remove_quotes(t_token **tokens)
 		return ;
 	while ((*tokens)->literal[i] != '\0')
 	{
-		if ((*tokens)->literal[i] == '"' || (*tokens)->literal[i] == '\'')
+		if (((*tokens)->literal[i] == '"' || (*tokens)->literal[i] == '\'')
+			&& (i > 0 && (*tokens)->literal[i - 1] != '='
+				&& (*tokens)->literal[i + 1] != ' '
+				&& (*tokens)->literal[i + 1] != '\0'))
 		{
 			quote = (*tokens)->literal[i];
 			len = ft_strlen((*tokens)->literal) - i;

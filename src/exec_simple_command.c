@@ -6,30 +6,30 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 10:42:52 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/23 17:12:15 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/23 21:07:27 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
-void	run_simple_command(t_ast *cmd_node, t_meta *meta)
+void	run_simple_command(t_ast *cmd, t_meta *meta)
 {
 	pid_t	child_pid;
 	int		exit_status;
 
-	if (is_builtin(cmd_node->data->word_list[0].word))
-		run_builtin(meta, cmd_node->data->word_list);
+	if (is_builtin(cmd->data->word_list[0].word))
+		run_builtin(meta, cmd->data->word_list);
 	else
 	{
-		if (cmd_node->data->pathname == NULL)
-			handle_null_pathname(meta);
+		if (cmd->data->pathname == NULL)
+			handle_null_pathname(cmd->data->word_list->word, meta);
 		else
 		{
 			child_pid = fork();
 			if (child_pid == -1)
 				return ;
 			if (child_pid == 0)
-				run_executable(cmd_node->data, meta);
+				run_executable(cmd->data, meta);
 			wait(&exit_status);
 			upd_simple_exit_status(exit_status, meta);
 		}

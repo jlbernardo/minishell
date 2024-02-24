@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:52:24 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/23 16:50:04 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/24 00:31:54 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,13 @@ void	with_value(t_word *wl, t_hash **ht, int *ret)
 	int			len;
 	char		*name;
 	char		*value;
+	char		*pre_value;
 
 	len = ft_strchr(wl->word, '=') - wl->word;
 	name = ft_substr(wl->word, 0, len);
 	len = ft_strlen(wl->word) - len - 1;
-	value = ft_substr(ft_strchr(wl->word, '='), 1, len);
+	pre_value = ft_substr(ft_strchr(wl->word, '='), 1, len);
+	value = ft_strtrim(pre_value, "\"'");
 	if (is_readonly(name))
 	{
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
@@ -64,6 +66,7 @@ void	with_value(t_word *wl, t_hash **ht, int *ret)
 		add_or_upd_ht_entry(name, value, ht);
 	free(name);
 	free(value);
+	free(pre_value);
 }
 
 void	without_value(t_word*wl, t_hash **ht)
