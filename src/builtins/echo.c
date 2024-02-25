@@ -6,48 +6,51 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 18:47:27 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/14 00:08:59 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/25 00:07:00 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	echo_err(void);
-int	check_flag(t_token *tokens);
+int	echo_error(void);
+int	check_flag(t_word *wl);
 
-int	echo(t_token *tokens)
+int	echo(t_meta *meta, t_word *wl)
 {
 	int			ret;
-	const int	flag = check_flag(tokens);
+	t_word		*temp;
+	const int	flag = check_flag(wl);
 
-	tokens = tokens->next;
+	(void)meta;
+	temp = wl;
+	temp = temp->next;
 	if (flag)
-		tokens = tokens->next;
-	while (tokens)
+		temp = temp->next;
+	while (temp)
 	{
-		ret = write(1, tokens->literal, ft_strlen(tokens->literal));
+		ret = write(STDOUT_FILENO, temp->word, ft_strlen(temp->word));
 		if (ret == -1)
-			return (echo_err());
-		tokens = tokens->next;
-		if (tokens)
-			ret = write(1, " ", 1);
+			return (echo_error());
+		temp = temp->next;
+		if (temp)
+			ret = write(STDOUT_FILENO, " ", 1);
 		if (ret == -1)
-			return (echo_err());
+			return (echo_error());
 	}
 	if (!flag)
-		write(1, "\n", 1);
-	return (0);
+		write(STDOUT_FILENO, "\n", 1);
+	return (EXIT_SUCCESS);
 }
 
-int	echo_err(void)
+int	echo_error(void)
 {
-	perror("bash: echo");
+	perror("minishell: echo");
 	return (-1);
 }
 
-int	check_flag(t_token *tokens)
+int	check_flag(t_word *wl)
 {
-	if (!ft_strcmp(tokens->next->literal, "-n"))
-		return (1);
-	return (0);
+	if (wl->next && !ft_strcmp(wl->next->word, "-n"))
+		return (TRUTH);
+	return (LIE);
 }

@@ -10,15 +10,19 @@ LIBFT_DIR = ./libft
 INCLUDE = -I./includes
 
 SD = src/
-SRC = $(addprefix $(SD), minishell.c lexer.c lexer_utils.c list_handler.c \
-						parser.c parser_utils.c moses_i.c moses_ii.c \
-						hashtable.c expander.c path_finder.c finisher.c)
-SRC += $(addprefix $(SD)builtin/, pwd.c)
+COMMON += $(addprefix $(SD)executor/, executor.c executor_utils.c pipeline.c \
+						exec_simple_command.c exec_pipeline_commands.c)
+COMMON += $(addprefix $(SD)lexer/, lexer.c lexer_utils.c)
+COMMON += $(addprefix $(SD)parser/, parser.c parser_utils.c expander.c \
+						path_finder.c)
+COMMON += $(addprefix $(SD)utils/, list_handler.c moses_i.c moses_ii.c \
+						hashtable.c finisher.c conditionals.c set_structures.c \
+						error_handler.c)
+COMMON += $(addprefix $(SD)builtins/, pwd.c env.c echo.c cd.c exit.c \
+						export.c export_utils.c unset.c)
 
-TEST_SRC = $(addprefix $(SD), tests.c lexer.c lexer_utils.c list_handler.c \
-						parser.c parser_utils.c moses_i.c moses_ii.c \
-						hashtable.c expander.c path_finder.c finisher.c)
-TEST_SRC += $(addprefix $(SD)builtin/, pwd.c env.c echo.c)
+SRC = $(COMMON) $(SD)minishell.c
+TEST = $(COMMON) $(SD)test.c
 
 OD = obj/
 OBJ = $(SRC:$(SD)%.c=$(OD)%.o)
@@ -65,6 +69,6 @@ rebug: clean debug
 frebug: fclean debug
 
 test: clean $(LIBFT)
-	$(CC) $(FLAGS) -gdwarf-4 $(TEST_SRC) $(LIBFT_DIR)/*.c $(LIBS) -o $(NAME)
+	@$(CC) $(FLAGS) -gdwarf-4 $(TEST) $(LIBFT_DIR)/*.c $(LIBS) -o $(NAME)
 
 .PHONY: all clean fclean re rebug frebug debug

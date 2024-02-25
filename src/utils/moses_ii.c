@@ -6,11 +6,11 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 18:31:50 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/06 18:38:01 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/25 00:07:00 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/minishell.h"
+#include "../includes/minishell.h"
 
 void	safe_free(void *p)
 {
@@ -20,7 +20,7 @@ void	safe_free(void *p)
 	p = NULL;
 }
 
-void	free_ht(t_hash **ht)
+void	free_hash(t_hash **ht)
 {
 	unsigned int	i;
 
@@ -41,4 +41,18 @@ void	free_ht_entry(t_hash *ht)
 	safe_free(ht->name);
 	safe_free(ht->value);
 	safe_free(ht);
+}
+
+void	free_str_array(char **array, int size)
+{
+	int	index;
+
+	if (array == NULL)
+		return ;
+	index = 0;
+	while (index <= size)
+	{
+		free(array[index]);
+		index++;
+	}
 }

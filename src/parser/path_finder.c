@@ -6,13 +6,13 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 20:38:49 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/08 20:50:03 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/25 00:07:00 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/minishell.h"
+#include "../includes/minishell.h"
 
-void	get_path(t_ast **ast, t_hash **env_vars)
+void	get_path(t_ast **ast, t_hash **hash)
 {
 	int		i;
 	char	**paths;
@@ -20,19 +20,24 @@ void	get_path(t_ast **ast, t_hash **env_vars)
 
 	if (!*ast)
 		return ;
-	if ((*ast)->type == CMD && not_builtin((*ast)->data->word_list->word))
+	if ((*ast)->type == CMD && !is_builtin((*ast)->data->word_list->word))
 	{
-		full_path = grab_value("PATH", env_vars);
-		paths = ft_split(full_path, ':');
-		find_path(ast, paths);
-		free(full_path);
-		i = -1;
-		while (paths[++i] != NULL)
-			free(paths[i]);
-		free(paths);
+		if (ft_strchr((*ast)->data->word_list->word, '/'))
+			(*ast)->data->pathname = ft_strdup((*ast)->data->word_list->word);
+		else
+		{
+			full_path = grab_value("PATH", hash);
+			paths = ft_split(full_path, ':');
+			find_path(ast, paths);
+			free(full_path);
+			i = -1;
+			while (paths[++i] != NULL)
+				free(paths[i]);
+			free(paths);
+		}
 	}
-	get_path(&(*ast)->left, env_vars);
-	get_path(&(*ast)->right, env_vars);
+	get_path(&(*ast)->left, hash);
+	get_path(&(*ast)->right, hash);
 }
 
 void	find_path(t_ast **ast, char **paths)
@@ -47,7 +52,7 @@ void	find_path(t_ast **ast, char **paths)
 		temp = ft_strjoin(paths[i], "/");
 		try = ft_strjoin(temp, (*ast)->data->word_list->word);
 		free(temp);
-		if (access(try, X_OK) == 0)
+		if (access(try, F_OK) == 0)
 		{
 			(*ast)->data->pathname = try;
 			break ;
@@ -55,27 +60,4 @@ void	find_path(t_ast **ast, char **paths)
 		free(try);
 		i++;
 	}
-}
-
-int	not_builtin(char *cmd)
-{
-	int					i;
-	static const char	*builtins[7] = {
-		"echo",
-		"cd",
-		"pwd",
-		"export",
-		"unset",
-		"env",
-		"exit",
-	};
-
-	i = 0;
-	while (i < 7)
-	{
-		if (!ft_strcmp(cmd, builtins[i]))
-			return (0);
-		i++;
-	}
-	return (1);
 }

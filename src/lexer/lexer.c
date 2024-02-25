@@ -6,40 +6,52 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:49 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/12 22:17:31 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/25 00:32:57 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/minishell.h"
+#include "../includes/minishell.h"
 
-int	lexer(t_token **tokens, t_ast **ast)
+int	lexer(t_meta *meta)
 {
 	char	*input;
 	t_lexer	lex;
 
-	*tokens = NULL;
-	*ast = NULL;
+	meta->tokens = NULL;
+	meta->ast = NULL;
 	input = readline("$> ");
+	add_history(input);
+	expand_variable(&input, meta);
 	set_lexer(&lex, input);
 	while (lex.read_pos < lex.size && lex.success == TRUTH)
 	{
 		read_char(&lex);
-		find_token(&lex, tokens, 1);
+		find_token(&lex, &meta->tokens, 1);
 	}
 	if (!lex.success)
-		ft_printf("Syntax error near token %s\n", (*tokens)->literal);
+		syntax_error(meta->tokens->literal, meta);
 	free(input);
 	return (lex.success);
 }
 
-void	set_lexer(t_lexer *lex, char *input)
+void	read_char(t_lexer *lex)
 {
-	lex->input = input;
-	lex->ch = 0;
-	lex->pos = 0;
-	lex->read_pos = 0;
-	lex->success = TRUTH;
-	lex->size = ft_strlen(input);
+	if (lex->read_pos >= lex->size)
+		lex->ch = 0;
+	else
+	{
+		if (lex->input[lex->read_pos] < 0)
+		{
+			lex->pos = lex->read_pos;
+			lex->ch = lex->input[lex->read_pos++];
+			lex->read_pos++;
+		}
+		else
+		{
+			lex->ch = lex->input[lex->read_pos];
+			lex->pos = lex->read_pos++;
+		}
+	}
 }
 
 void	find_token(t_lexer *lex, t_token **tokens, int size)

@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 17:38:30 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/14 00:30:24 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/24 23:46:43 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,22 @@
 
 int	main(void)
 {
+	char	*ret;
+	t_meta	meta;
 	int		control;
-	t_ast	*ast;
-	t_token	*tokens;
-	t_hash	**env_vars;
 
-	env_vars = ft_calloc(HT_SIZE, sizeof(t_hash *));
-	add_env_to_ht(__environ, env_vars);
+	set_meta(&meta, __environ);
 	control = 42;
 	while (control)
 	{
-		if (lexer(&tokens, &ast))
-			parser(tokens, &ast, env_vars);
-		finisher(tokens, ast);
+		if (lexer(&meta))
+			if (parser(&meta))
+				executor(&meta);
+		ret = grab_value("?", meta.hash);
+		ft_printf("Return value: %s\n", ret);
+		finisher(meta);
+		free(ret);
 	}
-	free_ht(env_vars);
+	free_hash(meta.hash);
 	return (0);
 }
