@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/25 00:25:40 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/25 00:35:59 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <errno.h>
 # include <linux/limits.h>
 # include <readline/readline.h>
+# include <readline/history.h>
 # include <sys/wait.h>
 # include <sys/types.h>
 # include <fcntl.h>
