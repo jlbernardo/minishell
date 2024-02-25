@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/24 23:30:06 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/24 23:40:26 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,18 +116,17 @@ void			finisher(t_meta meta);
 void			set_meta(t_meta *meta, char **__environ);
 
 /* LEXER */
+void			find_token(t_lexer *lex, t_token **tokens, int size);
+void			replace_variable(char **input, t_hash **hash);
+void			expand_variables(char **input, t_meta *meta);
+void			set_lexer(t_lexer *lex, char *input);
 void			read_char(t_lexer *lex);
 char			*read_unquoted(t_lexer *l);
-void			set_lexer(t_lexer *lex, char *input);
-void			expand_variables(char **input, t_meta *meta);
-void			find_token(t_lexer *lex, t_token **tokens, int size);
-char			*read_quoted(t_lexer *l, char quote, int s_open, int d_open);
 char			*get_variable_name(char *literal);
-void			replace_variable(char **input, t_hash **hash);
+char			*read_quoted(t_lexer *l, char quote, int s_open, int d_open);
 
 /* PARSER */
 void			syntax_error(char *token);
-void			split_tokens(t_meta *meta);
 void			remove_quotes(t_token **tokens);
 void			find_path(t_ast **ast, char **paths);
 void			get_path(t_ast **ast, t_hash **hash);
@@ -139,22 +138,22 @@ t_ast			*parse_pipeline(t_token **tokens, t_ast *parent);
 t_ast			*parse_cmd(t_token **tokens, t_ast *parent);
 
 /* EXECUTOR */
-int				run_builtin(t_meta *meta, t_word *wl);
-int				cap_n_upd_exit_status(t_meta *meta);
 int				get_size(t_word *wl);
+int				cap_n_upd_exit_status(t_meta *meta);
+int				run_builtin(t_meta *meta, t_word *wl);
 void			close_all_fds(void);
-void			handle_null_pathname(char *cmd, t_meta *meta);
+void			run_pipeline(t_ast *ast, t_meta *meta);
 void			run_executable(t_cmd *data, t_meta *meta);
+void			run_simple_command(t_ast *cmd, t_meta *meta);
+void			handle_null_pathname(char *cmd, t_meta *meta);
 void			free_array_of_strings(char **array, int size);
 void			exec_forked_command(t_cmd *data, t_meta *meta);
-void			run_simple_command(t_ast *cmd, t_meta *meta);
-void			run_pipeline(t_ast *ast, t_meta *meta);
-void			first_pipeline_cmd(t_ast *ast, int pipe_fd[2], t_meta *meta);
-void			middle_pipeline_cmd(t_ast *ast, int *pipe_fd, t_meta *meta);
-void			last_pipeline_cmd(t_ast *ast, int *pipe_fd, t_meta *meta);
 void			exec_right(t_cmd *data, int pipe_fd[2], t_meta *meta);
 void			handle_forked_null_pathname(t_cmd *data, t_meta *meta);
 void			upd_simple_exit_status(int exit_status, t_meta	*meta);
+void			last_pipeline_cmd(t_ast *ast, int *pipe_fd, t_meta *meta);
+void			middle_pipeline_cmd(t_ast *ast, int *pipe_fd, t_meta *meta);
+void			first_pipeline_cmd(t_ast *ast, int pipe_fd[2], t_meta *meta);
 void			exec_left(t_cmd *data, int in_fd, int pipe_fd[2], t_meta *meta);
 char			**stringfy(t_word *wl);
 
@@ -169,8 +168,8 @@ t_token			*tk_last(t_token *tk);
 t_redir			*new_redirect(t_token *tokens);
 
 /* HASH TABLE */
-void			add_env_to_ht(char **env, t_hash **ht);
 void			add_or_upd_ht_entry(char *name, char *value, t_hash **ht);
+void			add_env_to_ht(char **env, t_hash **ht);
 char			*grab_value(char *name, t_hash **ht);
 t_hash			*create_kv_pair(char *name, char *value);
 unsigned int	hash(char *name);
@@ -198,14 +197,14 @@ int				quote_open(char ch, char next, int s_open, int d_open);
 
 /* FINISHERS */
 void			safe_free(void *p);
+void			free_wl(t_word *wl);
 void			free_ht(t_hash **ht);
 void			free_ast(t_ast *ast);
-void			free_wl(t_word *wl);
 void			free_cmd(t_cmd	*cmd);
 void			free_ht_entry(t_hash *ht);
 void			finish_lexer(t_lexer *lex);
-void			free_tokens(t_token *tokens);
 void			free_redirects(t_redir *rl);
+void			free_tokens(t_token *tokens);
 void			free_array_of_strings(char **array, int size);
 
 #endif
