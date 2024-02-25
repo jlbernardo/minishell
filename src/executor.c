@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/24 16:08:26 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/24 23:31:01 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,10 @@ void	executor(t_meta *meta)
 		run_pipeline(meta->ast, meta);
 }
 
-
 void	run_pipeline(t_ast *ast, t_meta *meta)
 {
 	int	*pipe_fd;
-	
+
 	pipe_fd = malloc(2 * sizeof(int));
 	if (pipe(pipe_fd) == -1)
 		return ;
@@ -39,7 +38,8 @@ void	run_pipeline(t_ast *ast, t_meta *meta)
 	}
 	run_last_pipeline_cmd(ast, pipe_fd, meta);
 	free(pipe_fd);
-	while(cap_n_upd_exit_status(meta) != -1);
+	while (cap_n_upd_exit_status(meta) != -1)
+		;
 }
 
 void	run_executable(t_cmd *data, t_meta *meta)

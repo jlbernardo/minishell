@@ -6,13 +6,13 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 11:36:19 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/24 23:29:03 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/24 23:32:17 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
-void	run_first_pipeline_cmd(t_ast *ast, int pipe_fd[2], t_meta *meta)
+void	first_pipeline_cmd(t_ast *ast, int pipe_fd[2], t_meta *meta)
 {
 	pid_t	child_pid;
 
@@ -28,7 +28,7 @@ void	run_first_pipeline_cmd(t_ast *ast, int pipe_fd[2], t_meta *meta)
 	close(pipe_fd[1]);
 }
 
-void	run_middle_pipeline_cmd(t_ast *ast, int *pipe_fd, t_meta *meta)
+void	middle_pipeline_cmd(t_ast *ast, int *pipe_fd, t_meta *meta)
 {
 	pid_t	child_pid;
 	int		in_fd;
@@ -39,11 +39,8 @@ void	run_middle_pipeline_cmd(t_ast *ast, int *pipe_fd, t_meta *meta)
 	child_pid = fork();
 	if (child_pid == 0)
 	{
-		//redir input
 		dup2(in_fd, STDIN_FILENO);
-		//redir output
 		dup2(pipe_fd[1], STDOUT_FILENO);
-		//close fds not needed
 		close(pipe_fd[0]);
 		close(pipe_fd[1]);
 		close(in_fd);
@@ -54,7 +51,7 @@ void	run_middle_pipeline_cmd(t_ast *ast, int *pipe_fd, t_meta *meta)
 	close(pipe_fd[1]);
 }
 
-void	run_last_pipeline_cmd(t_ast *ast, int *pipe_fd, t_meta *meta)
+void	last_pipeline_cmd(t_ast *ast, int *pipe_fd, t_meta *meta)
 {
 	pid_t	child_pid;
 
@@ -90,44 +87,4 @@ void	exec_right(t_cmd *data, int pipe_fd[2], t_meta *meta)
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);
 	exec_forked_command(data, meta);
-}
-
-void	exec_forked_command(t_cmd *data, t_meta *meta)
-{
-	int	exit_code;
-
-	if (is_builtin(data->word_list[0].word))
-	{
-		exit_code = run_builtin(meta, data->word_list);
-		close_all_fds();
-		finisher(*meta);
-		free_ht(meta->hash);
-		exit(exit_code);
-	}
-	else if (data->pathname == NULL)
-		handle_forked_null_pathname(data, meta);
-	else
-		run_executable(data, meta);
-}
-
-int	cap_n_upd_exit_status(t_meta *meta)
-{
-	static pid_t	last_child_pid;
-	pid_t			current_child_pid;
-	int				exit_status;
-	char			*exit_string;
-
-	current_child_pid = wait(&exit_status);
-	if (current_child_pid > last_child_pid)
-	{
-		exit_status = WEXITSTATUS(exit_status);
-		exit_string = ft_itoa(exit_status);
-		if (exit_status == 13)
-			add_or_upd_ht_entry("?", "126", meta->hash);
-		else
-			add_or_upd_ht_entry("?", exit_string, meta->hash);
-		free(exit_string);
-	}
-	last_child_pid = current_child_pid;
-	return (current_child_pid);
 }
