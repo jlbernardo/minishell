@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 20:24:28 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/24 18:44:48 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/24 23:47:51 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,19 +57,4 @@ int	check_split(char *literal)
 	if (literal[i] == ' ')
 		return (i);
 	return (LIE);
-}
-
-void	update_literal(t_token *tk, char **new_str)
-{
-	int		post_space;
-	int		pre_space;
-	char	*temp;
-
-	pre_space = ft_strchr(tk->literal, ' ') - tk->literal;
-	post_space = ft_strlen(tk->literal) - pre_space - 1;
-	temp = ft_strdup(tk->literal);
-	free(tk->literal);
-	tk->literal = ft_substr(temp, 0, pre_space);
-	*new_str = ft_substr(ft_strchr(temp, ' '), 1, post_space);
-	free(temp);
 }

@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:11:53 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/23 16:53:09 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/24 23:45:07 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ int	cd(t_meta *meta, t_word *wl)
 	{
 		old_cwd = grab_value("PWD", meta->hash);
 		cwd = getcwd(NULL, PATH_MAX);
-		add_or_upd_ht_entry("PWD", cwd, meta->hash);
-		add_or_upd_ht_entry("OLDPWD", old_cwd, meta->hash);
+		add_upd_hashtable("PWD", cwd, meta->hash);
+		add_upd_hashtable("OLDPWD", old_cwd, meta->hash);
 		free(cwd);
 		free(old_cwd);
 	}

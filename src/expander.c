@@ -6,19 +6,19 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 18:32:55 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/24 22:17:05 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/24 23:43:50 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
-void	expand_variables(char **input, t_meta *meta)
+void	expand_variable(char **input, t_meta *meta)
 {
 	if (has_variable(*input))
 	{
 		replace_variable(input, meta->hash);
 		if (has_variable(*input))
-			expand_variables(input, meta);
+			expand_variable(input, meta);
 	}
 }
 

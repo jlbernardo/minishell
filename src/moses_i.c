@@ -6,17 +6,17 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 19:49:32 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/24 17:17:06 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/24 23:46:13 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
-void	free_wl(t_word *wl)
+void	free_wordlist(t_word *wl)
 {
 	if (wl == NULL)
 		return ;
-	free_wl(wl->next);
+	free_wordlist(wl->next);
 	free(wl->next);
 	free(wl->word);
 }
@@ -34,7 +34,7 @@ void	free_cmd(t_cmd	*cmd)
 	if (cmd == NULL)
 		return ;
 	free(cmd->pathname);
-	free_wl(cmd->word_list);
+	free_wordlist(cmd->word_list);
 	free(cmd->word_list);
 	free_redirects(cmd->redirects);
 	free(cmd->redirects);

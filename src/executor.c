@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/24 23:33:27 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/24 23:46:43 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	run_pipeline(t_ast *ast, t_meta *meta)
 	}
 	last_pipeline_cmd(ast, pipe_fd, meta);
 	free(pipe_fd);
-	while (cap_n_upd_exit_status(meta) != -1)
+	while (handle_exit_status(meta) != -1)
 		;
 }
 
@@ -53,10 +53,10 @@ void	run_executable(t_cmd *data, t_meta *meta)
 	if (exec_return == -1)
 	{
 		perror(strerror(errno));
-		free_array_of_strings(array_of_strings, get_size(data->word_list));
+		free_str_array(array_of_strings, get_size(data->word_list));
 		free(array_of_strings);
 		finisher(*meta);
-		free_ht(meta->hash);
+		free_hash(meta->hash);
 		exit(errno);
 	}
 }
@@ -85,7 +85,7 @@ int	run_builtin(t_meta *meta, t_word *wl)
 	if (!exit_str)
 		handle_null_pathname(wl->word, meta);
 	else
-		add_or_upd_ht_entry("?", exit_str, meta->hash);
+		add_upd_hashtable("?", exit_str, meta->hash);
 	free(exit_str);
 	return (exit_code);
 }

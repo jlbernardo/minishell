@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:52:24 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/24 18:54:47 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/24 23:46:13 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	with_value(t_word *wl, t_hash **ht, int *ret)
 		*ret = EXIT_FAILURE;
 	}
 	else
-		add_or_upd_ht_entry(name, value, ht);
+		add_upd_hashtable(name, value, ht);
 	free(name);
 	free(value);
 	free(pre_value);
@@ -77,7 +77,7 @@ void	without_value(t_word*wl, t_hash **ht)
 		return ;
 	value = grab_value(wl->word, ht);
 	if (!value)
-		add_or_upd_ht_entry(wl->word, NULL, ht);
+		add_upd_hashtable(wl->word, NULL, ht);
 	free(value);
 }
 
@@ -97,6 +97,6 @@ void	export_alone(t_hash **ht)
 	populate_sort_vars(ht, &vars);
 	sort_vars(&vars, vars, NULL);
 	print_export(vars, ht);
-	free_wl(vars);
+	free_wordlist(vars);
 	free(vars);
 }

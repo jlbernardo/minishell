@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 17:13:03 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/24 19:15:41 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/24 23:45:31 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 void	set_meta(t_meta *meta, char **__environ)
 {
 	meta->hash = ft_calloc(HT_SIZE, sizeof(t_hash *));
-	add_env_to_ht(__environ, meta->hash);
-	add_or_upd_ht_entry("?", "0", meta->hash);
+	set_hashtable(__environ, meta->hash);
+	add_upd_hashtable("?", "0", meta->hash);
 }
 
 void	set_lexer(t_lexer *lex, char *input)

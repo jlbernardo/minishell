@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 17:09:16 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/24 23:32:19 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/24 23:46:43 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	exec_forked_command(t_cmd *data, t_meta *meta)
 		exit_code = run_builtin(meta, data->word_list);
 		close_all_fds();
 		finisher(*meta);
-		free_ht(meta->hash);
+		free_hash(meta->hash);
 		exit(exit_code);
 	}
 	else if (data->pathname == NULL)
@@ -74,7 +74,7 @@ void	exec_forked_command(t_cmd *data, t_meta *meta)
 		run_executable(data, meta);
 }
 
-int	cap_n_upd_exit_status(t_meta *meta)
+int	handle_exit_status(t_meta *meta)
 {
 	static pid_t	last_child_pid;
 	pid_t			current_child_pid;
@@ -87,9 +87,9 @@ int	cap_n_upd_exit_status(t_meta *meta)
 		exit_status = WEXITSTATUS(exit_status);
 		exit_string = ft_itoa(exit_status);
 		if (exit_status == 13)
-			add_or_upd_ht_entry("?", "126", meta->hash);
+			add_upd_hashtable("?", "126", meta->hash);
 		else
-			add_or_upd_ht_entry("?", exit_string, meta->hash);
+			add_upd_hashtable("?", exit_string, meta->hash);
 		free(exit_string);
 	}
 	last_child_pid = current_child_pid;

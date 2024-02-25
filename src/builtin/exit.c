@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 19:35:43 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/24 17:29:22 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/24 23:46:43 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	ft_exit(t_meta *meta, t_word *wl)
 		return (exit_error(NULL, "too many arguments", exit_code));
 	else if (meta->tokens->next)
 		exit_code = ft_atol(meta->tokens->next->literal);
-	free_ht(meta->hash);
+	free_hash(meta->hash);
 	finisher(*meta);
 	exit(exit_code);
 }

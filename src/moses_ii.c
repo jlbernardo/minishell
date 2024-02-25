@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 18:31:50 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/24 17:26:37 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/24 23:46:43 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	safe_free(void *p)
 	p = NULL;
 }
 
-void	free_ht(t_hash **ht)
+void	free_hash(t_hash **ht)
 {
 	unsigned int	i;
 
@@ -43,7 +43,7 @@ void	free_ht_entry(t_hash *ht)
 	safe_free(ht);
 }
 
-void	free_array_of_strings(char **array, int size)
+void	free_str_array(char **array, int size)
 {
 	int	index;
 

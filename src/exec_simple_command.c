@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 10:42:52 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/23 21:07:27 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/24 23:45:07 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,10 @@ void	upd_simple_exit_status(int exit_status, t_meta *meta)
 
 	if (exit_status == 13)
 	{
-		add_or_upd_ht_entry("?", "126", meta->hash);
+		add_upd_hashtable("?", "126", meta->hash);
 		return ;
 	}
 	exit_string = ft_itoa(WEXITSTATUS(exit_status));
-	add_or_upd_ht_entry("?", exit_string, meta->hash);
+	add_upd_hashtable("?", exit_string, meta->hash);
 	free(exit_string);
 }

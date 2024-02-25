@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:49 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/24 23:12:35 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/24 23:43:50 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	lexer(t_meta *meta)
 	meta->tokens = NULL;
 	meta->ast = NULL;
 	input = readline("$> ");
-	expand_variables(&input, meta);
+	expand_variable(&input, meta);
 	set_lexer(&lex, input);
 	while (lex.read_pos < lex.size && lex.success == TRUTH)
 	{
