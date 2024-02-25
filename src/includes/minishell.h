@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/24 22:16:22 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/24 23:12:44 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,11 +117,11 @@ void			set_meta(t_meta *meta, char **__environ);
 
 /* LEXER */
 void			read_char(t_lexer *lex);
+char			*read_unquoted(t_lexer *l);
 void			set_lexer(t_lexer *lex, char *input);
 void			expand_variables(char **input, t_meta *meta);
 void			find_token(t_lexer *lex, t_token **tokens, int size);
 char			*read_quoted(t_lexer *l, char quote, int s_open, int d_open);
-char			*read_unquoted(t_lexer *l, char quote, int s_open, int d_open);
 char			*get_variable_name(char *literal);
 void			replace_variable(char **input, t_hash **hash);
 
