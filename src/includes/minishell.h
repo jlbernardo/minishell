@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/23 21:07:40 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/24 22:16:22 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,46 +116,37 @@ void			finisher(t_meta meta);
 void			set_meta(t_meta *meta, char **__environ);
 
 /* LEXER */
-int				is_operand(char ch);
-char			*read_unquoted(t_lexer *l, char quote, int s_open, int d_open);
-char			*read_quoted(t_lexer *l, char quote, int s_open, int d_open);
-void			find_token(t_lexer *lex, t_token **tokens, int size);
-void			set_lexer(t_lexer *lex, char *input);
 void			read_char(t_lexer *lex);
-
-/* EXPANDER */
-int				has_variable(char *literal);
+void			set_lexer(t_lexer *lex, char *input);
+void			expand_variables(char **input, t_meta *meta);
+void			find_token(t_lexer *lex, t_token **tokens, int size);
+char			*read_quoted(t_lexer *l, char quote, int s_open, int d_open);
+char			*read_unquoted(t_lexer *l, char quote, int s_open, int d_open);
 char			*get_variable_name(char *literal);
-void			replace_variable(t_token **tokens, t_hash **hash);
-void			expand_variables(t_token **tokens, t_meta *meta);
+void			replace_variable(char **input, t_hash **hash);
 
 /* PARSER */
-int				is_builtin(char *cmd);
-int				has_other_pipes(t_token *tokens);
 void			syntax_error(char *token);
+void			split_tokens(t_meta *meta);
 void			remove_quotes(t_token **tokens);
-void			append_wle(t_word *w, t_word **wl);
 void			find_path(t_ast **ast, char **paths);
-void			remove_empty_tokens(t_token **tokens);
 void			get_path(t_ast **ast, t_hash **hash);
-void			append_redirect(t_redir *r, t_redir **rl);
+void			remove_empty_tokens(t_token **tokens);
 void			set_cmd(t_ast **cmd_node, t_ast **parent);
+void			update_literal(t_token *tk, char **new_str);
 void			set_pl(t_ast **pl, t_ast **parent, t_token **tokens);
 t_ast			*parse_pipeline(t_token **tokens, t_ast *parent);
 t_ast			*parse_cmd(t_token **tokens, t_ast *parent);
-t_redir			*new_redirect(t_token *tokens);
-t_word			*new_wle(char *s);
 
 /* EXECUTOR */
-int				get_size(t_word *wl);
-int				cap_n_upd_exit_status(t_meta *meta);
 int				run_builtin(t_meta *meta, t_word *wl);
+int				cap_n_upd_exit_status(t_meta *meta);
+int				get_size(t_word *wl);
 void			close_all_fds(void);
-void			handle_null_pathname(char *cmd, t_meta *meta);
 void			run_executable(t_cmd *data, t_meta *meta);
-void			free_array_of_strings(char **array, int size);
-void			exec_forked_command(t_cmd *data, t_meta *meta);
 void			run_simple_command(t_ast *cmd, t_meta *meta);
+void			handle_null_pathname(char *cmd, t_meta *meta);
+void			exec_forked_command(t_cmd *data, t_meta *meta);
 void			run_pipeline(t_ast *ast, int in_fd, t_meta *meta);
 void			exec_right(t_cmd *data, int pipe_fd[2], t_meta *meta);
 void			handle_forked_null_pathname(t_cmd *data, t_meta *meta);
@@ -164,43 +155,54 @@ void			fork_maker(t_ast *ast, int in_fd, t_meta *meta, int pipe_fd[2]);
 void			exec_left(t_cmd *data, int in_fd, int pipe_fd[2], t_meta *meta);
 char			**stringfy(t_word *wl);
 
-/* LIST HANDLER */
-void			populate_sort_vars(t_hash **ht, t_word **vars);
-void			new_token(t_token **tk, int type, char *literal);
+/* LIST HANDLERS */
 void			sort_vars(t_word **vars, t_word *first, t_word *first_p);
+void			new_token(t_token **tk, int type, char *literal);
+void			populate_sort_vars(t_hash **ht, t_word **vars);
+void			append_redirect(t_redir *r, t_redir **rl);
+void			append_wle(t_word *w, t_word **wl);
+t_word			*new_wle(char *s);
 t_token			*tk_last(t_token *tk);
+t_redir			*new_redirect(t_token *tokens);
 
 /* HASH TABLE */
+void			add_env_to_ht(char **env, t_hash **ht);
+void			add_or_upd_ht_entry(char *name, char *value, t_hash **ht);
 char			*grab_value(char *name, t_hash **ht);
 t_hash			*create_kv_pair(char *name, char *value);
-void			add_or_upd_ht_entry(char *name, char *value, t_hash **ht);
-void			add_env_to_ht(char **env, t_hash **ht);
-void			free_ht_entry(t_hash *ht);
-void			free_ht(t_hash **ht);
-void			safe_free(void *p);
 unsigned int	hash(char *name);
 
 /* BUILTINS */
-int				sorted(t_word *vars);
-int				is_readonly(char *literal);
-int				valid_variable(char *literal);
-void			print_export(t_word *vars, t_hash **ht);
+int				cd(t_meta *meta, t_word *wl);
 int				pwd(t_meta *meta, t_word *wl);
 int				env(t_meta *meta, t_word *wl);
 int				echo(t_meta *meta, t_word *wl);
-int				cd(t_meta *meta, t_word *wl);
 int				unset(t_meta *meta, t_word *wl);
 int				export(t_meta *meta, t_word *wl);
 int				ft_exit(t_meta *meta, t_word *wl);
+void			print_export(t_word *vars, t_hash **ht);
 
-/* FINISHER */
+/* CONDITIONALS */
+int				is_operand(char ch);
+int				sorted(t_word *vars);
+int				is_builtin(char *cmd);
+int				is_readonly(char *literal);
+int				check_split(char *literal);
+int				has_variable(char *literal);
+int				valid_variable(char *literal);
+int				has_other_pipes(t_token *tokens);
+int				quote_open(char ch, char next, int s_open, int d_open);
+
+/* FINISHERS */
+void			safe_free(void *p);
+void			free_ht(t_hash **ht);
 void			free_ast(t_ast *ast);
-void			free_wl2(t_word *wl);
-void			free_data(t_cmd	*cmd);
+void			free_wl(t_word *wl);
+void			free_cmd(t_cmd	*cmd);
+void			free_ht_entry(t_hash *ht);
 void			finish_lexer(t_lexer *lex);
 void			free_tokens(t_token *tokens);
-void			free_redirects2(t_redir *rl);
-// void			free_wl(t_word **wl);
-// void			free_redirects(t_redir **rl);
+void			free_redirects(t_redir *rl);
+void			free_array_of_strings(char **array, int size);
 
 #endif

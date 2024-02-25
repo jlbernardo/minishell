@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   create_pipeline.c                                  :+:      :+:    :+:   */
+/*   pipeline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 22:55:09 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/21 22:55:49 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/24 19:19:35 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ t_ast	*parse_cmd(t_token **tokens, t_ast *parent)
 		else
 		{
 			syntax_error((*tokens)->literal);
-			free_data(cmd_node->data);
+			free_cmd(cmd_node->data);
 			free(cmd_node);
 			return (NULL);
 		}

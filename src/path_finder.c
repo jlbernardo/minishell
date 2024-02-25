@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 20:38:49 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/21 23:15:37 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/24 16:47:43 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,27 +60,4 @@ void	find_path(t_ast **ast, char **paths)
 		free(try);
 		i++;
 	}
-}
-
-int	is_builtin(char *cmd)
-{
-	int					i;
-	static const char	*builtins[7] = {
-		"echo",
-		"cd",
-		"pwd",
-		"export",
-		"unset",
-		"env",
-		"exit",
-	};
-
-	i = 0;
-	while (i < 7)
-	{
-		if (!ft_strcmp(cmd, builtins[i]))
-			return (TRUTH);
-		i++;
-	}
-	return (LIE);
 }

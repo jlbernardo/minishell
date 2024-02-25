@@ -6,18 +6,11 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 17:38:30 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/23 15:56:53 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/24 17:13:16 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
-
-void	set_meta(t_meta *meta, char **__environ)
-{
-	meta->hash = ft_calloc(HT_SIZE, sizeof(t_hash *));
-	add_env_to_ht(__environ, meta->hash);
-	add_or_upd_ht_entry("?", "0", meta->hash);
-}
 
 int	main(void)
 {

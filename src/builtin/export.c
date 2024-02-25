@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:52:24 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/24 00:31:54 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/24 18:54:47 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,6 @@ void	export_alone(t_hash **ht)
 	populate_sort_vars(ht, &vars);
 	sort_vars(&vars, vars, NULL);
 	print_export(vars, ht);
-	free_wl2(vars);
+	free_wl(vars);
 	free(vars);
 }

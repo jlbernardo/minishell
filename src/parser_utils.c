@@ -6,65 +6,11 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 20:24:28 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/24 00:35:32 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/24 18:44:48 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
-
-void	set_pl(t_ast **pl, t_ast **parent, t_token **tokens)
-{
-	int	len;
-	int	is_pipe;
-
-	if (*tokens == NULL)
-		return ;
-	len = ft_strlen((*tokens)->literal);
-	is_pipe = ft_strncmp((*tokens)->literal, "|", len);
-	*pl = ft_calloc(1, sizeof(t_ast));
-	if (pl == NULL)
-		return ;
-	(*pl)->type = PIPELINE;
-	(*pl)->parent = *parent;
-	(*pl)->success = 0;
-	if ((*pl)->parent == NULL && !is_pipe)
-	{
-		syntax_error((*tokens)->literal);
-		free(*pl);
-		*pl = NULL;
-	}
-}
-
-int	has_other_pipes(t_token *tokens)
-{
-	tokens = tokens->next;
-	if (tokens == NULL)
-		return (0);
-	while (tokens != NULL)
-	{
-		if (!ft_strncmp(tokens->literal, "|", 1))
-			return (1);
-		tokens = tokens->next;
-	}
-	return (0);
-}
-
-void	set_cmd(t_ast **cmd_node, t_ast **parent)
-{
-	*cmd_node = ft_calloc(1, sizeof(t_ast));
-	if (cmd_node == NULL)
-		return ;
-	(*cmd_node)->type = CMD;
-	(*cmd_node)->parent = *parent;
-	(*cmd_node)->left = NULL;
-	(*cmd_node)->right = NULL;
-	(*cmd_node)->data = malloc(sizeof(t_cmd));
-	if ((*cmd_node)->data == NULL)
-		return ;
-	(*cmd_node)->data->pathname = NULL;
-	(*cmd_node)->data->redirects = NULL;
-	(*cmd_node)->data->word_list = NULL;
-}
 
 t_redir	*new_redirect(t_token *tokens)
 {
@@ -86,31 +32,44 @@ t_redir	*new_redirect(t_token *tokens)
 	return (redir);
 }
 
-void	remove_quotes(t_token **tokens)
+int	check_split(char *literal)
 {
 	int		i;
-	int		len;
+	int		check;
 	char	quote;
 
 	i = 0;
-	if (!*tokens)
-		return ;
-	while ((*tokens)->literal[i] != '\0')
+	check = LIE;
+	while (literal[i] && literal[i] != ' ')
 	{
-		if (((*tokens)->literal[i] == '"' || (*tokens)->literal[i] == '\'')
-			&& (i > 0 && (*tokens)->literal[i - 1] != '='
-				&& (*tokens)->literal[i + 1] != ' '
-				&& (*tokens)->literal[i + 1] != '\0'))
+		if (literal[i] == '"' || literal[i] == '\'')
 		{
-			quote = (*tokens)->literal[i];
-			len = ft_strlen((*tokens)->literal) - i;
-			ft_memmove(&(*tokens)->literal[i], &(*tokens)->literal[i + 1], len);
-			while ((*tokens)->literal[i] != quote)
+			check = TRUTH;
+			quote = literal[i++];
+			while (literal[i] && literal[i] != quote && literal[i + 1] != '\0')
 				i++;
-			len = ft_strlen((*tokens)->literal) - i;
-			ft_memmove(&(*tokens)->literal[i], &(*tokens)->literal[i + 1], len);
+			if (literal[i])
+				i++;
+			break ;
 		}
 		i++;
 	}
-	remove_quotes(&(*tokens)->next);
+	if (literal[i] == ' ')
+		return (i);
+	return (LIE);
+}
+
+void	update_literal(t_token *tk, char **new_str)
+{
+	int		post_space;
+	int		pre_space;
+	char	*temp;
+
+	pre_space = ft_strchr(tk->literal, ' ') - tk->literal;
+	post_space = ft_strlen(tk->literal) - pre_space - 1;
+	temp = ft_strdup(tk->literal);
+	free(tk->literal);
+	tk->literal = ft_substr(temp, 0, pre_space);
+	*new_str = ft_substr(ft_strchr(temp, ' '), 1, post_space);
+	free(temp);
 }

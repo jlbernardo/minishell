@@ -6,13 +6,11 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 21:12:03 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/24 00:59:33 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/24 22:19:09 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
-
-void	split_tokens(t_meta *meta);
 
 int	parser(t_meta *meta)
 {
@@ -20,71 +18,63 @@ int	parser(t_meta *meta)
 
 	if (!meta->tokens)
 		return (LIE);
-	expand_variables(&meta->tokens, meta);
 	remove_quotes(&meta->tokens);
-	split_tokens(meta);
 	remove_empty_tokens(&meta->tokens);
 	temp = meta->tokens;
 	meta->ast = parse_pipeline(&meta->tokens, NULL);
-	get_path(&meta->ast, meta->hash);
 	meta->tokens = temp;
+	get_path(&meta->ast, meta->hash);
 	if (meta->ast && meta->ast->success)
 		return (TRUTH);
 	return (LIE);
 }
 
-int	check_where_to_split(char *literal)
+void	remove_quotes(t_token **tokens)
 {
 	int		i;
-	int		check;
+	int		len;
 	char	quote;
 
 	i = 0;
-	check = LIE;
-	while (literal[i] && literal[i] != ' ')
+	if (!*tokens)
+		return ;
+	while ((*tokens)->literal[i] != '\0')
 	{
-		if (literal[i] == '"' || literal[i] == '\'')
+		if (((*tokens)->literal[i] == '"' || (*tokens)->literal[i] == '\''))
 		{
-			check = TRUTH;
-			quote = literal[i++];
-			while (literal[i] != quote)
+			quote = (*tokens)->literal[i];
+			if (i > 0 && ((*tokens)->literal[i - 1] == '='))
+				break ;
+			len = ft_strlen((*tokens)->literal) - i;
+			ft_memmove(&(*tokens)->literal[i], &(*tokens)->literal[i + 1], len);
+			while ((*tokens)->literal[i] != quote)
 				i++;
-			i++;
-			break ;
+			len = ft_strlen((*tokens)->literal) - i;
+			ft_memmove(&(*tokens)->literal[i], &(*tokens)->literal[i + 1], len);
+			continue ;
 		}
 		i++;
 	}
-	if (literal[i] == ' ')
-		return (i);
-	return (LIE);
+	remove_quotes(&(*tokens)->next);
 }
 
 void	split_tokens(t_meta *meta)
 {
-	int		post_space;
-	int		pre_space;
-	char	*other_temp;
-	char	*str_temp;
+	char	*new_str;
 	t_token	*tk_next;
 	t_token	*tk;
 
 	tk = meta->tokens;
 	while (tk)
 	{
-		if (check_where_to_split(tk->literal))
+		if (check_split(tk->literal))
 		{
-			pre_space = ft_strchr(tk->literal, ' ') - tk->literal;
-			post_space = ft_strlen(tk->literal) - pre_space - 1;
-			str_temp = ft_strdup(tk->literal);
-			free(tk->literal);
-			tk->literal = ft_substr(str_temp, 0, pre_space);
+			update_literal(tk, &new_str);
 			tk_next = tk->next;
 			tk->next = NULL;
-			other_temp = ft_substr(ft_strchr(str_temp, ' '), 1, post_space);
-			new_token(&tk, WORD, other_temp);
+			new_token(&tk, WORD, new_str);
 			tk_last(tk)->next = tk_next;
-			free(other_temp);
-			free(str_temp);
+			free(new_str);
 			split_tokens(meta);
 		}
 		tk = tk->next;
@@ -107,12 +97,4 @@ void	remove_empty_tokens(t_token **tokens)
 	}
 	else
 		remove_empty_tokens(&curr->next);
-}
-
-void	syntax_error(char *token)
-{
-	ft_putstr_fd("minishell: syntax error near unexpected token '", \
-		STDERR_FILENO);
-	ft_putstr_fd(token, STDERR_FILENO);
-	ft_putendl_fd("'", STDERR_FILENO);
 }

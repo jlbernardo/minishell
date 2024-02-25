@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 11:36:19 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/23 18:14:08 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/24 17:29:57 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,16 +50,6 @@ void	exec_forked_command(t_cmd *data, t_meta *meta)
 		handle_forked_null_pathname(data, meta);
 	else
 		run_executable(data, meta);
-}
-
-void	handle_forked_null_pathname(t_cmd *data, t_meta *meta)
-{
-	ft_putstr_fd(data->word_list->word, STDERR_FILENO);
-	ft_putendl_fd(": command not found", STDERR_FILENO);
-	finisher(*meta);
-	free_ht(meta->hash);
-	close_all_fds();
-	exit(127);
 }
 
 int	cap_n_upd_exit_status(t_meta *meta)

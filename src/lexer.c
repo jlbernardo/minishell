@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:49 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/23 20:54:12 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/24 22:15:44 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int	lexer(t_meta *meta)
 	meta->tokens = NULL;
 	meta->ast = NULL;
 	input = readline("$> ");
+	expand_variables(&input, meta);
 	set_lexer(&lex, input);
 	while (lex.read_pos < lex.size && lex.success == TRUTH)
 	{
@@ -32,14 +33,24 @@ int	lexer(t_meta *meta)
 	return (lex.success);
 }
 
-void	set_lexer(t_lexer *lex, char *input)
+void	read_char(t_lexer *lex)
 {
-	lex->input = input;
-	lex->ch = 0;
-	lex->pos = 0;
-	lex->read_pos = 0;
-	lex->success = TRUTH;
-	lex->size = ft_strlen(input);
+	if (lex->read_pos >= lex->size)
+		lex->ch = 0;
+	else
+	{
+		if (lex->input[lex->read_pos] < 0)
+		{
+			lex->pos = lex->read_pos;
+			lex->ch = lex->input[lex->read_pos++];
+			lex->read_pos++;
+		}
+		else
+		{
+			lex->ch = lex->input[lex->read_pos];
+			lex->pos = lex->read_pos++;
+		}
+	}
 }
 
 void	find_token(t_lexer *lex, t_token **tokens, int size)

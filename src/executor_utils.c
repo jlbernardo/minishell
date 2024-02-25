@@ -6,25 +6,11 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 17:09:16 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/23 21:08:03 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/24 17:26:33 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./includes/minishell.h"
-
-void	free_array_of_strings(char **array, int size)
-{
-	int	index;
-
-	if (array == NULL)
-		return ;
-	index = 0;
-	while (index <= size)
-	{
-		free(array[index]);
-		index++;
-	}
-}
 
 char	**stringfy(t_word *wl)
 {
@@ -68,11 +54,4 @@ void	close_all_fds(void)
 		close(i);
 		i++;
 	}
-}
-
-void	handle_null_pathname(char *cmd, t_meta *meta)
-{
-	ft_putstr_fd(cmd, STDERR_FILENO);
-	ft_putendl_fd(": command not found", STDERR_FILENO);
-	add_or_upd_ht_entry("?", "127", meta->hash);
 }
