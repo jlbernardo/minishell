@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 21:12:03 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/25 00:19:16 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/25 18:48:20 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,4 +74,24 @@ void	remove_empty_tokens(t_token **tokens)
 	}
 	else
 		remove_empty_tokens(&curr->next);
+}
+
+t_redir	*new_redirect(t_token *tokens)
+{
+	t_redir	*redir;
+
+	redir = ft_calloc(1, sizeof(t_redir));
+	if (redir == NULL)
+		return (NULL);
+	if (ft_strncmp(tokens->literal, ">", 1) == 0)
+		redir->type = REDOUT;
+	else if (ft_strncmp(tokens->literal, ">>", 2) == 0)
+		redir->type = APPEND;
+	else if (ft_strncmp(tokens->literal, "<", 1) == 0)
+		redir->type = REDIN;
+	else if (ft_strncmp(tokens->literal, "<<", 2) == 0)
+		redir->type = HEREDOC;
+	redir->filename = ft_strdup(tokens->next->literal);
+	redir->next = NULL;
+	return (redir);
 }

@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 17:25:16 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/25 00:14:40 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/25 18:54:34 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,4 @@ void	handle_null_pathname(char *cmd, t_meta *meta)
 	ft_putstr_fd(cmd, STDERR_FILENO);
 	ft_putendl_fd(": command not found", STDERR_FILENO);
 	add_upd_hashtable("?", "127", meta->hash);
-}
-
-void	handle_forked_null_pathname(t_cmd *data, t_meta *meta)
-{
-	ft_putstr_fd(data->word_list->word, STDERR_FILENO);
-	ft_putendl_fd(": command not found", STDERR_FILENO);
-	finisher(*meta);
-	free_hash(meta->hash);
-	close_all_fds();
-	exit(127);
 }

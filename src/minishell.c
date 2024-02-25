@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 17:38:30 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/24 23:46:43 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/25 18:35:52 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,17 @@ int	main(void)
 {
 	char	*ret;
 	t_meta	meta;
-	int		control;
 
 	set_meta(&meta, __environ);
-	control = 42;
-	while (control)
+	while (42)
 	{
 		if (lexer(&meta))
 			if (parser(&meta))
 				executor(&meta);
 		ret = grab_value("?", meta.hash);
 		ft_printf("Return value: %s\n", ret);
-		finisher(meta);
+		finisher(meta, "AT", EXIT_SUCCESS);
 		free(ret);
 	}
-	free_hash(meta.hash);
-	return (0);
+	finisher(meta, "HE", EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/25 00:35:59 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/25 19:11:32 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,8 +113,8 @@ typedef struct s_builtin
 int				lexer(t_meta *meta);
 int				parser(t_meta *meta);
 void			executor(t_meta *meta);
-void			finisher(t_meta meta);
 void			set_meta(t_meta *meta, char **__environ);
+void			finisher(t_meta meta, char *flag, int exit_code);
 
 /* LEXER */
 void			find_token(t_lexer *lex, t_token **tokens, int size);
@@ -122,9 +122,9 @@ void			replace_variable(char **input, t_hash **hash);
 void			expand_variable(char **input, t_meta *meta);
 void			set_lexer(t_lexer *lex, char *input);
 void			read_char(t_lexer *lex);
-char			*read_unquoted(t_lexer *l);
+char			*read_unquoted(t_lexer *lex);
 char			*get_variable_name(char *literal);
-char			*read_quoted(t_lexer *l, char quote, int s_open, int d_open);
+char			*read_quoted(t_lexer *lex, char quote, int s_open, int d_open);
 
 /* PARSER */
 void			remove_quotes(t_token **tokens);
@@ -141,29 +141,27 @@ t_ast			*parse_pipeline(t_token **tokens, t_ast *parent, t_meta *meta);
 int				get_size(t_word *wl);
 int				handle_exit_status(t_meta *meta);
 int				run_builtin(t_meta *meta, t_word *wl);
-void			close_all_fds(void);
 void			run_pipeline(t_ast *ast, t_meta *meta);
 void			run_executable(t_cmd *data, t_meta *meta);
 void			run_simple_command(t_ast *cmd, t_meta *meta);
 void			handle_null_pathname(char *cmd, t_meta *meta);
 void			exec_forked_command(t_cmd *data, t_meta *meta);
 void			exec_right(t_cmd *data, int pipe_fd[2], t_meta *meta);
-void			handle_forked_null_pathname(t_cmd *data, t_meta *meta);
 void			upd_simple_exit_status(int exit_status, t_meta	*meta);
 void			last_pipeline_cmd(t_ast *ast, int *pipe_fd, t_meta *meta);
 void			middle_pipeline_cmd(t_ast *ast, int *pipe_fd, t_meta *meta);
 void			first_pipeline_cmd(t_ast *ast, int pipe_fd[2], t_meta *meta);
 void			exec_left(t_cmd *data, int in_fd, int pipe_fd[2], t_meta *meta);
-char			**stringfy(t_word *wl);
+char			**stringfy(t_word *word_list);
 
 /* LIST HANDLERS */
 void			sort_vars(t_word **vars, t_word *first, t_word *first_p);
-void			new_token(t_token **tk, int type, char *literal);
+void			append_redirect(t_redir *new_node, t_redir **redir_list);
+void			new_token(t_token **tokens, int type, char *literal);
+void			append_wle(t_word *new_node, t_word **word_list);
 void			populate_sort_vars(t_hash **ht, t_word **vars);
-void			append_redirect(t_redir *r, t_redir **rl);
-void			append_wle(t_word *w, t_word **wl);
-t_word			*new_wle(char *s);
-t_token			*tk_last(t_token *tk);
+t_word			*new_wle(char *string);
+t_token			*tk_last(t_token *tokens);
 t_redir			*new_redirect(t_token *tokens);
 
 /* HASH TABLE */
@@ -188,7 +186,6 @@ int				is_operand(char ch);
 int				sorted(t_word *vars);
 int				is_builtin(char *cmd);
 int				is_readonly(char *literal);
-int				check_split(char *literal);
 int				has_variable(char *literal);
 int				valid_variable(char *literal);
 int				has_other_pipes(t_token *tokens);
@@ -196,14 +193,15 @@ int				quote_open(char ch, char next, int s_open, int d_open);
 
 /* FINISHERS */
 void			safe_free(void *p);
+void			close_all_fds(void);
 void			free_ast(t_ast *ast);
 void			free_cmd(t_cmd	*cmd);
 void			free_hash(t_hash **ht);
-void			free_wordlist(t_word *wl);
 void			free_ht_entry(t_hash *ht);
 void			finish_lexer(t_lexer *lex);
-void			free_redirects(t_redir *rl);
 void			free_tokens(t_token *tokens);
+void			free_wordlist(t_word *word_list);
+void			free_redirects(t_redir *redir_list);
 void			free_str_array(char **array, int size);
 
 #endif
