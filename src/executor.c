@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/23 21:06:59 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/24 16:08:26 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,47 +17,29 @@ void	executor(t_meta *meta)
 	if (meta->ast->right == NULL)
 		run_simple_command(meta->ast->left, meta);
 	else
-		run_pipeline(meta->ast, 0, meta);
+		run_pipeline(meta->ast, meta);
 }
 
-void	run_pipeline(t_ast *ast, int in_fd, t_meta *meta)
-{
-	int		pipe_fd[2];
 
+void	run_pipeline(t_ast *ast, t_meta *meta)
+{
+	int	*pipe_fd;
+	
+	pipe_fd = malloc(2 * sizeof(int));
 	if (pipe(pipe_fd) == -1)
 		return ;
-	fork_maker(ast, in_fd, meta, pipe_fd);
-	if (in_fd != 0)
-		close(in_fd);
-	close(pipe_fd[1]);
-	close(pipe_fd[0]);
-	while (cap_n_upd_exit_status(meta) != -1)
-		;
-	return ;
-}
-
-void	fork_maker(t_ast *ast, int in_fd, t_meta *meta, int pipe_fd[2])
-{
-	pid_t	child_pid;
-
-	if (ast->right->type == CMD)
+	run_first_pipeline_cmd(ast, pipe_fd, meta);
+	ast = ast->right;
+	while (ast)
 	{
-		child_pid = fork();
-		if (child_pid == 0)
-			exec_left(ast->left->data, in_fd, pipe_fd, meta);
-		child_pid = fork();
-		if (child_pid == 0)
-			exec_right(ast->right->data, pipe_fd, meta);
+		if (ast->right == NULL)
+			break ;
+		run_middle_pipeline_cmd(ast, pipe_fd, meta);
+		ast = ast->right;
 	}
-	else
-	{
-		child_pid = fork();
-		if (child_pid == 0)
-			exec_left(ast->left->data, in_fd, pipe_fd, meta);
-		close(pipe_fd[1]);
-		run_pipeline(ast->right, pipe_fd[0], meta);
-		close(pipe_fd[0]);
-	}
+	run_last_pipeline_cmd(ast, pipe_fd, meta);
+	free(pipe_fd);
+	while(cap_n_upd_exit_status(meta) != -1);
 }
 
 void	run_executable(t_cmd *data, t_meta *meta)
