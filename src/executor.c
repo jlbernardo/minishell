@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/24 23:31:01 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/24 23:33:27 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,16 @@ void	run_pipeline(t_ast *ast, t_meta *meta)
 	pipe_fd = malloc(2 * sizeof(int));
 	if (pipe(pipe_fd) == -1)
 		return ;
-	run_first_pipeline_cmd(ast, pipe_fd, meta);
+	first_pipeline_cmd(ast, pipe_fd, meta);
 	ast = ast->right;
 	while (ast)
 	{
 		if (ast->right == NULL)
 			break ;
-		run_middle_pipeline_cmd(ast, pipe_fd, meta);
+		middle_pipeline_cmd(ast, pipe_fd, meta);
 		ast = ast->right;
 	}
-	run_last_pipeline_cmd(ast, pipe_fd, meta);
+	last_pipeline_cmd(ast, pipe_fd, meta);
 	free(pipe_fd);
 	while (cap_n_upd_exit_status(meta) != -1)
 		;
