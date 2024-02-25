@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 15:31:26 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/24 23:45:31 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/24 23:49:43 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,23 +93,4 @@ char	*grab_value(char *name, t_hash **ht)
 		entry = prev->next;
 	}
 	return (NULL);
-}
-
-void	set_hashtable(char **env, t_hash **ht)
-{
-	char			*pair[2];
-	unsigned int	len_after_equal;
-	unsigned int	len_before_equal;
-
-	while (*env)
-	{
-		len_before_equal = ft_strchr(*env, '=') - *env;
-		len_after_equal = ft_strlen(*env) - len_before_equal - 1;
-		pair[0] = ft_substr(*env, 0, len_before_equal);
-		pair[1] = ft_substr(ft_strchr(*env, '='), 1, len_after_equal);
-		add_upd_hashtable(pair[0], pair[1], ht);
-		safe_free(pair[0]);
-		safe_free(pair[1]);
-		env++;
-	}
 }
