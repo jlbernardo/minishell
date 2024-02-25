@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/24 23:57:10 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/25 00:25:40 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,15 +126,15 @@ char			*get_variable_name(char *literal);
 char			*read_quoted(t_lexer *l, char quote, int s_open, int d_open);
 
 /* PARSER */
-void			syntax_error(char *token);
 void			remove_quotes(t_token **tokens);
 void			find_path(t_ast **ast, char **paths);
 void			get_path(t_ast **ast, t_hash **hash);
 void			remove_empty_tokens(t_token **tokens);
+void			syntax_error(char *token, t_meta *meta);
 void			set_cmd(t_ast **cmd_node, t_ast **parent);
-void			set_pl(t_ast **pl, t_ast **parent, t_token **tokens);
-t_ast			*parse_pipeline(t_token **tokens, t_ast *parent);
-t_ast			*parse_cmd(t_token **tokens, t_ast *parent);
+void			set_pl(t_ast **pl, t_ast **parent, t_token **tk, t_meta *meta);
+t_ast			*parse_cmd(t_token **tokens, t_ast *parent, t_meta *meta);
+t_ast			*parse_pipeline(t_token **tokens, t_ast *parent, t_meta *meta);
 
 /* EXECUTOR */
 int				get_size(t_word *wl);

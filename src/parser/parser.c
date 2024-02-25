@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 21:12:03 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/25 00:07:00 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/25 00:19:16 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	parser(t_meta *meta)
 	remove_quotes(&meta->tokens);
 	remove_empty_tokens(&meta->tokens);
 	temp = meta->tokens;
-	meta->ast = parse_pipeline(&meta->tokens, NULL);
+	meta->ast = parse_pipeline(&meta->tokens, NULL, meta);
 	meta->tokens = temp;
 	get_path(&meta->ast, meta->hash);
 	if (meta->ast && meta->ast->success)

@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 17:13:03 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/25 00:07:00 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/25 00:25:12 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,15 @@ void	set_lexer(t_lexer *lex, char *input)
 	lex->size = ft_strlen(input);
 }
 
-void	set_pl(t_ast **pl, t_ast **parent, t_token **tokens)
+void	set_pl(t_ast **pl, t_ast **parent, t_token **tk, t_meta *meta)
 {
 	int	len;
 	int	is_pipe;
 
-	if (tokens == NULL)
+	if (tk == NULL)
 		return ;
-	len = ft_strlen((*tokens)->literal);
-	is_pipe = ft_strncmp((*tokens)->literal, "|", len);
+	len = ft_strlen((*tk)->literal);
+	is_pipe = ft_strncmp((*tk)->literal, "|", len);
 	*pl = ft_calloc(1, sizeof(t_ast));
 	if (pl == NULL)
 		return ;
@@ -46,7 +46,7 @@ void	set_pl(t_ast **pl, t_ast **parent, t_token **tokens)
 	(*pl)->success = 0;
 	if ((*pl)->parent == NULL && !is_pipe)
 	{
-		syntax_error((*tokens)->literal);
+		syntax_error((*tk)->literal, meta);
 		free(*pl);
 		*pl = NULL;
 	}
