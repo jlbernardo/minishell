@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/25 18:39:21 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/26 15:22:21 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	executor(t_meta *meta)
 {
+	execute_heredocs(meta->ast,	meta);
 	if (meta->ast->right == NULL)
 		run_simple_command(meta->ast->left, meta);
 	else

@@ -6,31 +6,32 @@
 /*   By: iusantos <iusantos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 14:56:18 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/23 11:28:12 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/26 15:25:14 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
 //traverse ast calling capture content on CMD nodes
-int	execute_heredocs(t_ast *ast)
+int	execute_heredocs(t_ast *ast, t_meta *meta)
 {
-	capture_content(ast->left->data->redirects);
+	//TODO: change signal handlers for CTRL+C e CTRL+D
+	capture_content(ast->left->data->redirects, meta);
 	if (ast->right == NULL)
 		return (1);
 	else
 	{
 		if (ast->right->type == CMD)
-			capture_content(ast->right->data->redirects);
+			capture_content(ast->right->data->redirects, meta);
 		else
-			execute_heredocs(ast->right);
+			execute_heredocs(ast->right, meta);
 	}
 	return 1;
 }
 
 //for each redirect that is heredoc, save the content in a file.
 //if there are multiple heredocs in a command, overwrites file
-void	capture_content(t_redir *rl)
+void	capture_content(t_redir *rl, t_meta *meta)
 {
 	static int	cmd_nbr;
 	char *tmp_file;
@@ -44,7 +45,7 @@ void	capture_content(t_redir *rl)
 			tmp_file = gen_tmpfile_name(cmd_nbr);
 			// O_CREAT || O_TRUNC || O_RDWR
 			heredoc_fd = open(tmp_file, O_CREAT|O_RDWR|O_TRUNC, 0666);
-			fill_tmpfile(heredoc_fd, rl);
+			fill_tmpfile(heredoc_fd, rl, meta);
 			free(tmp_file);
 		}
 		rl = rl->next;
@@ -69,8 +70,12 @@ char	*gen_tmpfile_name(int cmd_nbr)
 	return (tmpfile_name);
 }
 
-void	fill_tmpfile(int fd, t_redir *r)
+void	fill_tmpfile(int fd, t_redir *r, t_meta *meta)
 {
+	//checar de filename is quoted
+	//se sim, construir delim sem as aspas e nao expandir variaveis
+	//se nao, construir delim sem as aspas e expandir variaveis
+	//onde nós fazemos remoção de quotes?
 	char	*input;
 	unsigned int	size;
 
@@ -94,4 +99,5 @@ void	fill_tmpfile(int fd, t_redir *r)
 		}
 		write(fd, "\n", 1);
 	}
+	meta = NULL;
 }

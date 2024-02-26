@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 21:12:03 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/25 18:48:20 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/26 15:20:33 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,11 @@ void	remove_quotes(t_token **tokens)
 	i = 0;
 	if (!*tokens)
 		return ;
+	if ((*tokens)->type == REDIRECT && ft_strcmp((*tokens)->literal, "<<") == 0)
+	{
+		remove_quotes(&(*tokens)->next->next);
+		return ;
+	}
 	while ((*tokens)->literal[i] != '\0')
 	{
 		if (((*tokens)->literal[i] == '"' || (*tokens)->literal[i] == '\''))

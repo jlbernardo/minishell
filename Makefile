@@ -20,7 +20,7 @@ COMMON += $(addprefix $(SD)utils/, list_handler.c moses_i.c moses_ii.c \
 COMMON += $(addprefix $(SD)builtins/, pwd.c env.c echo.c cd.c exit.c \
 						export.c export_utils.c unset.c)
 
-SRC = $(COMMON) $(SD)minishell.c
+SRC = $(COMMON) $(SD)minishell.c $(SD)heredoc.c
 TEST = $(COMMON) $(SD)test.c
 
 OD = obj/

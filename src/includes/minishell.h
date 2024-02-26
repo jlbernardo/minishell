@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/26 11:48:16 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/26 14:39:06 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,12 @@ void			middle_pipeline_cmd(t_ast *ast, int *pipe_fd, t_meta *meta);
 void			first_pipeline_cmd(t_ast *ast, int pipe_fd[2], t_meta *meta);
 void			exec_left(t_cmd *data, int in_fd, int pipe_fd[2], t_meta *meta);
 char			**stringfy(t_word *word_list);
+
+/* HEREDOC & REDIRECTS*/
+int				execute_heredocs(t_ast *ast, t_meta *meta);
+void			capture_content(t_redir *rl, t_meta *meta);
+char			*gen_tmpfile_name(int cmd_nbr);
+void			fill_tmpfile(int fd, t_redir *r, t_meta *meta);
 
 /* LIST HANDLERS */
 void			sort_vars(t_word **vars, t_word *first, t_word *first_p);

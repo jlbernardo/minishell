@@ -6,11 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 10:42:52 by iusantos          #+#    #+#             */
-<<<<<<< HEAD:src/exec_simple_command.c
-/*   Updated: 2024/02/22 14:56:08 by iusantos         ###   ########.fr       */
-=======
-/*   Updated: 2024/02/25 00:07:00 by Juliany Ber      ###   ########.fr       */
->>>>>>> dev:src/executor/exec_simple_command.c
+/*   Updated: 2024/02/26 15:24:19 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +17,8 @@ void	run_simple_command(t_ast *cmd, t_meta *meta)
 	pid_t	child_pid;
 	int		exit_status;
 
-<<<<<<< HEAD:src/exec_simple_command.c
-	//TODO: deal with redirects
-	//execute_heredoc(cmd_node->data->redirects, meta);
-	if (is_builtin(cmd_node->data->word_list[0].word))
-		run_builtin(cmd_node->data->word_list);
-=======
 	if (is_builtin(cmd->data->word_list[0].word))
 		run_builtin(meta, cmd->data->word_list);
->>>>>>> dev:src/executor/exec_simple_command.c
 	else
 	{
 		if (cmd->data->pathname == NULL)
