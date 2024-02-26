@@ -1,38 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   finisher.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/12 13:22:09 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/21 16:19:58 by Juliany Ber      ###   ########.fr       */
+/*   Created: 2024/01/29 20:03:39 by Juliany Ber       #+#    #+#             */
+/*   Updated: 2024/02/25 18:34:29 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	env(t_hash **ht)
+void	finisher(t_meta meta, char *flag, int exit_code)
 {
-	int		i;
-	t_hash	*temp;
-
-	i = 0;
-	while (i < HT_SIZE)
-	{
-		temp = ht[i];
-		while (ht[i])
-		{
-			if (ht[i]->value)
-			{
-				ft_putstr_fd(ht[i]->name, 1);
-				ft_putchar_fd('=', 1);
-				ft_putendl_fd(ht[i]->value, 1);
-			}
-			ht[i] = ht[i]->next;
-		}
-		ht[i] = temp;
-		i++;
-	}
-	return (0);
+	if (ft_strchr(flag, 'A'))
+		free_ast(meta.ast);
+	if (ft_strchr(flag, 'T'))
+		free_tokens(meta.tokens);
+	if (ft_strchr(flag, 'H'))
+		free_hash(meta.hash);
+	if (ft_strchr(flag, 'E'))
+		exit(exit_code);
 }

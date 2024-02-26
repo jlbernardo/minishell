@@ -6,26 +6,23 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 18:32:55 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/22 11:40:16 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/25 00:07:00 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/minishell.h"
+#include "../includes/minishell.h"
 
-void	expand_variables(t_token **tokens, t_meta *meta)
+void	expand_variable(char **input, t_meta *meta)
 {
-	if (!*tokens)
-		return ;
-	if ((*tokens)->type != REDIRECT && has_variable((*tokens)->literal))
+	if (has_variable(*input))
 	{
-		replace_variable(tokens, meta->hash);
-		if (has_variable((*tokens)->literal))
-			expand_variables(tokens, meta);
+		replace_variable(input, meta->hash);
+		if (has_variable(*input))
+			expand_variable(input, meta);
 	}
-	expand_variables(&(*tokens)->next, meta);
 }
 
-void	replace_variable(t_token **tokens, t_hash **hash)
+void	replace_variable(char **input, t_hash **hash)
 {
 	int		i;
 	int		len;
@@ -34,21 +31,21 @@ void	replace_variable(t_token **tokens, t_hash **hash)
 	char	*var_value;
 
 	i = 0;
-	var_name = get_variable_name((*tokens)->literal);
+	var_name = get_variable_name(*input);
 	var_value = grab_value(var_name, hash);
-	temp = ft_strdup((*tokens)->literal);
+	temp = ft_strdup(*input);
 	len = ft_strlen(temp) - ft_strlen(var_name) + ft_strlen(var_value);
-	free((*tokens)->literal);
+	free(*input);
 	while (temp[i] != '$')
 		i++;
-	(*tokens)->literal = ft_calloc(len, sizeof(char));
-	ft_strlcat((*tokens)->literal, temp, i + 1);
+	*input = ft_calloc(len, sizeof(char));
+	ft_strlcat(*input, temp, i + 1);
 	if (var_value)
-		ft_strlcat((*tokens)->literal, var_value, \
-			ft_strlen((*tokens)->literal) + ft_strlen(var_value) + 1);
+		ft_strlcat(*input, var_value, \
+			ft_strlen(*input) + ft_strlen(var_value) + 1);
 	len = i + ft_strlen(var_name) + 1;
-	ft_strlcat((*tokens)->literal, &temp[i + ft_strlen(var_name) + 1], \
-		ft_strlen((*tokens)->literal) + ft_strlen(&temp[len]) + 1);
+	ft_strlcat(*input, &temp[i + ft_strlen(var_name) + 1], \
+		ft_strlen(*input) + ft_strlen(&temp[len]) + 1);
 	free(temp);
 	free(var_name);
 	free(var_value);
@@ -73,26 +70,4 @@ char	*get_variable_name(char *literal)
 		j++;
 	var = ft_substr(literal, i, j - i);
 	return (var);
-}
-
-int	has_variable(char *literal)
-{
-	int	d_quote;
-	int	s_quote;
-
-	d_quote = 0;
-	s_quote = 0;
-	while (*literal)
-	{
-		if (*literal == '"')
-			d_quote++;
-		else if (*literal == '\'')
-			s_quote++;
-		else if (*literal == '$'
-			&& (ft_isalnum(*(literal + 1)) || *(literal + 1) == '_')
-			&& (!(d_quote % 2 == 0 && s_quote % 2 != 0)))
-			return (1);
-		literal++;
-	}
-	return (0);
 }

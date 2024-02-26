@@ -6,11 +6,11 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:49 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/21 23:07:27 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/25 23:23:35 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/minishell.h"
+#include "../includes/minishell.h"
 
 int	lexer(t_meta *meta)
 {
@@ -20,6 +20,13 @@ int	lexer(t_meta *meta)
 	meta->tokens = NULL;
 	meta->ast = NULL;
 	input = readline("$> ");
+	if (!input)
+	{
+		ft_putendl_fd("exit", STDOUT_FILENO);
+		finisher(*meta, "HE", EXIT_SUCCESS);
+	}
+	add_history(input);
+	expand_variable(&input, meta);
 	set_lexer(&lex, input);
 	while (lex.read_pos < lex.size && lex.success == TRUTH)
 	{
@@ -27,19 +34,29 @@ int	lexer(t_meta *meta)
 		find_token(&lex, &meta->tokens, 1);
 	}
 	if (!lex.success)
-		syntax_error(meta->tokens->literal);
+		syntax_error(meta->tokens->literal, meta);
 	free(input);
 	return (lex.success);
 }
 
-void	set_lexer(t_lexer *lex, char *input)
+void	read_char(t_lexer *lex)
 {
-	lex->input = input;
-	lex->ch = 0;
-	lex->pos = 0;
-	lex->read_pos = 0;
-	lex->success = TRUTH;
-	lex->size = ft_strlen(input);
+	if (lex->read_pos >= lex->size)
+		lex->ch = 0;
+	else
+	{
+		if (lex->input[lex->read_pos] < 0)
+		{
+			lex->pos = lex->read_pos;
+			lex->ch = lex->input[lex->read_pos++];
+			lex->read_pos++;
+		}
+		else
+		{
+			lex->ch = lex->input[lex->read_pos];
+			lex->pos = lex->read_pos++;
+		}
+	}
 }
 
 void	find_token(t_lexer *lex, t_token **tokens, int size)

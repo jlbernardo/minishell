@@ -1,19 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   finisher.c                                         :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/29 20:03:39 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/21 23:42:25 by Juliany Ber      ###   ########.fr       */
+/*   Created: 2024/02/10 15:30:55 by julberna          #+#    #+#             */
+/*   Updated: 2024/02/25 00:07:00 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/minishell.h"
+#include "../includes/minishell.h"
 
-void	finisher(t_meta meta)
+int	pwd(t_meta *meta, t_word *wl)
 {
-	free_ast(meta.ast);
-	free_tokens(meta.tokens);
+	char	*path;
+
+	(void)meta;
+	(void)wl;
+	path = getcwd(NULL, PATH_MAX);
+	if (path)
+	{
+		ft_putendl_fd(path, STDOUT_FILENO);
+		free(path);
+		return (EXIT_SUCCESS);
+	}
+	perror("minishell: pwd");
+	return (EXIT_FAILURE);
 }

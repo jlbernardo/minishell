@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:16:16 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/21 16:28:12 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/25 00:07:00 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,27 @@
 
 void	delete_ht_entry(char *key, t_hash **ht);
 
-int	unset(t_token *tokens, t_hash **ht)
+int	unset(t_meta *meta, t_word *wl)
 {
 	int			ret;
+	t_word		*temp;
 
 	ret = EXIT_SUCCESS;
-	tokens = tokens->next;
-	while (tokens)
+	temp = wl;
+	temp = temp->next;
+	while (temp)
 	{
-		if (is_readonly(tokens->literal))
+		if (is_readonly(temp->word))
 		{
-			ft_putstr_fd("minishell: unset: ", 2);
-			ft_putstr_fd(tokens->literal, 2);
-			ft_putendl_fd(": cannot unset: readonly variable", 2);
+			ft_putstr_fd("minishell: unset: ", STDERR_FILENO);
+			ft_putstr_fd(temp->word, STDERR_FILENO);
+			ft_putendl_fd(": cannot unset: readonly variable", STDERR_FILENO);
 			ret = EXIT_FAILURE;
-			tokens = tokens->next;
+			temp = temp->next;
 			continue ;
 		}
-		delete_ht_entry(tokens->literal, ht);
-		tokens = tokens->next;
+		delete_ht_entry(temp->word, meta->hash);
+		temp = temp->next;
 	}
 	return (ret);
 }

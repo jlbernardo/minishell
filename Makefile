@@ -10,17 +10,18 @@ LIBFT_DIR = ./libft
 INCLUDE = -I./includes
 
 SD = src/
-COMMON = $(addprefix $(SD), lexer.c lexer_utils.c list_handler.c \
-						parser.c parser_utils.c create_pipeline.c moses_i.c \
-						moses_ii.c hashtable.c expander.c path_finder.c \
-						finisher.c executor.c exec_simple_command.c \
-						exec_pipeline_commands.c \
-						heredoc.c)
-COMMON += $(addprefix $(SD)builtin/, pwd.c env.c echo.c cd.c exit.c \
+COMMON += $(addprefix $(SD)executor/, executor.c executor_utils.c pipeline.c \
+						exec_simple_command.c exec_pipeline_commands.c)
+COMMON += $(addprefix $(SD)lexer/, lexer.c lexer_utils.c)
+COMMON += $(addprefix $(SD)parser/, parser.c expander.c path_finder.c)
+COMMON += $(addprefix $(SD)utils/, list_handler.c moses_i.c moses_ii.c \
+						hashtable.c finisher.c conditionals.c set_structures.c \
+						error_handler.c sig_handler.c)
+COMMON += $(addprefix $(SD)builtins/, pwd.c env.c echo.c cd.c exit.c \
 						export.c export_utils.c unset.c)
+
 SRC = $(COMMON) $(SD)minishell.c
 TEST = $(COMMON) $(SD)test.c
-
 
 OD = obj/
 OBJ = $(SRC:$(SD)%.c=$(OD)%.o)

@@ -6,15 +6,13 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:48:46 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/13 21:37:33 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/25 19:11:19 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/minishell.h"
+#include "../includes/minishell.h"
 
-t_token	*tk_last(t_token *tk);
-
-void	new_token(t_token **tk, int type, char *literal)
+void	new_token(t_token **tokens, int type, char *literal)
 {
 	t_token	*new_node;
 
@@ -24,63 +22,63 @@ void	new_token(t_token **tk, int type, char *literal)
 	new_node->type = type;
 	new_node->literal = ft_strdup(literal);
 	new_node->next = NULL;
-	if (!*tk)
-		*tk = new_node;
+	if (!*tokens)
+		*tokens = new_node;
 	else
-		tk_last(*tk)->next = new_node;
+		tk_last(*tokens)->next = new_node;
 }
 
-t_token	*tk_last(t_token *tk)
+t_token	*tk_last(t_token *tokens)
 {
-	if (tk == NULL)
+	if (tokens == NULL)
 		return (NULL);
-	while (tk->next != NULL)
-		tk = tk->next;
-	return (tk);
+	while (tokens->next != NULL)
+		tokens = tokens->next;
+	return (tokens);
 }
 
-t_word	*new_wle(char *s)
+t_word	*new_wle(char *string)
 {
-	t_word	*wle;
+	t_word	*new_node;
 
-	wle = malloc(sizeof(t_word));
-	if (wle == NULL)
+	new_node = malloc(sizeof(t_word));
+	if (new_node == NULL)
 		return (NULL);
-	wle->word = ft_strdup(s);
-	wle->next = NULL;
-	return (wle);
+	new_node->word = ft_strdup(string);
+	new_node->next = NULL;
+	return (new_node);
 }
 
-void	append_wle(t_word *w, t_word **wl)
+void	append_wle(t_word *new_node, t_word **word_list)
 {
-	t_word	*og;
+	t_word	*temp;
 
-	og = *wl;
-	if (*wl == NULL)
+	temp = *word_list;
+	if (*word_list == NULL)
 	{
-		*wl = w;
+		*word_list = new_node;
 		return ;
 	}
-	while ((*wl)->next != NULL)
-		*wl = (*wl)->next;
-	(*wl)->next = w;
-	*wl = og;
+	while ((*word_list)->next != NULL)
+		*word_list = (*word_list)->next;
+	(*word_list)->next = new_node;
+	*word_list = temp;
 	return ;
 }
 
-void	append_redirect(t_redir *r, t_redir **rl)
+void	append_redirect(t_redir *new_node, t_redir **redir_list)
 {
-	t_redir	*og;
+	t_redir	*temp;
 
-	og = *rl;
-	if (*rl == NULL)
+	temp = *redir_list;
+	if (*redir_list == NULL)
 	{
-		*rl = r;
+		*redir_list = new_node;
 		return ;
 	}
-	while ((*rl)->next != NULL)
-		*rl = (*rl)->next;
-	(*rl)->next = r;
-	*rl = og;
+	while ((*redir_list)->next != NULL)
+		*redir_list = (*redir_list)->next;
+	(*redir_list)->next = new_node;
+	*redir_list = temp;
 	return ;
 }

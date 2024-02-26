@@ -1,57 +1,52 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   create_pipeline.c                                  :+:      :+:    :+:   */
+/*   pipeline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 22:55:09 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/21 22:55:49 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/25 19:15:41 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/minishell.h"
+#include "../includes/minishell.h"
 
-t_ast	*create_pl_node(t_token **tokens, t_ast *parent)
+t_ast	*create_pl_node(t_token **tokens, t_ast *parent, t_meta *meta)
 {
 	t_ast	*pl_node;
 
-	set_pl(&pl_node, &parent, tokens);
+	set_pl(&pl_node, &parent, tokens, meta);
 	if (!pl_node)
 		return (NULL);
-	pl_node->left = parse_cmd(tokens, pl_node);
+	pl_node->left = parse_cmd(tokens, pl_node, meta);
 	return (pl_node);
 }
 
-t_ast	*handle_pipeline(t_token **tokens, t_ast *pl_node)
+t_ast	*handle_pipeline(t_token **tokens, t_ast *pl_node, t_meta *meta)
 {
 	if (!ft_strcmp((*tokens)->literal, "|") && has_other_pipes(*tokens)
 		&& ft_strcmp((*tokens)->next->literal, "|"))
 	{
 		*tokens = (*tokens)->next;
-		pl_node->right = parse_pipeline(tokens, pl_node);
+		pl_node->right = parse_pipeline(tokens, pl_node, meta);
 	}
 	else if (!ft_strcmp((*tokens)->literal, "|")
 		&& !has_other_pipes(*tokens) && (*tokens)->next != NULL)
 	{
 		*tokens = (*tokens)->next;
-		pl_node->right = parse_cmd(tokens, pl_node);
-		if (pl_node->right == NULL)
-			return (pl_node);
+		pl_node->right = parse_cmd(tokens, pl_node, meta);
 	}
 	else
-	{
-		syntax_error((*tokens)->literal);
-		return (pl_node);
-	}
+		syntax_error((*tokens)->literal, meta);
 	return (pl_node);
 }
 
-t_ast	*parse_pipeline(t_token **tokens, t_ast *parent)
+t_ast	*parse_pipeline(t_token **tokens, t_ast *parent, t_meta *meta)
 {
 	t_ast	*pl_node;
 
-	pl_node = create_pl_node(tokens, parent);
+	pl_node = create_pl_node(tokens, parent, meta);
 	if (!pl_node || pl_node->left == NULL)
 		return (pl_node);
 	if (*tokens == NULL)
@@ -59,12 +54,12 @@ t_ast	*parse_pipeline(t_token **tokens, t_ast *parent)
 		pl_node->success = TRUTH;
 		return (pl_node);
 	}
-	pl_node = handle_pipeline(tokens, pl_node);
+	pl_node = handle_pipeline(tokens, pl_node, meta);
 	pl_node->success = TRUTH;
 	return (pl_node);
 }
 
-t_ast	*parse_cmd(t_token **tokens, t_ast *parent)
+t_ast	*parse_cmd(t_token **tokens, t_ast *parent, t_meta *meta)
 {
 	t_ast	*cmd_node;
 
@@ -83,8 +78,8 @@ t_ast	*parse_cmd(t_token **tokens, t_ast *parent)
 		}
 		else
 		{
-			syntax_error((*tokens)->literal);
-			free_data(cmd_node->data);
+			syntax_error((*tokens)->literal, meta);
+			free_cmd(cmd_node->data);
 			free(cmd_node);
 			return (NULL);
 		}

@@ -6,37 +6,28 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 17:38:30 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/22 11:19:43 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/26 11:49:16 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
-void	set_meta(t_meta *meta, char **__environ)
-{
-	meta->hash = ft_calloc(HT_SIZE, sizeof(t_hash *));
-	add_env_to_ht(__environ, meta->hash);
-}
-
 int	main(void)
 {
-	char	*debug_string;
+	char	*ret;
 	t_meta	meta;
-	int		control;
 
+	signal_handler();
 	set_meta(&meta, __environ);
-	control = 42;
-	while (control)
+	while (42)
 	{
 		if (lexer(&meta))
 			if (parser(&meta))
 				executor(&meta);
-		finisher(meta);
-		control = 0;
+		ret = grab_value("?", meta.hash);
+		ft_printf("Return value: %s\n", ret);
+		finisher(meta, "AT", EXIT_SUCCESS);
+		free(ret);
 	}
-	debug_string = grab_value("?", meta.hash);
-	ft_printf("exit status: %s\n", debug_string);
-	free(debug_string);
-	free_ht(meta.hash);
-	return (0);
+	finisher(meta, "HE", EXIT_SUCCESS);
 }

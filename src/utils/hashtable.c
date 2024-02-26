@@ -6,11 +6,11 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 15:31:26 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/20 20:27:05 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/25 00:07:00 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/minishell.h"
+#include "../includes/minishell.h"
 
 unsigned int	hash(char *name)
 {
@@ -46,7 +46,7 @@ t_hash	*create_kv_pair(char *name, char *value)
 	return (kv_pair);
 }
 
-void	add_or_upd_ht_entry(char *name, char *value, t_hash **ht)
+void	add_upd_hashtable(char *name, char *value, t_hash **ht)
 {
 	t_hash			**entry;
 	t_hash			**prev;
@@ -93,23 +93,4 @@ char	*grab_value(char *name, t_hash **ht)
 		entry = prev->next;
 	}
 	return (NULL);
-}
-
-void	add_env_to_ht(char **env, t_hash **ht)
-{
-	char			*pair[2];
-	unsigned int	len_after_equal;
-	unsigned int	len_before_equal;
-
-	while (*env)
-	{
-		len_before_equal = ft_strchr(*env, '=') - *env;
-		len_after_equal = ft_strlen(*env) - len_before_equal - 1;
-		pair[0] = ft_substr(*env, 0, len_before_equal);
-		pair[1] = ft_substr(ft_strchr(*env, '='), 1, len_after_equal);
-		add_or_upd_ht_entry(pair[0], pair[1], ht);
-		safe_free(pair[0]);
-		safe_free(pair[1]);
-		env++;
-	}
 }

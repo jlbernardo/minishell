@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 19:35:43 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/21 23:45:28 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/25 19:03:20 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,42 @@
 
 int		check_ll(char *nbr);
 char	*trim_prefix(const char *s1, const char *set);
+int		exit_error(char *literal, char *reason, int exit_code);
 
-void	ft_exit(t_meta *meta, int last_exit)
+int	ft_exit(t_meta *meta, t_word *wl)
 {
-	long int	exit_code;
+	char			*exit_str;
+	long long int	exit_code;
 
-	exit_code = last_exit;
-	ft_putendl_fd(meta->tokens->literal, 1);
+	(void)wl;
+	exit_str = grab_value("?", meta->hash);
+	exit_code = ft_atoi(exit_str);
+	ft_putendl_fd(meta->tokens->literal, STDOUT_FILENO);
 	if ((meta->tokens->next
 			&& (!ft_isdigit(*meta->tokens->next->literal)
 				&& *meta->tokens->next->literal != '-'))
 		|| (meta->tokens->next && check_ll(meta->tokens->next->literal)))
-	{
-		ft_putstr_fd("minishell: exit: ", 2);
-		ft_putstr_fd(meta->tokens->next->literal, 2);
-		ft_putendl_fd(": numeric argument required", 2);
-		exit_code = 2;
-	}
+		exit_code = exit_error(meta->tokens->next->literal,
+				"numeric argument required", exit_code);
 	else if (meta->tokens->next && meta->tokens->next->next)
-	{
-		ft_putendl_fd("minishell: exit: too many arguments", 2);
-		return ;
-	}
+		return (exit_error(NULL, "too many arguments", exit_code));
 	else if (meta->tokens->next)
 		exit_code = ft_atol(meta->tokens->next->literal);
-	free_ht(meta->hash);
-	finisher(*meta);
-	exit(exit_code);
+	finisher(*meta, "ATHE", exit_code);
+	return (exit_code);
+}
+
+int	exit_error(char *literal, char *reason, int exit_code)
+{
+	ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
+	if (literal)
+	{
+		ft_putstr_fd(literal, STDERR_FILENO);
+		ft_putstr_fd(": ", STDERR_FILENO);
+		exit_code = 2;
+	}
+	ft_putendl_fd(reason, STDERR_FILENO);
+	return (exit_code);
 }
 
 int	check_ll(char *exit_code)
