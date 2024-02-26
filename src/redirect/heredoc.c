@@ -6,11 +6,11 @@
 /*   By: iusantos <iusantos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 14:56:18 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/26 16:53:24 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/26 17:55:41 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/minishell.h"
+#include "../includes/minishell.h"
 
 //traverse ast calling capture content on CMD nodes
 int	execute_heredocs(t_ast *ast, t_meta *meta)
