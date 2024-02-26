@@ -16,7 +16,7 @@ COMMON += $(addprefix $(SD)lexer/, lexer.c lexer_utils.c)
 COMMON += $(addprefix $(SD)parser/, parser.c expander.c path_finder.c)
 COMMON += $(addprefix $(SD)utils/, list_handler.c moses_i.c moses_ii.c \
 						hashtable.c finisher.c conditionals.c set_structures.c \
-						error_handler.c signals.c)
+						error_handler.c sig_handler.c)
 COMMON += $(addprefix $(SD)builtins/, pwd.c env.c echo.c cd.c exit.c \
 						export.c export_utils.c unset.c)
 

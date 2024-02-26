@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/25 19:11:32 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/25 23:06:31 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,17 @@
 
 # include "../../libft/libft.h"
 # include <stdio.h>
+# include <errno.h>
+# include <fcntl.h>
+# include <signal.h>
 # include <stddef.h>
 # include <unistd.h>
-# include <errno.h>
-# include <linux/limits.h>
-# include <readline/readline.h>
-# include <readline/history.h>
+# include <string.h>
 # include <sys/wait.h>
 # include <sys/types.h>
-# include <fcntl.h>
-# include <string.h>
+# include <linux/limits.h>
+# include <readline/history.h>
+# include <readline/readline.h>
 
 # define LIE 0
 # define TRUTH 1
@@ -163,6 +164,10 @@ void			populate_sort_vars(t_hash **ht, t_word **vars);
 t_word			*new_wle(char *string);
 t_token			*tk_last(t_token *tokens);
 t_redir			*new_redirect(t_token *tokens);
+
+/* SIGNALS */
+void			signal_handler(void);
+void			sig_deal(int signo);
 
 /* HASH TABLE */
 char			*grab_value(char *name, t_hash **ht);

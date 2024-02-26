@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 17:38:30 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/25 18:35:52 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/25 23:07:01 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	main(void)
 	char	*ret;
 	t_meta	meta;
 
+	signal_handler();
 	set_meta(&meta, __environ);
 	while (42)
 	{

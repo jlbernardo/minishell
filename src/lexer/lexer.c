@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:49 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/25 18:38:18 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/25 23:23:35 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,10 @@ int	lexer(t_meta *meta)
 	meta->ast = NULL;
 	input = readline("$> ");
 	if (!input)
+	{
+		ft_putendl_fd("exit", STDOUT_FILENO);
 		finisher(*meta, "HE", EXIT_SUCCESS);
+	}
 	add_history(input);
 	expand_variable(&input, meta);
 	set_lexer(&lex, input);
