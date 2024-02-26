@@ -6,7 +6,7 @@
 /*   By: iusantos <iusantos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 14:56:18 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/26 15:25:14 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/26 16:53:24 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,14 @@ void	capture_content(t_redir *rl, t_meta *meta)
 		{
 			//open file, call readline, close file;
 			tmp_file = gen_tmpfile_name(cmd_nbr);
-			// O_CREAT || O_TRUNC || O_RDWR
 			heredoc_fd = open(tmp_file, O_CREAT|O_RDWR|O_TRUNC, 0666);
 			fill_tmpfile(heredoc_fd, rl, meta);
 			free(tmp_file);
 		}
 		rl = rl->next;
+		cmd_nbr++;
 	}
-	cmd_nbr++;
+	cmd_nbr = 0;
 }
 
 char	*gen_tmpfile_name(int cmd_nbr)
@@ -72,10 +72,6 @@ char	*gen_tmpfile_name(int cmd_nbr)
 
 void	fill_tmpfile(int fd, t_redir *r, t_meta *meta)
 {
-	//checar de filename is quoted
-	//se sim, construir delim sem as aspas e nao expandir variaveis
-	//se nao, construir delim sem as aspas e expandir variaveis
-	//onde nós fazemos remoção de quotes?
 	char	*input;
 	unsigned int	size;
 
@@ -87,17 +83,19 @@ void	fill_tmpfile(int fd, t_redir *r, t_meta *meta)
 		if (size == 0)
 			write(fd, "\n", 1);
 		else
-			write(fd, input, size);
+		{
+			expand_variable(&input, meta);
+			write(fd, input, ft_strlen(input));
+		}
 		free(input);
 		input = readline(">");
 		if (ft_strcmp(input, r->filename) == 0)
 		{
 			free(input);
-			write(fd, "\0", 1);
+			write(fd, "\n\0", 2);
 			close(fd);
 			break;
 		}
 		write(fd, "\n", 1);
 	}
-	meta = NULL;
 }
