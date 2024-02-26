@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/25 00:07:00 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/25 18:39:21 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,7 @@ void	run_executable(t_cmd *data, t_meta *meta)
 		perror(strerror(errno));
 		free_str_array(array_of_strings, get_size(data->word_list));
 		free(array_of_strings);
-		finisher(*meta);
-		free_hash(meta->hash);
-		exit(errno);
+		finisher(*meta, "ATHE", errno);
 	}
 }
 

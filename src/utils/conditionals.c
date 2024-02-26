@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 16:44:26 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/25 00:07:00 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/25 18:47:09 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 int	is_operand(char ch)
 {
 	if (ch == '>' || ch == '<' || ch == '|')
-		return (1);
-	return (0);
+		return (TRUTH);
+	return (LIE);
 }
 
 int	quote_open(char ch, char next, int s_open, int d_open)
@@ -31,14 +31,14 @@ int	has_other_pipes(t_token *tokens)
 {
 	tokens = tokens->next;
 	if (tokens == NULL)
-		return (0);
+		return (LIE);
 	while (tokens != NULL)
 	{
 		if (!ft_strncmp(tokens->literal, "|", 1))
-			return (1);
+			return (TRUTH);
 		tokens = tokens->next;
 	}
-	return (0);
+	return (LIE);
 }
 
 int	is_builtin(char *cmd)

@@ -6,42 +6,42 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 17:09:16 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/25 00:07:00 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/25 19:09:09 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	**stringfy(t_word *wl)
+char	**stringfy(t_word *word_list)
 {
-	char	**array;
 	int		size;
 	int		index;
+	char	**array;
 
-	size = get_size(wl) + 1;
+	size = get_size(word_list) + 1;
 	array = ft_calloc(size, sizeof(char *));
 	index = 0;
-	while (wl->next != NULL)
+	while (word_list->next != NULL)
 	{
-		array[index] = ft_strdup(wl->word);
+		array[index] = ft_strdup(word_list->word);
 		index++;
-		wl = wl->next;
+		word_list = word_list->next;
 	}
-	array[index] = ft_strdup(wl->word);
+	array[index] = ft_strdup(word_list->word);
 	return (array);
 }
 
 int	get_size(t_word *wl)
 {
-	int	nelem;
+	int	len;
 
-	nelem = 1;
+	len = 1;
 	while (wl->next != NULL)
 	{
-		nelem++;
+		len++;
 		wl = wl->next;
 	}
-	return (nelem);
+	return (len);
 }
 
 void	close_all_fds(void)
@@ -64,32 +64,34 @@ void	exec_forked_command(t_cmd *data, t_meta *meta)
 	{
 		exit_code = run_builtin(meta, data->word_list);
 		close_all_fds();
-		finisher(*meta);
-		free_hash(meta->hash);
-		exit(exit_code);
+		finisher(*meta, "ATHE", exit_code);
 	}
 	else if (data->pathname == NULL)
-		handle_forked_null_pathname(data, meta);
+	{
+		handle_null_pathname(data->word_list->word, meta);
+		close_all_fds();
+		finisher(*meta, "ATHE", 127);
+	}
 	else
 		run_executable(data, meta);
 }
 
 int	handle_exit_status(t_meta *meta)
 {
-	static pid_t	last_child_pid;
-	pid_t			current_child_pid;
 	int				exit_status;
 	char			*exit_string;
+	pid_t			current_child_pid;
+	static pid_t	last_child_pid;
 
 	current_child_pid = wait(&exit_status);
 	if (current_child_pid > last_child_pid)
 	{
 		exit_status = WEXITSTATUS(exit_status);
-		exit_string = ft_itoa(exit_status);
 		if (exit_status == 13)
-			add_upd_hashtable("?", "126", meta->hash);
+			exit_string = ft_itoa(126);
 		else
-			add_upd_hashtable("?", exit_string, meta->hash);
+			exit_string = ft_itoa(exit_status);
+		add_upd_hashtable("?", exit_string, meta->hash);
 		free(exit_string);
 	}
 	last_child_pid = current_child_pid;
