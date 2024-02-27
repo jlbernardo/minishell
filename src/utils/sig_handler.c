@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 17:16:50 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/27 16:42:50 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/27 18:00:20 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,8 @@ void	sig_deal(int signo)
 void	eof_signal(t_meta *meta)
 {
 	int		exit_code;
-	char	*exit_str;
 
-	exit_str = grab_value("?", meta->hash);
-	exit_code = ft_atoi(exit_str);
-	free(exit_str);
+	exit_code = last_exit(meta);
 	ft_putendl_fd("exit", STDOUT_FILENO);
 	finisher(*meta, "ATHE", exit_code);
 }

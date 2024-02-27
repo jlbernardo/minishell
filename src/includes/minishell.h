@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/25 23:46:16 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/27 17:54:23 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,6 +171,7 @@ void			signal_handler(void);
 void			eof_signal(t_meta *meta);
 
 /* HASH TABLE */
+int				last_exit(t_meta *meta);
 char			*grab_value(char *name, t_hash **ht);
 void			set_hashtable(char **env, t_hash **ht);
 void			add_upd_hashtable(char *name, char *value, t_hash **ht);
