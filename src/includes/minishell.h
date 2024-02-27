@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/25 23:06:31 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/25 23:46:16 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,8 +166,9 @@ t_token			*tk_last(t_token *tokens);
 t_redir			*new_redirect(t_token *tokens);
 
 /* SIGNALS */
-void			signal_handler(void);
 void			sig_deal(int signo);
+void			signal_handler(void);
+void			eof_signal(t_meta *meta);
 
 /* HASH TABLE */
 char			*grab_value(char *name, t_hash **ht);

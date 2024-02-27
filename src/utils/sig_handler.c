@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 17:16:50 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/25 23:13:22 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/27 16:42:50 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,16 @@ void	sig_deal(int signo)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
+}
+
+void	eof_signal(t_meta *meta)
+{
+	int		exit_code;
+	char	*exit_str;
+
+	exit_str = grab_value("?", meta->hash);
+	exit_code = ft_atoi(exit_str);
+	free(exit_str);
+	ft_putendl_fd("exit", STDOUT_FILENO);
+	finisher(*meta, "ATHE", exit_code);
 }
