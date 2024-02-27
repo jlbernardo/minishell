@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 16:44:26 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/25 18:47:09 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/26 00:07:32 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,8 @@ int	has_variable(char *literal)
 		else if (*literal == '\'' && d_quote % 2 == 0)
 			s_quote++;
 		else if (*literal == '$'
-			&& (ft_isalnum(*(literal + 1)) || *(literal + 1) == '_')
+			&& (ft_isalnum(*(literal + 1)) || *(literal + 1) == '_'
+				|| *(literal + 1) == '?')
 			&& (s_quote % 2 == 0))
 			return (TRUTH);
 		literal++;
