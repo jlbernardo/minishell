@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 17:25:16 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/25 18:54:34 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/28 14:48:33 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,13 @@ void	handle_null_pathname(char *cmd, t_meta *meta)
 	ft_putstr_fd(cmd, STDERR_FILENO);
 	ft_putendl_fd(": command not found", STDERR_FILENO);
 	add_upd_hashtable("?", "127", meta->hash);
+}
+
+void	path_error(t_meta *meta, char *path, char *msg, int exit_code)
+{
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd(path, STDERR_FILENO);
+	ft_putstr_fd(": ", STDERR_FILENO);
+	ft_putendl_fd(msg, STDERR_FILENO);
+	finisher(*meta, "ATHE", exit_code);
 }

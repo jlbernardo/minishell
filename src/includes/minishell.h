@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/27 21:32:23 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/28 16:02:19 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,7 @@ void			upd_simple_exit_status(int exit_status, t_meta	*meta);
 void			last_pipeline_cmd(t_ast *ast, int *pipe_fd, t_meta *meta);
 void			middle_pipeline_cmd(t_ast *ast, int *pipe_fd, t_meta *meta);
 void			first_pipeline_cmd(t_ast *ast, int pipe_fd[2], t_meta *meta);
+void			path_error(t_meta *meta, char *path, char *msg, int exit_code);
 void			exec_left(t_cmd *data, int in_fd, int pipe_fd[2], t_meta *meta);
 char			**stringfy(t_word *word_list);
 
