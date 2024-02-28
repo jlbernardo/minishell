@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/27 17:54:23 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/27 21:32:23 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <stddef.h>
 # include <unistd.h>
 # include <string.h>
+# include <sys/stat.h>
 # include <sys/wait.h>
 # include <sys/types.h>
 # include <linux/limits.h>

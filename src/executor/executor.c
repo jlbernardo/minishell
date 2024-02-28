@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/25 18:39:21 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/27 21:49:55 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,18 @@ void	run_pipeline(t_ast *ast, t_meta *meta)
 
 void	run_executable(t_cmd *data, t_meta *meta)
 {
-	int		exec_return;
-	char	**array_of_strings;
+	int			exec_return;
+	char		**array_of_strings;
+	struct stat	buf;
 
+	stat(data->pathname, &buf);
+	if (S_ISDIR(buf.st_mode))
+	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(data->pathname, STDERR_FILENO);
+		ft_putendl_fd(": Is a directory", STDERR_FILENO);
+		finisher(*meta, "ATHE", 126);
+	}
 	array_of_strings = NULL;
 	array_of_strings = stringfy(data->word_list);
 	exec_return = execve(data->pathname, array_of_strings, NULL);
