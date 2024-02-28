@@ -19,6 +19,7 @@ COMMON += $(addprefix $(SD)utils/, list_handler.c moses_i.c moses_ii.c \
 						error_handler.c sig_handler.c)
 COMMON += $(addprefix $(SD)builtins/, pwd.c env.c echo.c cd.c exit.c \
 						export.c export_utils.c unset.c)
+COMMON += $(addprefix $(SD)redirect/, heredoc.c)
 
 SRC = $(COMMON) $(SD)minishell.c
 TEST = $(COMMON) $(SD)test.c

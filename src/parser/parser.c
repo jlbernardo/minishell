@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 21:12:03 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/28 16:14:40 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/28 17:47:12 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	parser(t_meta *meta)
 		add_upd_hashtable("?", "0", meta->hash);
 		return (LIE);
 	}
-	remove_quotes(&meta->tokens);
+	remove_quotes(&meta->tokens, 0, 0, 0);
 	remove_empty_tokens(&meta->tokens);
 	temp = meta->tokens;
 	meta->ast = parse_pipeline(&meta->tokens, NULL, meta);
@@ -32,15 +32,13 @@ int	parser(t_meta *meta)
 	return (LIE);
 }
 
-void	remove_quotes(t_token **tokens)
+void	remove_quotes(t_token **tokens, int i, int len, char quote)
 {
-	int		i;
-	int		len;
-	char	quote;
-
-	i = 0;
-	if (!*tokens)
+	if ((*tokens)->type == REDIRECT && ft_strcmp((*tokens)->literal, "<<") == 0)
+	{
+		remove_quotes(&(*tokens)->next->next, 0, 0, 0);
 		return ;
+	}
 	while ((*tokens)->literal[i] != '\0')
 	{
 		if (((*tokens)->literal[i] == '"' || (*tokens)->literal[i] == '\''))
@@ -58,7 +56,7 @@ void	remove_quotes(t_token **tokens)
 		}
 		i++;
 	}
-	remove_quotes(&(*tokens)->next);
+	remove_quotes(&(*tokens)->next, 0, 0, 0);
 }
 
 void	remove_empty_tokens(t_token **tokens)
