@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 21:12:03 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/25 18:48:20 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/28 16:14:40 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@ int	parser(t_meta *meta)
 	t_token	*temp;
 
 	if (!meta->tokens)
+	{
+		add_upd_hashtable("?", "0", meta->hash);
 		return (LIE);
+	}
 	remove_quotes(&meta->tokens);
 	remove_empty_tokens(&meta->tokens);
 	temp = meta->tokens;
