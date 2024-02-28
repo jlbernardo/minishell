@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 17:09:16 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/25 19:09:09 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/28 18:58:08 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,26 +54,6 @@ void	close_all_fds(void)
 		close(i);
 		i++;
 	}
-}
-
-void	exec_forked_command(t_cmd *data, t_meta *meta)
-{
-	int	exit_code;
-
-	if (is_builtin(data->word_list[0].word))
-	{
-		exit_code = run_builtin(meta, data->word_list);
-		close_all_fds();
-		finisher(*meta, "ATHE", exit_code);
-	}
-	else if (data->pathname == NULL)
-	{
-		handle_null_pathname(data->word_list->word, meta);
-		close_all_fds();
-		finisher(*meta, "ATHE", 127);
-	}
-	else
-		run_executable(data, meta);
 }
 
 int	handle_exit_status(t_meta *meta)

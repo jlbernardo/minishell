@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/28 17:48:09 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/28 20:09:53 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,6 +177,7 @@ t_redir			*new_redirect(t_token *tokens);
 void			sig_deal(int signo);
 void			signal_handler(void);
 void			eof_signal(t_meta *meta);
+void			forked_signal(int child_pid);
 
 /* HASH TABLE */
 int				last_exit(t_meta *meta);
