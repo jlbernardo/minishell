@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/26 15:22:21 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/28 17:44:07 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	executor(t_meta *meta)
 {
-	execute_heredocs(meta->ast,	meta);
+	execute_heredocs(meta->ast, meta);
 	if (meta->ast->right == NULL)
 		run_simple_command(meta->ast->left, meta);
 	else
@@ -45,10 +45,17 @@ void	run_pipeline(t_ast *ast, t_meta *meta)
 
 void	run_executable(t_cmd *data, t_meta *meta)
 {
-	int		exec_return;
-	char	**array_of_strings;
+	int			exec_return;
+	char		**array_of_strings;
+	struct stat	buf;
 
-	array_of_strings = NULL;
+	stat(data->pathname, &buf);
+	if (S_ISDIR(buf.st_mode))
+		path_error(meta, data->pathname, "Is a directory", 126);
+	if (access(data->pathname, F_OK))
+		path_error(meta, data->pathname, "No such file or directory", 127);
+	if (access(data->pathname, X_OK))
+		path_error(meta, data->pathname, "Permission denied", 126);
 	array_of_strings = stringfy(data->word_list);
 	exec_return = execve(data->pathname, array_of_strings, NULL);
 	if (exec_return == -1)

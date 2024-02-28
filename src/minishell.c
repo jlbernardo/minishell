@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 17:38:30 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/26 11:49:16 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/28 17:43:51 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int	main(void)
 {
-	char	*ret;
 	t_meta	meta;
 
 	signal_handler();
@@ -24,10 +23,7 @@ int	main(void)
 		if (lexer(&meta))
 			if (parser(&meta))
 				executor(&meta);
-		ret = grab_value("?", meta.hash);
-		ft_printf("Return value: %s\n", ret);
 		finisher(meta, "AT", EXIT_SUCCESS);
-		free(ret);
 	}
-	finisher(meta, "HE", EXIT_SUCCESS);
+	finisher(meta, "HE", last_exit(&meta));
 }

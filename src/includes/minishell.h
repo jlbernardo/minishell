@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/26 14:39:06 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/02/28 17:48:09 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <stddef.h>
 # include <unistd.h>
 # include <string.h>
+# include <sys/stat.h>
 # include <sys/wait.h>
 # include <sys/types.h>
 # include <linux/limits.h>
@@ -128,15 +129,15 @@ char			*get_variable_name(char *literal);
 char			*read_quoted(t_lexer *lex, char quote, int s_open, int d_open);
 
 /* PARSER */
-void			remove_quotes(t_token **tokens);
 void			find_path(t_ast **ast, char **paths);
 void			get_path(t_ast **ast, t_hash **hash);
 void			remove_empty_tokens(t_token **tokens);
 void			syntax_error(char *token, t_meta *meta);
 void			set_cmd(t_ast **cmd_node, t_ast **parent);
+void			remove_quotes(t_token **tokens, int i, int len, char quote);
 void			set_pl(t_ast **pl, t_ast **parent, t_token **tk, t_meta *meta);
-t_ast			*parse_cmd(t_token **tokens, t_ast *parent, t_meta *meta);
 t_ast			*parse_pipeline(t_token **tokens, t_ast *parent, t_meta *meta);
+t_ast			*parse_cmd(t_token **tokens, t_ast *parent, t_meta *meta);
 
 /* EXECUTOR */
 int				get_size(t_word *wl);
@@ -152,14 +153,15 @@ void			upd_simple_exit_status(int exit_status, t_meta	*meta);
 void			last_pipeline_cmd(t_ast *ast, int *pipe_fd, t_meta *meta);
 void			middle_pipeline_cmd(t_ast *ast, int *pipe_fd, t_meta *meta);
 void			first_pipeline_cmd(t_ast *ast, int pipe_fd[2], t_meta *meta);
+void			path_error(t_meta *meta, char *path, char *msg, int exit_code);
 void			exec_left(t_cmd *data, int in_fd, int pipe_fd[2], t_meta *meta);
 char			**stringfy(t_word *word_list);
 
 /* HEREDOC & REDIRECTS*/
 int				execute_heredocs(t_ast *ast, t_meta *meta);
+void			fill_tmpfile(int fd, t_redir *r, t_meta *meta);
 void			capture_content(t_redir *rl, t_meta *meta);
 char			*gen_tmpfile_name(int cmd_nbr);
-void			fill_tmpfile(int fd, t_redir *r, t_meta *meta);
 
 /* LIST HANDLERS */
 void			sort_vars(t_word **vars, t_word *first, t_word *first_p);
@@ -172,10 +174,12 @@ t_token			*tk_last(t_token *tokens);
 t_redir			*new_redirect(t_token *tokens);
 
 /* SIGNALS */
-void			signal_handler(void);
 void			sig_deal(int signo);
+void			signal_handler(void);
+void			eof_signal(t_meta *meta);
 
 /* HASH TABLE */
+int				last_exit(t_meta *meta);
 char			*grab_value(char *name, t_hash **ht);
 void			set_hashtable(char **env, t_hash **ht);
 void			add_upd_hashtable(char *name, char *value, t_hash **ht);
@@ -200,7 +204,7 @@ int				is_readonly(char *literal);
 int				has_variable(char *literal);
 int				valid_variable(char *literal);
 int				has_other_pipes(t_token *tokens);
-int				quote_open(char ch, char next, int s_open, int d_open);
+int				quote_open(int s_open, int d_open);
 
 /* FINISHERS */
 void			safe_free(void *p);
