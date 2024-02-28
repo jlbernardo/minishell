@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 16:44:26 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/26 00:07:32 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/28 16:38:33 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,11 @@ int	is_operand(char ch)
 	return (LIE);
 }
 
-int	quote_open(char ch, char next, int s_open, int d_open)
+int	quote_open(int s_open, int d_open)
 {
-	if (ch != '\0' && !((s_open % 2 == 0 && d_open % 2 == 0)
-			&& (next == ' ' || is_operand(ch) || next == '\0')))
-		return (TRUTH);
-	return (LIE);
+	if (s_open % 2 == 0 && d_open % 2 == 0)
+		return (LIE);
+	return (TRUTH);
 }
 
 int	has_other_pipes(t_token *tokens)

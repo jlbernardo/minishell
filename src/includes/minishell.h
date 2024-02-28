@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/28 16:02:19 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/28 16:38:20 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,7 +198,7 @@ int				is_readonly(char *literal);
 int				has_variable(char *literal);
 int				valid_variable(char *literal);
 int				has_other_pipes(t_token *tokens);
-int				quote_open(char ch, char next, int s_open, int d_open);
+int				quote_open(int s_open, int d_open);
 
 /* FINISHERS */
 void			safe_free(void *p);
