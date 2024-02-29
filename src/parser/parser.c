@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 21:12:03 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/28 17:47:12 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/28 20:13:50 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ int	parser(t_meta *meta)
 
 void	remove_quotes(t_token **tokens, int i, int len, char quote)
 {
+	if (!*tokens)
+		return ;
 	if ((*tokens)->type == REDIRECT && ft_strcmp((*tokens)->literal, "<<") == 0)
 	{
 		remove_quotes(&(*tokens)->next->next, 0, 0, 0);

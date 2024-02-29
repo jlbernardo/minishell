@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/28 18:59:55 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/28 21:07:23 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	run_executable(t_cmd *data, t_meta *meta)
 {
 	int			exec_return;
 	char		**argv;
+	char		**envp;
 	struct stat	buf;
 
 	stat(data->pathname, &buf);
@@ -56,13 +57,16 @@ void	run_executable(t_cmd *data, t_meta *meta)
 		path_error(meta, data->pathname, "No such file or directory", 127);
 	if (access(data->pathname, X_OK))
 		path_error(meta, data->pathname, "Permission denied", 126);
-	argv = stringfy(data->word_list);
-	exec_return = execve(data->pathname, argv, NULL);
+	format_argv(data->word_list, &argv);
+	format_envp(meta->hash, &envp);
+	exec_return = execve(data->pathname, argv, envp);
 	if (exec_return == -1)
 	{
 		perror(strerror(errno));
-		free_str_array(argv, get_size(data->word_list));
+		free_str_array(argv, get_wl_size(data->word_list));
+		free_str_array(envp, get_envp_size(meta->hash));
 		free(argv);
+		free(envp);
 		finisher(*meta, "ATHE", errno);
 	}
 }
