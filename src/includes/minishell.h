@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/29 15:55:56 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/29 16:03:44 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@
 # define CMD 30
 # define PIPELINE 31
 
-# define HT_SIZE 10
+# define HT_SIZE 180
 
 typedef struct s_meta
 {
