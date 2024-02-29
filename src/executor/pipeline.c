@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 22:55:09 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/25 19:15:41 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/28 18:15:42 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ t_ast	*parse_cmd(t_token **tokens, t_ast *parent, t_meta *meta)
 	set_cmd(&cmd_node, &parent);
 	while (*tokens != NULL && ft_strncmp((*tokens)->literal, "|", 1))
 	{
-		if ((*tokens)->type == REDIRECT && (*tokens)->next->type == WORD)
+		if ((*tokens)->type == REDIRECT
+			&& (*tokens)->next && (*tokens)->next->type == WORD)
 		{
 			append_redirect(new_redirect(*tokens), &cmd_node->data->redirects);
 			*tokens = (*tokens)->next->next;
