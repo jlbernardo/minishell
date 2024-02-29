@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 17:16:50 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/28 20:34:48 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/28 21:23:29 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	sig_deal(int signo)
 	rl_redisplay();
 }
 
-void	forked_signal(int child_pid)
+void	mid_exec_signal(int child_pid)
 {
 	struct sigaction	sig;
 

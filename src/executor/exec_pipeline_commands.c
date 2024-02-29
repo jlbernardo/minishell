@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 11:36:19 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/28 21:10:47 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/28 21:23:29 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	first_pipeline_cmd(t_ast *ast, int pipe_fd[2], t_meta *meta)
 	pid_t	child_pid;
 
 	child_pid = fork();
-	forked_signal(child_pid);
+	mid_exec_signal(child_pid);
 	if (child_pid == 0)
 	{
 		dup2(pipe_fd[1], STDOUT_FILENO);
@@ -38,7 +38,7 @@ void	middle_pipeline_cmd(t_ast *ast, int *pipe_fd, t_meta *meta)
 	if (pipe(pipe_fd) == -1)
 		return ;
 	child_pid = fork();
-	forked_signal(child_pid);
+	mid_exec_signal(child_pid);
 	if (child_pid == 0)
 	{
 		dup2(in_fd, STDIN_FILENO);
@@ -58,7 +58,7 @@ void	last_pipeline_cmd(t_ast *ast, int *pipe_fd, t_meta *meta)
 	pid_t	child_pid;
 
 	child_pid = fork();
-	forked_signal(child_pid);
+	mid_exec_signal(child_pid);
 	if (child_pid == 0)
 	{
 		dup2(pipe_fd[0], STDIN_FILENO);

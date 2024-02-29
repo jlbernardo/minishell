@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 14:56:18 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/28 17:50:47 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/28 22:15:22 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ void	capture_content(t_redir *rl, t_meta *meta)
 
 char	*gen_tmpfile_name(int cmd_nbr)
 {
-	char			*tmpfile_name;
-	char			*tmpfile_nbr;
 	int				digits;
+	char			*tmpfile_nbr;
+	char			*tmpfile_name;
 	unsigned int	buf_size;
 
 	tmpfile_nbr = ft_itoa(cmd_nbr);
