@@ -6,13 +6,13 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 17:16:50 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/28 21:23:29 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/29 15:56:19 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	signal_handler(void)
+void	signal_handler(t_meta *meta)
 {
 	struct sigaction	sig_int;
 	struct sigaction	sig_quit;
@@ -25,6 +25,7 @@ void	signal_handler(void)
 	sig_quit.sa_flags = 0;
 	sigaction(SIGQUIT, &sig_quit, NULL);
 	sigaction(SIGINT, &sig_int, NULL);
+	tcsetattr(STDIN_FILENO, TCSANOW, meta->term);
 }
 
 void	sig_deal(int signo)

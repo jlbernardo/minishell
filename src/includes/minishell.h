@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/28 21:23:29 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/29 15:55:56 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <stddef.h>
 # include <unistd.h>
 # include <string.h>
+# include <termios.h>
 # include <sys/stat.h>
 # include <sys/wait.h>
 # include <sys/types.h>
@@ -49,6 +50,7 @@ typedef struct s_meta
 	struct s_token	*tokens;
 	struct s_ast	*ast;
 	struct s_hash	**hash;
+	struct termios	*term;
 }				t_meta;
 
 typedef struct s_hash
@@ -177,7 +179,7 @@ t_redir			*new_redirect(t_token *tokens);
 
 /* SIGNALS */
 void			sig_deal(int signo);
-void			signal_handler(void);
+void			signal_handler(t_meta *meta);
 void			eof_signal(t_meta *meta);
 void			mid_exec_signal(int child_pid);
 

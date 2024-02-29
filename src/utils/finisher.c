@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 20:03:39 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/25 18:34:29 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/29 15:52:56 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,8 @@ void	finisher(t_meta meta, char *flag, int exit_code)
 	if (ft_strchr(flag, 'H'))
 		free_hash(meta.hash);
 	if (ft_strchr(flag, 'E'))
+	{
+		free(meta.term);
 		exit(exit_code);
+	}
 }
