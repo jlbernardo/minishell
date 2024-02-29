@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:11:53 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/28 17:35:36 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/28 21:05:31 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	cd(t_meta *meta, t_word *wl)
 	char	*path;
 	char	*old_cwd;
 
-	len = get_size(wl);
+	len = get_wl_size(wl);
 	if (len > 2)
 		ret = give_error(NULL, len);
 	else

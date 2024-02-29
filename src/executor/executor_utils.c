@@ -6,74 +6,90 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 17:09:16 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/25 19:09:09 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/28 21:16:40 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	**stringfy(t_word *word_list)
+void	format_argv(t_word *word_list, char ***array)
 {
 	int		size;
 	int		index;
-	char	**array;
 
-	size = get_size(word_list) + 1;
-	array = ft_calloc(size, sizeof(char *));
+	size = get_wl_size(word_list) + 1;
+	*array = ft_calloc(size, sizeof(char *));
 	index = 0;
 	while (word_list->next != NULL)
 	{
-		array[index] = ft_strdup(word_list->word);
+		(*array)[index] = ft_strdup(word_list->word);
 		index++;
 		word_list = word_list->next;
 	}
-	array[index] = ft_strdup(word_list->word);
-	return (array);
+	(*array)[index] = ft_strdup(word_list->word);
 }
 
-int	get_size(t_word *wl)
+void	format_envp(t_hash **hash, char ***array)
 {
-	int	len;
-
-	len = 1;
-	while (wl->next != NULL)
-	{
-		len++;
-		wl = wl->next;
-	}
-	return (len);
-}
-
-void	close_all_fds(void)
-{
-	int	i;
+	int		i;
+	int		len;
+	int		index;
+	t_hash	*temp;
 
 	i = 0;
-	while (i < 1024)
+	index = 0;
+	*array = ft_calloc(get_envp_size(hash) + 1, sizeof(char *));
+	while (i < HT_SIZE)
 	{
-		close(i);
+		temp = hash[i];
+		while (hash[i])
+		{
+			len = ft_strlen(hash[i]->name) + ft_strlen(hash[i]->value) + 2;
+			(*array)[index] = ft_calloc(len, sizeof(char));
+			ft_strlcat((*array)[index], hash[i]->name, len);
+			ft_strlcat((*array)[index], "=", len);
+			ft_strlcat((*array)[index], hash[i]->value, len);
+			index++;
+			hash[i] = hash[i]->next;
+		}
+		hash[i] = temp;
 		i++;
 	}
 }
 
-void	exec_forked_command(t_cmd *data, t_meta *meta)
+int	get_envp_size(t_hash **hash)
 {
-	int	exit_code;
+	int		i;
+	int		len;
+	t_hash	*temp;
 
-	if (is_builtin(data->word_list[0].word))
+	i = 0;
+	len = 0;
+	while (i < HT_SIZE)
 	{
-		exit_code = run_builtin(meta, data->word_list);
-		close_all_fds();
-		finisher(*meta, "ATHE", exit_code);
+		temp = hash[i];
+		while (hash[i])
+		{
+			len++;
+			hash[i] = hash[i]->next;
+		}
+		hash[i] = temp;
+		i++;
 	}
-	else if (data->pathname == NULL)
+	return (len);
+}
+
+int	get_wl_size(t_word *word_list)
+{
+	int	len;
+
+	len = 1;
+	while (word_list->next != NULL)
 	{
-		handle_null_pathname(data->word_list->word, meta);
-		close_all_fds();
-		finisher(*meta, "ATHE", 127);
+		len++;
+		word_list = word_list->next;
 	}
-	else
-		run_executable(data, meta);
+	return (len);
 }
 
 int	handle_exit_status(t_meta *meta)

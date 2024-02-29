@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/28 17:48:09 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/28 21:06:03 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,12 +140,15 @@ t_ast			*parse_pipeline(t_token **tokens, t_ast *parent, t_meta *meta);
 t_ast			*parse_cmd(t_token **tokens, t_ast *parent, t_meta *meta);
 
 /* EXECUTOR */
-int				get_size(t_word *wl);
+int				get_envp_size(t_hash **hash);
+int				get_wl_size(t_word *word_list);
 int				handle_exit_status(t_meta *meta);
 int				run_builtin(t_meta *meta, t_word *wl);
 void			run_pipeline(t_ast *ast, t_meta *meta);
+void			format_envp(t_hash **hash, char ***array);
 void			run_executable(t_cmd *data, t_meta *meta);
 void			run_simple_command(t_ast *cmd, t_meta *meta);
+void			format_argv(t_word *word_list, char ***array);
 void			handle_null_pathname(char *cmd, t_meta *meta);
 void			exec_forked_command(t_cmd *data, t_meta *meta);
 void			exec_right(t_cmd *data, int pipe_fd[2], t_meta *meta);
@@ -155,7 +158,6 @@ void			middle_pipeline_cmd(t_ast *ast, int *pipe_fd, t_meta *meta);
 void			first_pipeline_cmd(t_ast *ast, int pipe_fd[2], t_meta *meta);
 void			path_error(t_meta *meta, char *path, char *msg, int exit_code);
 void			exec_left(t_cmd *data, int in_fd, int pipe_fd[2], t_meta *meta);
-char			**stringfy(t_word *word_list);
 
 /* HEREDOC & REDIRECTS*/
 int				execute_heredocs(t_ast *ast, t_meta *meta);
@@ -177,6 +179,7 @@ t_redir			*new_redirect(t_token *tokens);
 void			sig_deal(int signo);
 void			signal_handler(void);
 void			eof_signal(t_meta *meta);
+void			forked_signal(int child_pid);
 
 /* HASH TABLE */
 int				last_exit(t_meta *meta);

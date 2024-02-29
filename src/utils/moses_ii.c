@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 18:31:50 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/25 00:07:00 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/28 20:58:53 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,5 +54,17 @@ void	free_str_array(char **array, int size)
 	{
 		free(array[index]);
 		index++;
+	}
+}
+
+void	close_all_fds(void)
+{
+	int	i;
+
+	i = 0;
+	while (i < 1024)
+	{
+		close(i);
+		i++;
 	}
 }
