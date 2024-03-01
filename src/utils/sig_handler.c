@@ -6,13 +6,13 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 17:16:50 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/28 20:34:48 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/29 19:12:20 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	signal_handler(void)
+void	signal_handler(t_meta *meta)
 {
 	struct sigaction	sig_int;
 	struct sigaction	sig_quit;
@@ -23,8 +23,10 @@ void	signal_handler(void)
 	sigemptyset(&sig_quit.sa_mask);
 	sig_quit.sa_handler = SIG_IGN;
 	sig_quit.sa_flags = 0;
-	sigaction(SIGQUIT, &sig_quit, NULL);
 	sigaction(SIGINT, &sig_int, NULL);
+	sigaction(SIGQUIT, &sig_quit, NULL);
+	g_received_signal = 0;
+	tcsetattr(STDIN_FILENO, TCSANOW, meta->term);
 }
 
 void	sig_deal(int signo)
@@ -36,7 +38,7 @@ void	sig_deal(int signo)
 	rl_redisplay();
 }
 
-void	forked_signal(int child_pid)
+void	mid_exec_signal(int child_pid)
 {
 	struct sigaction	sig;
 
@@ -57,4 +59,11 @@ void	eof_signal(t_meta *meta)
 	exit_code = last_exit(meta);
 	ft_putendl_fd("exit", STDOUT_FILENO);
 	finisher(*meta, "ATHE", exit_code);
+}
+
+void	heredoc_sigint_handler(int signum)
+{
+	close(STDIN_FILENO);
+	if (signum == SIGINT)
+		g_received_signal = SIGINT;
 }

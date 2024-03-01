@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 20:38:49 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/25 00:07:00 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/28 22:27:05 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ void	get_path(t_ast **ast, t_hash **hash)
 
 	if (!*ast)
 		return ;
-	if ((*ast)->type == CMD && !is_builtin((*ast)->data->word_list->word))
+	if ((*ast)->type == CMD && (*ast)->data->word_list
+		&& !is_builtin((*ast)->data->word_list->word))
 	{
 		if (ft_strchr((*ast)->data->word_list->word, '/'))
 			(*ast)->data->pathname = ft_strdup((*ast)->data->word_list->word);

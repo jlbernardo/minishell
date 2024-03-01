@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 14:56:18 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/28 17:50:47 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/29 20:16:31 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,29 @@
 
 int	execute_heredocs(t_ast *ast, t_meta *meta)
 {
-	capture_content(ast->left->data->redirects, meta);
-	if (ast->right == NULL)
-		return (1);
-	else
+	int		child_pid;
+	int		exit_status;
+
+	child_pid = fork();
+	signal(SIGINT, SIG_IGN);
+	if (child_pid == 0)
+		child_heredoc(meta, ast);
+	waitpid(-1, &exit_status, 0);
+	signal_handler(meta);
+	if (WEXITSTATUS(exit_status) == 1)
 	{
-		if (ast->right->type == CMD)
-			capture_content(ast->right->data->redirects, meta);
-		else
-			execute_heredocs(ast->right, meta);
+		add_upd_hashtable("?", "130", meta->hash);
+		meta->ast->success = LIE;
+		return (EXIT_FAILURE);
 	}
-	return (1);
+	return (EXIT_SUCCESS);
 }
 
 void	capture_content(t_redir *rl, t_meta *meta)
 {
-	int			heredoc_fd;
-	char		*tmp_file;
-	static int	cmd_nbr;
+	int				heredoc_fd;
+	char			*tmp_file;
+	static int		cmd_nbr;
 
 	while (rl != NULL)
 	{
@@ -39,20 +44,19 @@ void	capture_content(t_redir *rl, t_meta *meta)
 		{
 			tmp_file = gen_tmpfile_name(cmd_nbr);
 			heredoc_fd = open(tmp_file, O_CREAT | O_RDWR | O_TRUNC, 0666);
-			fill_tmpfile(heredoc_fd, rl, meta);
 			free(tmp_file);
+			fill_tmpfile(heredoc_fd, rl, meta);
 		}
 		rl = rl->next;
-		cmd_nbr++;
 	}
-	cmd_nbr = 0;
+	cmd_nbr++;
 }
 
 char	*gen_tmpfile_name(int cmd_nbr)
 {
+	int				digits;
 	char			*tmpfile_name;
 	char			*tmpfile_nbr;
-	int				digits;
 	unsigned int	buf_size;
 
 	tmpfile_nbr = ft_itoa(cmd_nbr);
@@ -68,28 +72,22 @@ char	*gen_tmpfile_name(int cmd_nbr)
 void	fill_tmpfile(int fd, t_redir *r, t_meta *meta)
 {
 	char			*input;
-	unsigned int	size;
 
-	input = readline(">");
-	while (ft_strcmp(input, r->filename) != 0)
+	while (TRUTH)
 	{
-		size = ft_strlen(input);
-		if (size == 0)
-			write(fd, "\n", 1);
-		else
-		{
-			expand_variable(&input, meta);
-			write(fd, input, ft_strlen(input));
-		}
-		free(input);
 		input = readline(">");
+		if (handle_eof(input, r, fd, meta) == 1)
+			return ;
 		if (ft_strcmp(input, r->filename) == 0)
 		{
 			free(input);
-			write(fd, "\n\0", 2);
-			close(fd);
+			write_and_close(fd);
 			break ;
 		}
-		write(fd, "\n", 1);
+		if (ft_strlen(input) == 0)
+			write(fd, "\n", STDOUT_FILENO);
+		else
+			expand_and_write(input, fd, meta);
+		free(input);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 10:42:52 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/28 21:10:43 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/28 22:28:49 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,25 @@ void	run_simple_command(t_ast *cmd, t_meta *meta)
 	pid_t	child_pid;
 	int		exit_status;
 
-	if (is_builtin(cmd->data->word_list[0].word))
-		run_builtin(meta, cmd->data->word_list);
-	else
+	if (cmd->data->word_list)
 	{
-		if (cmd->data->pathname == NULL)
-			handle_null_pathname(cmd->data->word_list->word, meta);
+		if (is_builtin(cmd->data->word_list[0].word))
+			run_builtin(meta, cmd->data->word_list);
 		else
 		{
-			child_pid = fork();
-			forked_signal(child_pid);
-			if (child_pid == -1)
-				return ;
-			if (child_pid == 0)
-				run_executable(cmd->data, meta);
-			wait(&exit_status);
-			upd_simple_exit_status(WEXITSTATUS(exit_status), meta);
+			if (cmd->data->pathname == NULL)
+				handle_null_pathname(cmd->data->word_list->word, meta);
+			else
+			{
+				child_pid = fork();
+				mid_exec_signal(child_pid);
+				if (child_pid == -1)
+					return ;
+				if (child_pid == 0)
+					run_executable(cmd->data, meta);
+				wait(&exit_status);
+				upd_simple_exit_status(WEXITSTATUS(exit_status), meta);
+			}
 		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/28 21:06:03 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/29 21:17:36 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # include <stddef.h>
 # include <unistd.h>
 # include <string.h>
+# include <termios.h>
+# include <sysexits.h>
 # include <sys/stat.h>
 # include <sys/wait.h>
 # include <sys/types.h>
@@ -42,13 +44,16 @@
 # define CMD 30
 # define PIPELINE 31
 
-# define HT_SIZE 10
+# define HT_SIZE 180
+
+extern int	g_received_signal;
 
 typedef struct s_meta
 {
 	struct s_token	*tokens;
 	struct s_ast	*ast;
 	struct s_hash	**hash;
+	struct termios	*term;
 }				t_meta;
 
 typedef struct s_hash
@@ -134,6 +139,7 @@ void			get_path(t_ast **ast, t_hash **hash);
 void			remove_empty_tokens(t_token **tokens);
 void			syntax_error(char *token, t_meta *meta);
 void			set_cmd(t_ast **cmd_node, t_ast **parent);
+void			check_invalid_commands(t_ast *ast, t_meta *meta);
 void			remove_quotes(t_token **tokens, int i, int len, char quote);
 void			set_pl(t_ast **pl, t_ast **parent, t_token **tk, t_meta *meta);
 t_ast			*parse_pipeline(t_token **tokens, t_ast *parent, t_meta *meta);
@@ -151,18 +157,20 @@ void			run_simple_command(t_ast *cmd, t_meta *meta);
 void			format_argv(t_word *word_list, char ***array);
 void			handle_null_pathname(char *cmd, t_meta *meta);
 void			exec_forked_command(t_cmd *data, t_meta *meta);
-void			exec_right(t_cmd *data, int pipe_fd[2], t_meta *meta);
 void			upd_simple_exit_status(int exit_status, t_meta	*meta);
 void			last_pipeline_cmd(t_ast *ast, int *pipe_fd, t_meta *meta);
 void			middle_pipeline_cmd(t_ast *ast, int *pipe_fd, t_meta *meta);
 void			first_pipeline_cmd(t_ast *ast, int pipe_fd[2], t_meta *meta);
 void			path_error(t_meta *meta, char *path, char *msg, int exit_code);
-void			exec_left(t_cmd *data, int in_fd, int pipe_fd[2], t_meta *meta);
 
 /* HEREDOC & REDIRECTS*/
 int				execute_heredocs(t_ast *ast, t_meta *meta);
 void			fill_tmpfile(int fd, t_redir *r, t_meta *meta);
 void			capture_content(t_redir *rl, t_meta *meta);
+void			child_heredoc(t_meta *meta, t_ast *ast);
+void			write_and_close(int fd);
+int				handle_eof(char *input, t_redir *r, int fd, t_meta *meta);
+void			expand_and_write(char *input, int fd, t_meta *meta);
 char			*gen_tmpfile_name(int cmd_nbr);
 
 /* LIST HANDLERS */
@@ -177,9 +185,10 @@ t_redir			*new_redirect(t_token *tokens);
 
 /* SIGNALS */
 void			sig_deal(int signo);
-void			signal_handler(void);
 void			eof_signal(t_meta *meta);
-void			forked_signal(int child_pid);
+void			signal_handler(t_meta *meta);
+void			mid_exec_signal(int child_pid);
+void			heredoc_sigint_handler(int signum);
 
 /* HASH TABLE */
 int				last_exit(t_meta *meta);
