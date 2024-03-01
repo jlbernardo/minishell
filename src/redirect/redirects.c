@@ -6,7 +6,7 @@
 /*   By: iusantos <iusantos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:32:57 by iusantos          #+#    #+#             */
-/*   Updated: 2024/03/01 17:07:37 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/03/01 17:18:51 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,13 @@ int	red_output(t_redir *r)
 
 int	red_heredoc(t_redir *r)
 {
-	r = 0;
-	return 0;
+	int	fd;
+
+	(void)r;
+	fd = open("/tmp/0", O_RDONLY);
+	dup2(fd, STDIN_FILENO);
+	close(fd);
+	return (TRUTH);
 }
 
 int	red_append(t_redir *r)
