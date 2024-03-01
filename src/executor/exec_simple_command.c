@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 10:42:52 by iusantos          #+#    #+#             */
-/*   Updated: 2024/03/01 15:53:20 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/03/01 17:58:27 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@ void	run_simple_command(t_ast *cmd, t_meta *meta)
 	pid_t	child_pid;
 	int		exit_status;
 
-	if (simple_command_redirects(cmd->data->redirects, meta) == LIE)
+	//i think the line21 conditional check can be added to line 23 check
+	//for norminette fuckery
+	if (process_redirects(cmd->data->redirects, meta) == LIE)
 		return ;
 	if (cmd->data->word_list)
 	{
@@ -40,7 +42,6 @@ void	run_simple_command(t_ast *cmd, t_meta *meta)
 			}
 		}
 	}
-	//recover origional fds for STDIN & STDOUT
 }
 
 void	upd_simple_exit_status(int exit_status, t_meta *meta)

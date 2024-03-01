@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/03/01 15:52:17 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/03/01 17:58:07 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef struct s_meta
 	struct s_ast	*ast;
 	struct s_hash	**hash;
 	struct termios	*term;
+	int				cmd_nbr;
 }				t_meta;
 
 typedef struct s_hash
@@ -174,11 +175,11 @@ void			expand_and_write(char *input, int fd, t_meta *meta);
 char			*gen_tmpfile_name(int cmd_nbr);
 
 /* REDIRECTS */
-int				simple_command_redirects(t_redir *rl, t_meta *meta);
+int				process_redirects(t_redir *rl, t_meta *meta);
 int				red_input(t_redir *r);
 int				red_append(t_redir *r);
 int				red_output(t_redir *r);
-int				red_heredoc(t_redir *r);
+int				red_heredoc(t_redir *r, int cmd_nbr);
 void			print_nsf_error_msg(char *filename);
 void			print_np_error_msg(char *filename);
 

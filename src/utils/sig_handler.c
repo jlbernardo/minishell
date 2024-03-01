@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 17:16:50 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/29 19:12:20 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/01 17:50:55 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	signal_handler(t_meta *meta)
 	sigaction(SIGQUIT, &sig_quit, NULL);
 	g_received_signal = 0;
 	tcsetattr(STDIN_FILENO, TCSANOW, meta->term);
+	meta->cmd_nbr = 0;
 }
 
 void	sig_deal(int signo)

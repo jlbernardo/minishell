@@ -6,13 +6,13 @@
 /*   By: iusantos <iusantos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:32:57 by iusantos          #+#    #+#             */
-/*   Updated: 2024/03/01 17:18:51 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/03/01 17:58:09 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	simple_command_redirects(t_redir *rl, t_meta *meta)
+int	process_redirects(t_redir *rl, t_meta *meta)
 {
 	int	process_next_redir;
 
@@ -25,7 +25,7 @@ int	simple_command_redirects(t_redir *rl, t_meta *meta)
 		else if (rl->type == REDOUT)
 			process_next_redir = red_output(rl);
 		else
-			process_next_redir = red_heredoc(rl);
+			process_next_redir = red_heredoc(rl, meta->cmd_nbr);
 		if (process_next_redir == LIE)
 		{
 			add_upd_hashtable("?", "1", meta->hash);
@@ -79,12 +79,15 @@ int	red_output(t_redir *r)
 	return (TRUTH);
 }
 
-int	red_heredoc(t_redir *r)
+int	red_heredoc(t_redir *r, int cmd_nbr)
 {
 	int	fd;
+	char *heredoc_file;
 
 	(void)r;
-	fd = open("/tmp/0", O_RDONLY);
+	heredoc_file = gen_tmpfile_name(cmd_nbr);
+	fd = open(heredoc_file, O_RDONLY);
+	free(heredoc_file);
 	dup2(fd, STDIN_FILENO);
 	close(fd);
 	return (TRUTH);

@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/03/01 16:11:00 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/03/01 18:00:36 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,11 @@ void	exec_forked_command(t_cmd *data, t_meta *meta)
 {
 	int	exit_code;
 
+	if (process_redirects(data->redirects, meta) == LIE)
+	{
+		finisher(*meta, "ATHE", 1);
+		return ;
+	}
 	if (is_builtin(data->word_list[0].word))
 	{
 		exit_code = run_builtin(meta, data->word_list);
