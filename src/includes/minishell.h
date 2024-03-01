@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/29 21:17:36 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/01 15:52:17 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,7 @@ void			middle_pipeline_cmd(t_ast *ast, int *pipe_fd, t_meta *meta);
 void			first_pipeline_cmd(t_ast *ast, int pipe_fd[2], t_meta *meta);
 void			path_error(t_meta *meta, char *path, char *msg, int exit_code);
 
-/* HEREDOC & REDIRECTS*/
+/* HEREDOC EXECUTION */
 int				execute_heredocs(t_ast *ast, t_meta *meta);
 void			fill_tmpfile(int fd, t_redir *r, t_meta *meta);
 void			capture_content(t_redir *rl, t_meta *meta);
@@ -172,6 +172,15 @@ void			write_and_close(int fd);
 int				handle_eof(char *input, t_redir *r, int fd, t_meta *meta);
 void			expand_and_write(char *input, int fd, t_meta *meta);
 char			*gen_tmpfile_name(int cmd_nbr);
+
+/* REDIRECTS */
+int				simple_command_redirects(t_redir *rl, t_meta *meta);
+int				red_input(t_redir *r);
+int				red_append(t_redir *r);
+int				red_output(t_redir *r);
+int				red_heredoc(t_redir *r);
+void			print_nsf_error_msg(char *filename);
+void			print_np_error_msg(char *filename);
 
 /* LIST HANDLERS */
 void			sort_vars(t_word **vars, t_word *first, t_word *first_p);

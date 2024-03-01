@@ -6,18 +6,28 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/29 21:30:08 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/01 16:11:00 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include <unistd.h>
 
 void	executor(t_meta *meta)
 {
+	int og_stdin;
+	int	og_stdout;
+
+	og_stdin = dup(STDIN_FILENO);
+	og_stdout = dup(STDOUT_FILENO);
 	if (meta->ast->right == NULL)
 		run_simple_command(meta->ast->left, meta);
 	else
 		run_pipeline(meta->ast, meta);
+	dup2(og_stdin, STDIN_FILENO);
+	dup2(og_stdout, STDOUT_FILENO);
+	close(og_stdin);
+	close(og_stdout);
 }
 
 void	run_pipeline(t_ast *ast, t_meta *meta)
