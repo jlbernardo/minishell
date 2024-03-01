@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 17:16:50 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/29 15:56:19 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/29 19:12:20 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,9 @@ void	signal_handler(t_meta *meta)
 	sigemptyset(&sig_quit.sa_mask);
 	sig_quit.sa_handler = SIG_IGN;
 	sig_quit.sa_flags = 0;
-	sigaction(SIGQUIT, &sig_quit, NULL);
 	sigaction(SIGINT, &sig_int, NULL);
+	sigaction(SIGQUIT, &sig_quit, NULL);
+	g_received_signal = 0;
 	tcsetattr(STDIN_FILENO, TCSANOW, meta->term);
 }
 
@@ -58,4 +59,11 @@ void	eof_signal(t_meta *meta)
 	exit_code = last_exit(meta);
 	ft_putendl_fd("exit", STDOUT_FILENO);
 	finisher(*meta, "ATHE", exit_code);
+}
+
+void	heredoc_sigint_handler(int signum)
+{
+	close(STDIN_FILENO);
+	if (signum == SIGINT)
+		g_received_signal = SIGINT;
 }

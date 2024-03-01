@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/28 21:07:23 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/29 21:30:08 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	executor(t_meta *meta)
 {
-	execute_heredocs(meta->ast, meta);
 	if (meta->ast->right == NULL)
 		run_simple_command(meta->ast->left, meta);
 	else
@@ -112,7 +111,6 @@ void	exec_forked_command(t_cmd *data, t_meta *meta)
 	}
 	else if (data->pathname == NULL)
 	{
-		handle_null_pathname(data->word_list->word, meta);
 		close_all_fds();
 		finisher(*meta, "ATHE", 127);
 	}

@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 21:12:03 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/28 21:25:41 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/29 21:30:22 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ int	parser(t_meta *meta)
 	meta->ast = parse_pipeline(&meta->tokens, NULL, meta);
 	meta->tokens = temp;
 	get_path(&meta->ast, meta->hash);
+	execute_heredocs(meta->ast, meta);
+	check_invalid_commands(meta->ast, meta);
 	if (meta->ast && meta->ast->success)
 		return (TRUTH);
 	return (LIE);
@@ -77,6 +79,17 @@ void	remove_empty_tokens(t_token **tokens)
 	}
 	else
 		remove_empty_tokens(&curr->next);
+}
+
+void	check_invalid_commands(t_ast *ast, t_meta *meta)
+{
+	if (!ast)
+		return ;
+	if (ast->data && !ast->data->pathname
+		&& !is_builtin(ast->data->word_list[0].word))
+		handle_null_pathname(ast->data->word_list->word, meta);
+	check_invalid_commands(ast->left, meta);
+	check_invalid_commands(ast->right, meta);
 }
 
 t_redir	*new_redirect(t_token *tokens)

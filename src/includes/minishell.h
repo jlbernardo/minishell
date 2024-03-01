@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/29 20:53:06 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/29 21:17:36 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <unistd.h>
 # include <string.h>
 # include <termios.h>
+# include <sysexits.h>
 # include <sys/stat.h>
 # include <sys/wait.h>
 # include <sys/types.h>
@@ -44,6 +45,8 @@
 # define PIPELINE 31
 
 # define HT_SIZE 180
+
+extern int	g_received_signal;
 
 typedef struct s_meta
 {
@@ -136,6 +139,7 @@ void			get_path(t_ast **ast, t_hash **hash);
 void			remove_empty_tokens(t_token **tokens);
 void			syntax_error(char *token, t_meta *meta);
 void			set_cmd(t_ast **cmd_node, t_ast **parent);
+void			check_invalid_commands(t_ast *ast, t_meta *meta);
 void			remove_quotes(t_token **tokens, int i, int len, char quote);
 void			set_pl(t_ast **pl, t_ast **parent, t_token **tk, t_meta *meta);
 t_ast			*parse_pipeline(t_token **tokens, t_ast *parent, t_meta *meta);
@@ -163,6 +167,10 @@ void			path_error(t_meta *meta, char *path, char *msg, int exit_code);
 int				execute_heredocs(t_ast *ast, t_meta *meta);
 void			fill_tmpfile(int fd, t_redir *r, t_meta *meta);
 void			capture_content(t_redir *rl, t_meta *meta);
+void			child_heredoc(t_meta *meta, t_ast *ast);
+void			write_and_close(int fd);
+int				handle_eof(char *input, t_redir *r, int fd, t_meta *meta);
+void			expand_and_write(char *input, int fd, t_meta *meta);
 char			*gen_tmpfile_name(int cmd_nbr);
 
 /* LIST HANDLERS */
@@ -177,9 +185,10 @@ t_redir			*new_redirect(t_token *tokens);
 
 /* SIGNALS */
 void			sig_deal(int signo);
-void			signal_handler(t_meta *meta);
 void			eof_signal(t_meta *meta);
+void			signal_handler(t_meta *meta);
 void			mid_exec_signal(int child_pid);
+void			heredoc_sigint_handler(int signum);
 
 /* HASH TABLE */
 int				last_exit(t_meta *meta);
