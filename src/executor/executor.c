@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/03/02 17:48:34 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/03/02 20:07:54 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 void	executor(t_meta *meta)
 {
-	int og_stdin;
+	int	og_stdin;
 	int	og_stdout;
 
 	og_stdin = dup(STDIN_FILENO);
