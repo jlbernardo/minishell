@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/03/02 16:54:11 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/03/02 17:48:34 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,8 @@ void	exec_forked_command(t_cmd *data, t_meta *meta)
 {
 	int	exit_code;
 
-	if (process_redirects(data->redirects, meta) == LIE)
+	if (process_redirects(data->redirects, meta) == LIE
+		|| data->word_list == NULL)
 	{
 		finisher(*meta, "ATHE", 1);
 		return ;
