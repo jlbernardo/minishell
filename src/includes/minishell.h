@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/03/01 17:58:07 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/03/02 17:55:29 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,6 @@ void			get_path(t_ast **ast, t_hash **hash);
 void			remove_empty_tokens(t_token **tokens);
 void			syntax_error(char *token, t_meta *meta);
 void			set_cmd(t_ast **cmd_node, t_ast **parent);
-void			check_invalid_commands(t_ast *ast, t_meta *meta);
 void			remove_quotes(t_token **tokens, int i, int len, char quote);
 void			set_pl(t_ast **pl, t_ast **parent, t_token **tk, t_meta *meta);
 t_ast			*parse_pipeline(t_token **tokens, t_ast *parent, t_meta *meta);
