@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 14:56:18 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/29 20:16:31 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/02 18:17:47 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,19 @@ char	*gen_tmpfile_name(int cmd_nbr)
 void	fill_tmpfile(int fd, t_redir *r, t_meta *meta)
 {
 	char			*input;
+	unsigned int	size;
 
-	while (TRUTH)
+	input = readline(">"); 
+	if (handle_eof(input, r, fd, meta) == 1)
+		return ;
+	while (ft_strcmp(input, r->filename) != 0)
 	{
+		size = ft_strlen(input);
+		if (size == 0)
+			write(fd, "\n", 1);
+		else
+			expand_and_write(input, fd, meta);
+		free(input);
 		input = readline(">");
 		if (handle_eof(input, r, fd, meta) == 1)
 			return ;
@@ -84,10 +94,6 @@ void	fill_tmpfile(int fd, t_redir *r, t_meta *meta)
 			write_and_close(fd);
 			break ;
 		}
-		if (ft_strlen(input) == 0)
-			write(fd, "\n", STDOUT_FILENO);
-		else
-			expand_and_write(input, fd, meta);
-		free(input);
+		write(fd, "\n", 1);
 	}
 }
