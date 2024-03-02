@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/03/02 16:36:21 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/03/02 16:54:11 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,7 @@ void	exec_forked_command(t_cmd *data, t_meta *meta)
 	}
 	else if (data->pathname == NULL)
 	{
+		handle_null_pathname(data->word_list[0].word, meta);
 		close_all_fds();
 		finisher(*meta, "ATHE", 127);
 	}
