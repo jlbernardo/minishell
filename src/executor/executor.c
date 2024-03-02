@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/03/01 18:00:36 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/03/02 16:36:21 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,10 +101,7 @@ int	run_builtin(t_meta *meta, t_word *wl)
 		}
 	}
 	exit_str = ft_itoa(exit_code);
-	if (!exit_str)
-		handle_null_pathname(wl->word, meta);
-	else
-		add_upd_hashtable("?", exit_str, meta->hash);
+	add_upd_hashtable("?", exit_str, meta->hash);
 	free(exit_str);
 	return (exit_code);
 }

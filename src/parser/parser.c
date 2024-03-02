@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 21:12:03 by julberna          #+#    #+#             */
-/*   Updated: 2024/03/02 16:18:26 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/03/02 16:39:18 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	parser(t_meta *meta)
 	get_path(&meta->ast, meta->hash);
 	if (meta->ast->success == 1)
 		execute_heredocs(meta->ast, meta);
-	check_invalid_commands(meta->ast, meta);
+	// check_invalid_commands(meta->ast, meta);
 	if (meta->ast && meta->ast->success)
 		return (TRUTH);
 	return (LIE);
