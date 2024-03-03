@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 19:35:43 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/03/03 17:23:08 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/03 19:42:57 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,8 @@ int	bigger_than_llmax(char *exit_code)
 	const char	*max_ll = "+9223372036854775807";
 
 	ret = LIE;
+	if (exit_code[0] == '-')
+		return (ret);
 	if (exit_code[0] == '+')
 	{
 		n = trim_prefix(&exit_code[1], "0");
@@ -99,13 +101,9 @@ int	bigger_than_llmax(char *exit_code)
 			ret = TRUTH;
 		free(nn);
 	}
-	else
-	{
-		n = trim_prefix(exit_code, "0");
-		if (ft_strlen(n) > ft_strlen(&max_ll[1])
-			|| ft_strcmp(&max_ll[1], n) < 0)
-			ret = TRUTH;
-	}
+	n = trim_prefix(exit_code, "0");
+	if (ft_strlen(n) > ft_strlen(&max_ll[1]) || ft_strcmp(&max_ll[1], n) < 0)
+		ret = TRUTH;
 	free(n);
 	return (ret);
 }
