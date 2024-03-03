@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 18:33:55 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/29 20:14:14 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/03 14:06:30 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ void	child_heredoc(t_meta *meta, t_ast *ast)
 	finisher(*meta, "ATHE", EXIT_SUCCESS);
 }
 
-void	expand_and_write(char *input, int fd, t_meta *meta)
+void	expand_and_write(char **input, int fd, t_meta *meta)
 {
-	expand_variable(&input, meta);
-	write(fd, input, ft_strlen(input));
+	expand_variable(input, meta);
+	write(fd, *input, ft_strlen(*input));
 }
 
 int	handle_eof(char *input, t_redir *r, int fd, t_meta *meta)
