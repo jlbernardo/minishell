@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iusantos <iusantos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:32:57 by iusantos          #+#    #+#             */
-/*   Updated: 2024/03/01 17:58:09 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/03/02 20:10:47 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	red_input(t_redir *r)
 
 	if (access(r->filename, F_OK) == 0)
 	{
-		if(access(r->filename, R_OK) != 0)
+		if (access(r->filename, R_OK) != 0)
 		{
 			print_np_error_msg(r->filename);
 			return (LIE);
@@ -67,13 +67,13 @@ int	red_output(t_redir *r)
 
 	if (access(r->filename, F_OK) == 0)
 	{
-		if(access(r->filename, W_OK) != 0)
+		if (access(r->filename, W_OK) != 0)
 		{
 			print_np_error_msg(r->filename);
 			return (LIE);
 		}
 	}
-	fd = open(r->filename, O_WRONLY|O_TRUNC|O_CREAT, 0644);
+	fd = open(r->filename, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	dup2(fd, STDOUT_FILENO);
 	close(fd);
 	return (TRUTH);
@@ -81,8 +81,8 @@ int	red_output(t_redir *r)
 
 int	red_heredoc(t_redir *r, int cmd_nbr)
 {
-	int	fd;
-	char *heredoc_file;
+	int		fd;
+	char	*heredoc_file;
 
 	(void)r;
 	heredoc_file = gen_tmpfile_name(cmd_nbr);
@@ -99,28 +99,14 @@ int	red_append(t_redir *r)
 
 	if (access(r->filename, F_OK) == 0)
 	{
-		if(access(r->filename, W_OK) != 0)
+		if (access(r->filename, W_OK) != 0)
 		{
 			print_np_error_msg(r->filename);
 			return (LIE);
 		}
 	}
-	fd = open(r->filename, O_WRONLY|O_APPEND|O_CREAT, 0644);
+	fd = open(r->filename, O_WRONLY | O_APPEND | O_CREAT, 0644);
 	dup2(fd, STDOUT_FILENO);
 	close(fd);
 	return (TRUTH);
-}
-
-void	print_nsf_error_msg(char *filename)
-{
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(filename, 2);
-	ft_putstr_fd(": no such file or directory\n", 2);
-}
-
-void	print_np_error_msg(char *filename)
-{
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(filename, 2);
-	ft_putstr_fd(": permission denied\n", 2);
 }

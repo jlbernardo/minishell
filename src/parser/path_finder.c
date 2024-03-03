@@ -6,15 +6,16 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 20:38:49 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/28 22:27:05 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/02 21:05:52 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+void	free_paths(char *full_path, char **paths);
+
 void	get_path(t_ast **ast, t_hash **hash)
 {
-	int		i;
 	char	**paths;
 	char	*full_path;
 
@@ -28,17 +29,26 @@ void	get_path(t_ast **ast, t_hash **hash)
 		else
 		{
 			full_path = grab_value("PATH", hash);
+			if (!full_path)
+				return ;
 			paths = ft_split(full_path, ':');
 			find_path(ast, paths);
-			free(full_path);
-			i = -1;
-			while (paths[++i] != NULL)
-				free(paths[i]);
-			free(paths);
+			free_paths(full_path, paths);
 		}
 	}
 	get_path(&(*ast)->left, hash);
 	get_path(&(*ast)->right, hash);
+}
+
+void	free_paths(char *full_path, char **paths)
+{
+	int	i;
+
+	i = -1;
+	free(full_path);
+	while (paths[++i] != NULL)
+		free(paths[i]);
+	free(paths);
 }
 
 void	find_path(t_ast **ast, char **paths)
