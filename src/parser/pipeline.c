@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 22:55:09 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/28 18:15:42 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/03 16:11:10 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ t_ast	*handle_pipeline(t_token **tokens, t_ast *pl_node, t_meta *meta)
 		pl_node->right = parse_cmd(tokens, pl_node, meta);
 	}
 	else
-		syntax_error((*tokens)->literal, meta);
+		syntax_error((*tokens)->next, meta);
 	return (pl_node);
 }
 
@@ -79,7 +79,7 @@ t_ast	*parse_cmd(t_token **tokens, t_ast *parent, t_meta *meta)
 		}
 		else
 		{
-			syntax_error((*tokens)->literal, meta);
+			syntax_error((*tokens)->next, meta);
 			free_cmd(cmd_node->data);
 			free(cmd_node);
 			return (NULL);

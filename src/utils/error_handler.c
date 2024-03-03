@@ -6,17 +6,23 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 17:25:16 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/03/03 15:22:15 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/03 15:58:54 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	syntax_error(char *token, t_meta *meta)
+void	syntax_error(t_token *token, t_meta *meta)
 {
+	char	*err_tk;
+
+	if (token)
+		err_tk = token->literal;
+	else
+		err_tk = "newline";
 	ft_putstr_fd("minishell: syntax error near unexpected token `", \
 		STDERR_FILENO);
-	ft_putstr_fd(token, STDERR_FILENO);
+	ft_putstr_fd(err_tk, STDERR_FILENO);
 	ft_putendl_fd("'", STDERR_FILENO);
 	add_upd_hashtable("?", "2", meta->hash);
 }

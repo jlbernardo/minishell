@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/03/03 12:47:33 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/03/03 15:57:57 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ char			*read_quoted(t_lexer *lex, char quote, int s_open, int d_open);
 void			find_path(t_ast **ast, char **paths);
 void			get_path(t_ast **ast, t_hash **hash);
 void			remove_empty_tokens(t_token **tokens);
-void			syntax_error(char *token, t_meta *meta);
+void			syntax_error(t_token *token, t_meta *meta);
 void			set_cmd(t_ast **cmd_node, t_ast **parent);
 void			remove_quotes(t_token **tokens, int i, int len, char quote);
 void			set_pl(t_ast **pl, t_ast **parent, t_token **tk, t_meta *meta);
