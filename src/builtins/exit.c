@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 19:35:43 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/27 18:15:50 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/03 17:23:08 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,14 @@ int	ft_exit(t_meta *meta, t_word *wl)
 
 	(void)wl;
 	exit_code = last_exit(meta);
-	ft_putendl_fd(meta->tokens->literal, STDOUT_FILENO);
-	if (meta->tokens->next)
+	ft_putendl_fd(wl->word, STDOUT_FILENO);
+	if (wl->next)
 	{
-		arg = meta->tokens->next->literal;
+		arg = wl->next->word;
 		if ((!ft_isdigit(*arg) && *arg != '-' && *arg != '+')
 			|| bigger_than_llmax(arg) || smaller_than_llmin(arg))
 			exit_code = exit_error(arg, "numeric argument required");
-		else if (meta->tokens->next->next)
+		else if (wl->next->next)
 		{
 			add_upd_hashtable("?", "1", meta->hash);
 			return (exit_error(NULL, "too many arguments"));

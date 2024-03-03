@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/03/02 21:38:21 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/03 17:27:55 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	executor(t_meta *meta)
 
 	og_stdin = dup(STDIN_FILENO);
 	og_stdout = dup(STDOUT_FILENO);
+	remove_quotes(meta->ast);
 	if (meta->ast->right == NULL)
 		run_simple_command(meta->ast->left, meta);
 	else

@@ -11,7 +11,8 @@ INCLUDE = -I./includes
 
 SD = src/
 COMMON += $(addprefix $(SD)executor/, executor.c executor_utils.c \
-						exec_simple_command.c exec_pipeline_commands.c)
+						exec_simple_command.c exec_pipeline_commands.c \
+						quote_removal.c)
 COMMON += $(addprefix $(SD)lexer/, lexer.c lexer_utils.c)
 COMMON += $(addprefix $(SD)parser/, parser.c expander.c path_finder.c \
 						pipeline.c)
