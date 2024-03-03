@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/03/03 12:47:33 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/03/03 14:05:12 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,7 @@ void			capture_content(t_redir *rl, t_meta *meta);
 void			child_heredoc(t_meta *meta, t_ast *ast);
 void			write_and_close(int fd);
 int				handle_eof(char *input, t_redir *r, int fd, t_meta *meta);
-void			expand_and_write(char *input, int fd, t_meta *meta);
+void			expand_and_write(char **input, int fd, t_meta *meta);
 char			*gen_tmpfile_name(int cmd_nbr);
 
 /* REDIRECTS */
