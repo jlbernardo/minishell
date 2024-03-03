@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 17:13:03 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/03/03 12:48:18 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/03 16:23:00 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,10 @@ void	set_pl(t_ast **pl, t_ast **parent, t_token **tk, t_meta *meta)
 		return ;
 	(*pl)->type = PIPELINE;
 	(*pl)->parent = *parent;
-	(*pl)->success = 0;
+	(*pl)->success = TRUTH;
 	if ((*pl)->parent == NULL && !is_pipe)
 	{
-		syntax_error((*tk)->literal, meta);
+		syntax_error(*tk, meta);
 		free(*pl);
 		*pl = NULL;
 	}
