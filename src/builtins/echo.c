@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 18:47:27 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/25 00:07:00 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/03 13:01:14 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	echo_error(void)
 
 int	check_flag(t_word *wl)
 {
-	if (wl->next && !ft_strcmp(wl->next->word, "-n"))
+	if (wl->next && !ft_strncmp(wl->next->word, "-n", 1))
 		return (TRUTH);
 	return (LIE);
 }
