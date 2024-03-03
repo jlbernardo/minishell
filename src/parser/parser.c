@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 21:12:03 by julberna          #+#    #+#             */
-/*   Updated: 2024/03/02 18:06:39 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/03/03 15:49:09 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,11 @@ int	parser(t_meta *meta)
 	meta->ast = parse_pipeline(&meta->tokens, NULL, meta);
 	meta->tokens = temp;
 	get_path(&meta->ast, meta->hash);
-	if (meta->ast->success == 1)
-		execute_heredocs(meta->ast, meta);
 	if (meta->ast && meta->ast->success)
+	{
+		execute_heredocs(meta->ast, meta);
 		return (TRUTH);
+	}
 	return (LIE);
 }
 

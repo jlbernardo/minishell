@@ -10,10 +10,11 @@ LIBFT_DIR = ./libft
 INCLUDE = -I./includes
 
 SD = src/
-COMMON += $(addprefix $(SD)executor/, executor.c executor_utils.c pipeline.c \
+COMMON += $(addprefix $(SD)executor/, executor.c executor_utils.c \
 						exec_simple_command.c exec_pipeline_commands.c)
 COMMON += $(addprefix $(SD)lexer/, lexer.c lexer_utils.c)
-COMMON += $(addprefix $(SD)parser/, parser.c expander.c path_finder.c)
+COMMON += $(addprefix $(SD)parser/, parser.c expander.c path_finder.c \
+						pipeline.c)
 COMMON += $(addprefix $(SD)utils/, list_handler.c moses_i.c moses_ii.c \
 						hashtable.c finisher.c conditionals.c set_structures.c \
 						error_handler.c error_handler_2.c sig_handler.c)

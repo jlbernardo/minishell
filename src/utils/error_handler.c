@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 17:25:16 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/03/02 20:29:36 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/03 15:22:15 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	syntax_error(char *token, t_meta *meta)
 {
-	ft_putstr_fd("minishell: syntax error near unexpected token '", \
+	ft_putstr_fd("minishell: syntax error near unexpected token `", \
 		STDERR_FILENO);
 	ft_putstr_fd(token, STDERR_FILENO);
 	ft_putendl_fd("'", STDERR_FILENO);
