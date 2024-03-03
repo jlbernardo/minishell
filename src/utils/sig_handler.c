@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 17:16:50 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/03/03 12:05:12 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/03/03 12:13:15 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void	eof_signal(t_meta *meta)
 
 void	heredoc_sigint_handler(int signum)
 {
+	write(1, "\n", 1);
 	close(STDIN_FILENO);
 	if (signum == SIGINT)
 		g_received_signal = SIGINT;
