@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/03/02 17:55:29 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/03/03 12:47:33 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,6 +181,7 @@ int				red_output(t_redir *r);
 int				red_heredoc(t_redir *r, int cmd_nbr);
 void			print_nsf_error_msg(char *filename);
 void			print_np_error_msg(char *filename);
+void			print_dir_error_msg(char *filename);
 
 /* LIST HANDLERS */
 void			sort_vars(t_word **vars, t_word *first, t_word *first_p);
