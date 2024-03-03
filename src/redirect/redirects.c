@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:32:57 by iusantos          #+#    #+#             */
-/*   Updated: 2024/03/03 12:47:12 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/03/03 13:06:55 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,16 +63,15 @@ int	red_input(t_redir *r)
 
 int	red_output(t_redir *r)
 {
-	int	fd;
-	struct stat    buf;
+	int			fd;
+	struct stat	buf;
 
-    stat(r->filename, &buf);
-    if (S_ISDIR(buf.st_mode) != 0)
+	stat(r->filename, &buf);
+	if (S_ISDIR(buf.st_mode) != 0)
 	{
 		print_dir_error_msg(r->filename);
 		return (LIE);
 	}
-
 	if (access(r->filename, F_OK) == 0)
 	{
 		if (access(r->filename, W_OK) != 0)
