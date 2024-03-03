@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 21:12:03 by julberna          #+#    #+#             */
-/*   Updated: 2024/03/02 18:06:39 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/03/03 17:26:03 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,64 +21,16 @@ int	parser(t_meta *meta)
 		add_upd_hashtable("?", "0", meta->hash);
 		return (LIE);
 	}
-	remove_quotes(&meta->tokens, 0, 0, 0);
-	remove_empty_tokens(&meta->tokens);
 	temp = meta->tokens;
 	meta->ast = parse_pipeline(&meta->tokens, NULL, meta);
 	meta->tokens = temp;
 	get_path(&meta->ast, meta->hash);
-	if (meta->ast->success == 1)
-		execute_heredocs(meta->ast, meta);
 	if (meta->ast && meta->ast->success)
+	{
+		execute_heredocs(meta->ast, meta);
 		return (TRUTH);
+	}
 	return (LIE);
-}
-
-void	remove_quotes(t_token **tokens, int i, int len, char quote)
-{
-	if (!*tokens)
-		return ;
-	if (ft_strcmp((*tokens)->literal, "<<") == 0 && (*tokens)->next != NULL)
-	{
-		remove_quotes(&(*tokens)->next->next, 0, 0, 0);
-		return ;
-	}
-	while ((*tokens)->literal[i] != '\0')
-	{
-		if (((*tokens)->literal[i] == '"' || (*tokens)->literal[i] == '\''))
-		{
-			quote = (*tokens)->literal[i];
-			if (i > 0 && ((*tokens)->literal[i - 1] == '='))
-				break ;
-			len = ft_strlen((*tokens)->literal) - i;
-			ft_memmove(&(*tokens)->literal[i], &(*tokens)->literal[i + 1], len);
-			while ((*tokens)->literal[i] != quote)
-				i++;
-			len = ft_strlen((*tokens)->literal) - i;
-			ft_memmove(&(*tokens)->literal[i], &(*tokens)->literal[i + 1], len);
-			continue ;
-		}
-		i++;
-	}
-	remove_quotes(&(*tokens)->next, 0, 0, 0);
-}
-
-void	remove_empty_tokens(t_token **tokens)
-{
-	t_token	*curr;
-
-	curr = *tokens;
-	if (!tokens || !*tokens)
-		return ;
-	if (!curr->literal)
-	{
-		*tokens = curr->next;
-		free(curr->literal);
-		free(curr);
-		remove_empty_tokens(tokens);
-	}
-	else
-		remove_empty_tokens(&curr->next);
 }
 
 t_redir	*new_redirect(t_token *tokens)

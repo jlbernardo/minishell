@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:49 by julberna          #+#    #+#             */
-/*   Updated: 2024/03/03 11:58:58 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/03/03 16:11:57 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	lexer(t_meta *meta)
 		find_token(&lex, &meta->tokens, 1);
 	}
 	if (!lex.success)
-		syntax_error(meta->tokens->literal, meta);
+		syntax_error(meta->tokens, meta);
 	free(input);
 	return (lex.success);
 }

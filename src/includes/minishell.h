@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/03/03 14:05:12 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/03/03 17:33:33 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,10 +137,8 @@ char			*read_quoted(t_lexer *lex, char quote, int s_open, int d_open);
 /* PARSER */
 void			find_path(t_ast **ast, char **paths);
 void			get_path(t_ast **ast, t_hash **hash);
-void			remove_empty_tokens(t_token **tokens);
-void			syntax_error(char *token, t_meta *meta);
+void			syntax_error(t_token *token, t_meta *meta);
 void			set_cmd(t_ast **cmd_node, t_ast **parent);
-void			remove_quotes(t_token **tokens, int i, int len, char quote);
 void			set_pl(t_ast **pl, t_ast **parent, t_token **tk, t_meta *meta);
 t_ast			*parse_pipeline(t_token **tokens, t_ast *parent, t_meta *meta);
 t_ast			*parse_cmd(t_token **tokens, t_ast *parent, t_meta *meta);
@@ -151,6 +149,7 @@ int				get_wl_size(t_word *word_list);
 int				handle_exit_status(t_meta *meta);
 int				run_builtin(t_meta *meta, t_word *wl);
 void			run_pipeline(t_ast *ast, t_meta *meta);
+void			remove_quotes(t_ast *ast);
 void			format_envp(t_hash **hash, char ***array);
 void			run_executable(t_cmd *data, t_meta *meta);
 void			run_simple_command(t_ast *cmd, t_meta *meta);
@@ -158,9 +157,11 @@ void			format_argv(t_word *word_list, char ***array);
 void			handle_null_pathname(char *cmd, t_meta *meta);
 void			exec_forked_command(t_cmd *data, t_meta *meta);
 void			upd_simple_exit_status(int exit_status, t_meta	*meta);
+void			redir_quotes(t_redir **redir, int i, int len, char quote);
 void			last_pipeline_cmd(t_ast *ast, int *pipe_fd, t_meta *meta);
 void			middle_pipeline_cmd(t_ast *ast, int *pipe_fd, t_meta *meta);
 void			first_pipeline_cmd(t_ast *ast, int pipe_fd[2], t_meta *meta);
+void			wordlist_quotes(t_word **wordlist, int i, int len, char quote);
 void			path_error(t_meta *meta, char *path, char *msg, int exit_code);
 
 /* HEREDOC EXECUTION */
