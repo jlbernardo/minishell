@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 14:56:18 by iusantos          #+#    #+#             */
-/*   Updated: 2024/03/02 18:17:47 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/03/03 12:28:12 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	fill_tmpfile(int fd, t_redir *r, t_meta *meta)
 	char			*input;
 	unsigned int	size;
 
-	input = readline(">"); 
+	input = readline(">");
 	if (handle_eof(input, r, fd, meta) == 1)
 		return ;
 	while (ft_strcmp(input, r->filename) != 0)

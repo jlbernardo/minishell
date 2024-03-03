@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 10:42:52 by iusantos          #+#    #+#             */
-/*   Updated: 2024/03/01 17:58:27 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/03/03 12:27:13 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,8 @@ void	run_simple_command(t_ast *cmd, t_meta *meta)
 	pid_t	child_pid;
 	int		exit_status;
 
-	//i think the line21 conditional check can be added to line 23 check
-	//for norminette fuckery
-	if (process_redirects(cmd->data->redirects, meta) == LIE)
-		return ;
-	if (cmd->data->word_list)
+	if (cmd->data->word_list
+		&& process_redirects(cmd->data->redirects, meta) == TRUTH)
 	{
 		if (is_builtin(cmd->data->word_list[0].word))
 			run_builtin(meta, cmd->data->word_list);
