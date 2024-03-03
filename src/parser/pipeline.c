@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 22:55:09 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/03/03 16:24:47 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/03 16:40:48 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ t_ast	*create_pl_node(t_token **tokens, t_ast *parent, t_meta *meta)
 	if (!pl_node)
 		return (NULL);
 	pl_node->left = parse_cmd(tokens, pl_node, meta);
+	if (!pl_node->success && parent)
+		parent->success = LIE;
 	return (pl_node);
 }
 
