@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 20:18:04 by julberna          #+#    #+#             */
-/*   Updated: 2024/03/02 20:39:23 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/02 21:31:13 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,6 @@ char	*read_quoted(t_lexer *lex, char quote, int sq, int dq)
 	update_quote(ch, &sq, &dq, &quote);
 	while (ch && (quote_open(sq, dq) || (ft_notspace(ch) && !is_operand(ch))))
 	{
-		if (sq % 2 != 0 || dq % 2 != 0)
-			update_quote(ch, &sq, &dq, &quote);
 		ch = lex->input[++lex->read_pos];
 		update_quote(ch, &sq, &dq, &quote);
 	}
