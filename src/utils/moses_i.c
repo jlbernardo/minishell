@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 19:49:32 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/25 19:01:56 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/03 20:12:19 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	free_redirects(t_redir *redir_list)
 	if (redir_list == NULL)
 		return ;
 	free_redirects(redir_list->next);
+	free(redir_list->next);
 	free(redir_list->filename);
 }
 
