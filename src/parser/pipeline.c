@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 22:55:09 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/03/03 16:58:54 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/03 17:39:19 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,20 +72,19 @@ t_ast	*parse_cmd(t_token **tokens, t_ast *parent, t_meta *meta)
 		{
 			append_redirect(new_redirect(*tokens), &cmd_node->data->redirects);
 			*tokens = (*tokens)->next->next;
+			continue ;
 		}
 		else if ((*tokens)->type == WORD)
 		{
 			append_wle(new_wle((*tokens)->literal), &cmd_node->data->word_list);
 			*tokens = (*tokens)->next;
+			continue ;
 		}
-		else
-		{
-			syntax_error((*tokens)->next, meta);
-			parent->success = LIE;
-			free_cmd(cmd_node->data);
-			free(cmd_node);
-			return (NULL);
-		}
+		syntax_error((*tokens)->next, meta);
+		parent->success = LIE;
+		free_cmd(cmd_node->data);
+		free(cmd_node);
+		return (NULL);
 	}
 	return (cmd_node);
 }
