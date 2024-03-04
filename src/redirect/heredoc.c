@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 14:56:18 by iusantos          #+#    #+#             */
-/*   Updated: 2024/03/04 01:21:36 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/04 13:07:17 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	execute_heredocs(t_ast *ast, t_meta *meta)
 	int		exit_status;
 
 	child_pid = fork();
+	signal(SIGINT, SIG_IGN);
 	if (child_pid == 0)
 		child_heredoc(meta, ast);
 	waitpid(-1, &exit_status, 0);
@@ -73,7 +74,7 @@ void	fill_tmpfile(int fd, t_redir *r, t_meta *meta)
 	char			*input;
 	unsigned int	size;
 
-	input = readline(">");
+	input = readline("> ");
 	if (handle_eof(input, r, fd, meta) == 1)
 		return ;
 	while (ft_strcmp(input, r->filename) != 0)
@@ -84,7 +85,7 @@ void	fill_tmpfile(int fd, t_redir *r, t_meta *meta)
 		else
 			expand_and_write(&input, fd, meta);
 		free(input);
-		input = readline(">");
+		input = readline("> ");
 		if (handle_eof(input, r, fd, meta) == 1)
 			return ;
 		if (ft_strcmp(input, r->filename) == 0)

@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 10:42:52 by iusantos          #+#    #+#             */
-/*   Updated: 2024/03/04 01:31:52 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/04 01:37:15 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	upd_simple_exit_status(int exit_status, t_meta *meta)
 {
 	char	*exit_string;
 
-	if (WIFSIGNALED(exit_status) && exit_status == 2)
+	if (WIFSIGNALED(exit_status) && exit_status == SIGINT)
 	{
 		ft_putstr_fd("\n", STDIN_FILENO);
 		add_upd_hashtable("?", "130", meta->hash);
