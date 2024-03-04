@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 17:09:16 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/03/03 20:52:18 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/04 15:18:50 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,13 +103,20 @@ int	handle_exit_status(t_meta *meta)
 	current_child_pid = wait(&exit_status);
 	if (current_child_pid > last_child_pid)
 	{
-		exit_status = WEXITSTATUS(exit_status);
-		if (exit_status == 13)
-			exit_string = ft_itoa(126);
+		if (WIFSIGNALED(exit_status) != 0)
+		{
+			exit_string = ft_itoa(128 + WTERMSIG(exit_status));
+			add_upd_hashtable("?", exit_string, meta->hash);
+			free(exit_string);
+		}
+		else if (WEXITSTATUS(exit_status) == 13)
+			add_upd_hashtable("?", "126", meta->hash);
 		else
-			exit_string = ft_itoa(exit_status);
-		add_upd_hashtable("?", exit_string, meta->hash);
-		free(exit_string);
+		{
+			exit_string = ft_itoa(WEXITSTATUS(exit_status));
+			add_upd_hashtable("?", exit_string, meta->hash);
+			free(exit_string);
+		}
 	}
 	last_child_pid = current_child_pid;
 	return (current_child_pid);
