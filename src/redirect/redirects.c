@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:32:57 by iusantos          #+#    #+#             */
-/*   Updated: 2024/03/03 21:51:42 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/03 22:01:17 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ int	process_redirects(t_redir *rl, t_meta *meta)
 		else
 			rl = rl->next;
 	}
-	// add_upd_hashtable("?", "0", meta->hash);
 	return (TRUTH);
 }
 
