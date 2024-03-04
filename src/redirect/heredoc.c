@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 14:56:18 by iusantos          #+#    #+#             */
-/*   Updated: 2024/03/03 14:05:26 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/03/04 01:21:36 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ int	execute_heredocs(t_ast *ast, t_meta *meta)
 	int		exit_status;
 
 	child_pid = fork();
-	signal(SIGINT, SIG_IGN);
 	if (child_pid == 0)
 		child_heredoc(meta, ast);
 	waitpid(-1, &exit_status, 0);

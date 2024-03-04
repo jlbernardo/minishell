@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 18:33:55 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/03/03 14:06:30 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/03/04 01:21:01 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	child_heredoc(t_meta *meta, t_ast *ast)
 {
 	while (ast)
 	{
-		signal(SIGINT, heredoc_sigint_handler);
 		capture_content(ast->left->data->redirects, meta);
 		if (ast->right != NULL)
 		{
