@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 15:31:26 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/27 17:53:46 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/04 16:28:10 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ void	add_upd_hashtable(char *name, char *value, t_hash **ht)
 		if (ft_strcmp((*entry)->name, name) == 0)
 		{
 			free((*entry)->value);
+			if (value == NULL)
+				value = "";
 			(*entry)->value = ft_strdup(value);
 			return ;
 		}
