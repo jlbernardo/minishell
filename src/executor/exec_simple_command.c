@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 10:42:52 by iusantos          #+#    #+#             */
-/*   Updated: 2024/03/04 01:37:15 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/04 13:57:16 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	run_simple_command(t_ast *cmd, t_meta *meta)
 			else
 			{
 				child_pid = fork();
-				mid_exec_signal(child_pid);
+				execution_signal(child_pid);
 				if (child_pid == -1)
 					return ;
 				if (child_pid == 0)

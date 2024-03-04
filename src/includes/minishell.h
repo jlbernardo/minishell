@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/03/03 17:33:33 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/04 14:27:43 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,21 +135,21 @@ char			*get_variable_name(char *literal);
 char			*read_quoted(t_lexer *lex, char quote, int s_open, int d_open);
 
 /* PARSER */
-void			find_path(t_ast **ast, char **paths);
 void			get_path(t_ast **ast, t_hash **hash);
-void			syntax_error(t_token *token, t_meta *meta);
+void			find_path(t_ast **ast, char **paths);
 void			set_cmd(t_ast **cmd_node, t_ast **parent);
+void			syntax_error(t_token *token, t_meta *meta);
 void			set_pl(t_ast **pl, t_ast **parent, t_token **tk, t_meta *meta);
 t_ast			*parse_pipeline(t_token **tokens, t_ast *parent, t_meta *meta);
 t_ast			*parse_cmd(t_token **tokens, t_ast *parent, t_meta *meta);
 
 /* EXECUTOR */
-int				get_envp_size(t_hash **hash);
-int				get_wl_size(t_word *word_list);
-int				handle_exit_status(t_meta *meta);
 int				run_builtin(t_meta *meta, t_word *wl);
-void			run_pipeline(t_ast *ast, t_meta *meta);
+int				handle_exit_status(t_meta *meta);
+int				get_wl_size(t_word *word_list);
+int				get_envp_size(t_hash **hash);
 void			remove_quotes(t_ast *ast);
+void			run_pipeline(t_ast *ast, t_meta *meta);
 void			format_envp(t_hash **hash, char ***array);
 void			run_executable(t_cmd *data, t_meta *meta);
 void			run_simple_command(t_ast *cmd, t_meta *meta);
@@ -166,23 +166,22 @@ void			path_error(t_meta *meta, char *path, char *msg, int exit_code);
 
 /* HEREDOC EXECUTION */
 int				execute_heredocs(t_ast *ast, t_meta *meta);
-void			fill_tmpfile(int fd, t_redir *r, t_meta *meta);
-void			capture_content(t_redir *rl, t_meta *meta);
-void			child_heredoc(t_meta *meta, t_ast *ast);
-void			write_and_close(int fd);
-int				handle_eof(char *input, t_redir *r, int fd, t_meta *meta);
-void			expand_and_write(char **input, int fd, t_meta *meta);
 char			*gen_tmpfile_name(int cmd_nbr);
+void			write_and_close(int fd);
+void			child_heredoc(t_meta *meta, t_ast *ast);
+void			capture_content(t_redir *rl, t_meta *meta);
+void			fill_tmpfile(int fd, t_redir *r, t_meta *meta);
+void			expand_and_write(char **input, int fd, t_meta *meta);
 
 /* REDIRECTS */
-int				process_redirects(t_redir *rl, t_meta *meta);
 int				red_input(t_redir *r);
 int				red_append(t_redir *r);
 int				red_output(t_redir *r);
 int				red_heredoc(t_redir *r, int cmd_nbr);
+int				process_redirects(t_redir *rl, t_meta *meta);
+void			print_dir_error_msg(char *filename);
 void			print_nsf_error_msg(char *filename);
 void			print_np_error_msg(char *filename);
-void			print_dir_error_msg(char *filename);
 
 /* LIST HANDLERS */
 void			sort_vars(t_word **vars, t_word *first, t_word *first_p);
@@ -195,11 +194,13 @@ t_token			*tk_last(t_token *tokens);
 t_redir			*new_redirect(t_token *tokens);
 
 /* SIGNALS */
-void			sig_deal(int signo);
-void			eof_signal(t_meta *meta);
-void			signal_handler(t_meta *meta);
-void			mid_exec_signal(int child_pid);
-void			heredoc_sigint_handler(int signum);
+void			basic_sigint(int signo);
+void			eof_basic(t_meta *meta);
+void			heredoc_sigint(int signo);
+void			basic_signal(t_meta *meta);
+void			heredoc_signal(int child_pid);
+void			execution_signal(int child_pid);
+int				signal_received(char *input, t_redir *r, int fd, t_meta *meta);
 
 /* HASH TABLE */
 int				last_exit(t_meta *meta);

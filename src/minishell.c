@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 17:38:30 by julberna          #+#    #+#             */
-/*   Updated: 2024/03/04 01:20:50 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/04 13:54:19 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	main(void)
 	set_meta(&meta, __environ);
 	while (42)
 	{
-		signal_handler(&meta);
+		basic_signal(&meta);
 		if (lexer(&meta))
 			if (parser(&meta))
 				executor(&meta);

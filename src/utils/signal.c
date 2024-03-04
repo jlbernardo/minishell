@@ -1,24 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sig_handler.c                                      :+:      :+:    :+:   */
+/*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 17:16:50 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/03/04 01:32:19 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/04 14:13:48 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	signal_handler(t_meta *meta)
+void	basic_signal(t_meta *meta)
 {
 	struct sigaction	sig_int;
 	struct sigaction	sig_quit;
 
 	sigemptyset(&sig_int.sa_mask);
-	sig_int.sa_handler = sig_deal;
+	sig_int.sa_handler = basic_sigint;
 	sig_int.sa_flags = 0;
 	sigemptyset(&sig_quit.sa_mask);
 	sig_quit.sa_handler = SIG_IGN;
@@ -30,17 +30,7 @@ void	signal_handler(t_meta *meta)
 	g_received_signal = 0;
 }
 
-void	sig_deal(int signo)
-{
-	(void)signo;
-	g_received_signal = SIGINT;
-	ft_putchar_fd('\n', STDOUT_FILENO);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-}
-
-void	mid_exec_signal(int child_pid)
+void	execution_signal(int child_pid)
 {
 	struct sigaction	sig;
 
@@ -54,19 +44,15 @@ void	mid_exec_signal(int child_pid)
 	sigaction(SIGINT, &sig, NULL);
 }
 
-void	eof_signal(t_meta *meta)
+void	heredoc_signal(int child_pid)
 {
-	int		exit_code;
+	struct sigaction	sig;
 
-	exit_code = last_exit(meta);
-	ft_putendl_fd("exit", STDOUT_FILENO);
-	finisher(*meta, "ATHE", exit_code);
-}
-
-void	heredoc_sigint_handler(int signum)
-{
-	write(1, "\n", 1);
-	close(STDIN_FILENO);
-	if (signum == SIGINT)
-		g_received_signal = SIGINT;
+	sigemptyset(&sig.sa_mask);
+	sig.sa_flags = 0;
+	if (child_pid == 0)
+		sig.sa_handler = heredoc_sigint;
+	else
+		sig.sa_handler = SIG_IGN;
+	sigaction(SIGINT, &sig, NULL);
 }
