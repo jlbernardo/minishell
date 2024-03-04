@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:49 by julberna          #+#    #+#             */
-/*   Updated: 2024/02/25 00:32:57 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/04 14:06:22 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,10 @@ int	lexer(t_meta *meta)
 	meta->tokens = NULL;
 	meta->ast = NULL;
 	input = readline("$> ");
+	if (g_received_signal == SIGINT)
+		add_upd_hashtable("?", "130", meta->hash);
+	if (!input)
+		eof_basic(meta);
 	add_history(input);
 	expand_variable(&input, meta);
 	set_lexer(&lex, input);
@@ -29,7 +33,7 @@ int	lexer(t_meta *meta)
 		find_token(&lex, &meta->tokens, 1);
 	}
 	if (!lex.success)
-		syntax_error(meta->tokens->literal, meta);
+		syntax_error(meta->tokens, meta);
 	free(input);
 	return (lex.success);
 }

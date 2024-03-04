@@ -6,42 +6,48 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 19:35:43 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/25 00:07:00 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/03 19:42:57 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int		check_ll(char *nbr);
+int		bigger_than_llmax(char *exit_code);
+int		smaller_than_llmin(char *exit_code);
+int		exit_error(char *literal, char *reason);
 char	*trim_prefix(const char *s1, const char *set);
-int		exit_error(char *literal, char *reason, int exit_code);
 
 int	ft_exit(t_meta *meta, t_word *wl)
 {
-	char			*exit_str;
+	char			*arg;
 	long long int	exit_code;
 
 	(void)wl;
-	exit_str = grab_value("?", meta->hash);
-	exit_code = ft_atoi(exit_str);
-	ft_putendl_fd(meta->tokens->literal, STDOUT_FILENO);
-	if ((meta->tokens->next
-			&& (!ft_isdigit(*meta->tokens->next->literal)
-				&& *meta->tokens->next->literal != '-'))
-		|| (meta->tokens->next && check_ll(meta->tokens->next->literal)))
-		exit_code = exit_error(meta->tokens->next->literal,
-				"numeric argument required", exit_code);
-	else if (meta->tokens->next && meta->tokens->next->next)
-		return (exit_error(NULL, "too many arguments", exit_code));
-	else if (meta->tokens->next)
-		exit_code = ft_atol(meta->tokens->next->literal);
-	free_hash(meta->hash);
-	finisher(*meta);
-	exit(exit_code);
+	exit_code = last_exit(meta);
+	ft_putendl_fd(wl->word, STDOUT_FILENO);
+	if (wl->next)
+	{
+		arg = wl->next->word;
+		if ((!ft_isdigit(*arg) && *arg != '-' && *arg != '+')
+			|| bigger_than_llmax(arg) || smaller_than_llmin(arg))
+			exit_code = exit_error(arg, "numeric argument required");
+		else if (wl->next->next)
+		{
+			add_upd_hashtable("?", "1", meta->hash);
+			return (exit_error(NULL, "too many arguments"));
+		}
+		else
+			exit_code = ft_atol(arg);
+	}
+	finisher(*meta, "ATHE", exit_code);
+	return (exit_code);
 }
 
-int	exit_error(char *literal, char *reason, int exit_code)
+int	exit_error(char *literal, char *reason)
 {
+	int	exit_code;
+
+	exit_code = 1;
 	ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
 	if (literal)
 	{
@@ -53,12 +59,11 @@ int	exit_error(char *literal, char *reason, int exit_code)
 	return (exit_code);
 }
 
-int	check_ll(char *exit_code)
+int	smaller_than_llmin(char *exit_code)
 {
 	int			ret;
 	char		*n;
 	char		*nn;
-	const char	*max_ll = "9223372036854775807";
 	const char	*min_ll = "-9223372036854775808";
 
 	ret = LIE;
@@ -66,18 +71,39 @@ int	check_ll(char *exit_code)
 	{
 		n = trim_prefix(&exit_code[1], "0");
 		nn = ft_calloc(ft_strlen(n) + 2, sizeof(char));
-		ft_strlcat(nn, "-", ft_strlen(n) + 2);
+		ft_strlcat(nn, &exit_code[0], 2);
 		ft_strlcat(nn, n, ft_strlen(n) + 2);
 		if (ft_strlen(nn) > ft_strlen(min_ll) || ft_strcmp(min_ll, nn) < 0)
 			ret = TRUTH;
+		free(n);
 		free(nn);
 	}
-	else
+	return (ret);
+}
+
+int	bigger_than_llmax(char *exit_code)
+{
+	int			ret;
+	char		*n;
+	char		*nn;
+	const char	*max_ll = "+9223372036854775807";
+
+	ret = LIE;
+	if (exit_code[0] == '-')
+		return (ret);
+	if (exit_code[0] == '+')
 	{
-		n = trim_prefix(exit_code, "0");
-		if (ft_strlen(n) > ft_strlen(max_ll) || ft_strcmp(max_ll, n) < 0)
+		n = trim_prefix(&exit_code[1], "0");
+		nn = ft_calloc(ft_strlen(n) + 2, sizeof(char));
+		ft_strlcat(nn, &exit_code[0], 2);
+		ft_strlcat(nn, n, ft_strlen(n) + 2);
+		if (ft_strlen(nn) > ft_strlen(max_ll) || ft_strcmp(max_ll, nn) < 0)
 			ret = TRUTH;
+		free(nn);
 	}
+	n = trim_prefix(exit_code, "0");
+	if (ft_strlen(n) > ft_strlen(&max_ll[1]) || ft_strcmp(&max_ll[1], n) < 0)
+		ret = TRUTH;
 	free(n);
 	return (ret);
 }

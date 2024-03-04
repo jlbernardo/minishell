@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:11:53 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/25 00:07:00 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/02/28 21:05:31 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,21 +23,23 @@ int	cd(t_meta *meta, t_word *wl)
 	char	*path;
 	char	*old_cwd;
 
-	path = set_path(wl->next, meta->hash);
-	ret = chdir(path);
-	len = get_size(wl);
-	if (ret == -1 || len > 2)
-		ret = give_error(path, len);
+	len = get_wl_size(wl);
+	if (len > 2)
+		ret = give_error(NULL, len);
 	else
 	{
+		path = set_path(wl->next, meta->hash);
+		ret = chdir(path);
+		if (ret == -1)
+			ret = give_error(path, 0);
 		old_cwd = grab_value("PWD", meta->hash);
 		cwd = getcwd(NULL, PATH_MAX);
 		add_upd_hashtable("PWD", cwd, meta->hash);
 		add_upd_hashtable("OLDPWD", old_cwd, meta->hash);
 		free(cwd);
 		free(old_cwd);
+		free(path);
 	}
-	free(path);
 	return (ret);
 }
 

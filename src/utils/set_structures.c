@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 17:13:03 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/25 00:25:12 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/04 15:20:32 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,16 @@
 
 void	set_meta(t_meta *meta, char **__environ)
 {
+	meta->term = ft_calloc(1, sizeof(struct termios));
+	if (tcgetattr(STDIN_FILENO, meta->term) < 0)
+	{
+		perror("minishell: tcsetattr");
+		exit (EXIT_FAILURE);
+	}
 	meta->hash = ft_calloc(HT_SIZE, sizeof(t_hash *));
 	set_hashtable(__environ, meta->hash);
 	add_upd_hashtable("?", "0", meta->hash);
+	meta->cmd_nbr = 0;
 }
 
 void	set_lexer(t_lexer *lex, char *input)
@@ -43,10 +50,10 @@ void	set_pl(t_ast **pl, t_ast **parent, t_token **tk, t_meta *meta)
 		return ;
 	(*pl)->type = PIPELINE;
 	(*pl)->parent = *parent;
-	(*pl)->success = 0;
+	(*pl)->success = TRUTH;
 	if ((*pl)->parent == NULL && !is_pipe)
 	{
-		syntax_error((*tk)->literal, meta);
+		syntax_error(*tk, meta);
 		free(*pl);
 		*pl = NULL;
 	}

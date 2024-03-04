@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 22:55:09 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/25 00:25:32 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/03 17:39:19 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ t_ast	*create_pl_node(t_token **tokens, t_ast *parent, t_meta *meta)
 	if (!pl_node)
 		return (NULL);
 	pl_node->left = parse_cmd(tokens, pl_node, meta);
+	if (!pl_node->success && parent)
+		parent->success = LIE;
 	return (pl_node);
 }
 
@@ -36,13 +38,11 @@ t_ast	*handle_pipeline(t_token **tokens, t_ast *pl_node, t_meta *meta)
 	{
 		*tokens = (*tokens)->next;
 		pl_node->right = parse_cmd(tokens, pl_node, meta);
-		if (pl_node->right == NULL)
-			return (pl_node);
 	}
 	else
 	{
-		syntax_error((*tokens)->literal, meta);
-		return (pl_node);
+		syntax_error((*tokens)->next, meta);
+		pl_node->success = LIE;
 	}
 	return (pl_node);
 }
@@ -55,12 +55,8 @@ t_ast	*parse_pipeline(t_token **tokens, t_ast *parent, t_meta *meta)
 	if (!pl_node || pl_node->left == NULL)
 		return (pl_node);
 	if (*tokens == NULL)
-	{
-		pl_node->success = TRUTH;
 		return (pl_node);
-	}
 	pl_node = handle_pipeline(tokens, pl_node, meta);
-	pl_node->success = TRUTH;
 	return (pl_node);
 }
 
@@ -71,23 +67,24 @@ t_ast	*parse_cmd(t_token **tokens, t_ast *parent, t_meta *meta)
 	set_cmd(&cmd_node, &parent);
 	while (*tokens != NULL && ft_strncmp((*tokens)->literal, "|", 1))
 	{
-		if ((*tokens)->type == REDIRECT && (*tokens)->next->type == WORD)
+		if ((*tokens)->type == REDIRECT
+			&& (*tokens)->next && (*tokens)->next->type == WORD)
 		{
 			append_redirect(new_redirect(*tokens), &cmd_node->data->redirects);
 			*tokens = (*tokens)->next->next;
+			continue ;
 		}
 		else if ((*tokens)->type == WORD)
 		{
 			append_wle(new_wle((*tokens)->literal), &cmd_node->data->word_list);
 			*tokens = (*tokens)->next;
+			continue ;
 		}
-		else
-		{
-			syntax_error((*tokens)->literal, meta);
-			free_cmd(cmd_node->data);
-			free(cmd_node);
-			return (NULL);
-		}
+		syntax_error((*tokens)->next, meta);
+		parent->success = LIE;
+		free_cmd(cmd_node->data);
+		free(cmd_node);
+		return (NULL);
 	}
 	return (cmd_node);
 }

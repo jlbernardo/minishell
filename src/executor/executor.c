@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/25 00:07:00 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/04 00:19:07 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,20 @@
 
 void	executor(t_meta *meta)
 {
+	int	og_stdin;
+	int	og_stdout;
+
+	og_stdin = dup(STDIN_FILENO);
+	og_stdout = dup(STDOUT_FILENO);
+	remove_quotes(meta->ast);
 	if (meta->ast->right == NULL)
 		run_simple_command(meta->ast->left, meta);
 	else
 		run_pipeline(meta->ast, meta);
+	dup2(og_stdin, STDIN_FILENO);
+	dup2(og_stdout, STDOUT_FILENO);
+	close(og_stdin);
+	close(og_stdout);
 }
 
 void	run_pipeline(t_ast *ast, t_meta *meta)
@@ -44,20 +54,29 @@ void	run_pipeline(t_ast *ast, t_meta *meta)
 
 void	run_executable(t_cmd *data, t_meta *meta)
 {
-	int		exec_return;
-	char	**array_of_strings;
+	int			exec_return;
+	char		**argv;
+	char		**envp;
+	struct stat	buf;
 
-	array_of_strings = NULL;
-	array_of_strings = stringfy(data->word_list);
-	exec_return = execve(data->pathname, array_of_strings, NULL);
+	stat(data->pathname, &buf);
+	if (S_ISDIR(buf.st_mode))
+		path_error(meta, data->pathname, "Is a directory", 126);
+	if (access(data->pathname, F_OK))
+		path_error(meta, data->pathname, "No such file or directory", 127);
+	if (access(data->pathname, X_OK))
+		path_error(meta, data->pathname, "Permission denied", 126);
+	format_argv(data->word_list, &argv);
+	format_envp(meta->hash, &envp);
+	exec_return = execve(data->pathname, argv, envp);
 	if (exec_return == -1)
 	{
 		perror(strerror(errno));
-		free_str_array(array_of_strings, get_size(data->word_list));
-		free(array_of_strings);
-		finisher(*meta);
-		free_hash(meta->hash);
-		exit(errno);
+		free_str_array(argv, get_wl_size(data->word_list));
+		free_str_array(envp, get_envp_size(meta->hash));
+		free(argv);
+		free(envp);
+		finisher(*meta, "ATHE", errno);
 	}
 }
 
@@ -82,10 +101,33 @@ int	run_builtin(t_meta *meta, t_word *wl)
 		}
 	}
 	exit_str = ft_itoa(exit_code);
-	if (!exit_str)
-		handle_null_pathname(wl->word, meta);
-	else
-		add_upd_hashtable("?", exit_str, meta->hash);
+	add_upd_hashtable("?", exit_str, meta->hash);
 	free(exit_str);
 	return (exit_code);
+}
+
+void	exec_forked_command(t_cmd *data, t_meta *meta)
+{
+	int	exit_code;
+
+	if (process_redirects(data->redirects, meta) == LIE
+		|| data->word_list == NULL)
+	{
+		finisher(*meta, "ATHE", 1);
+		return ;
+	}
+	if (is_builtin(data->word_list[0].word))
+	{
+		exit_code = run_builtin(meta, data->word_list);
+		close_all_fds();
+		finisher(*meta, "ATHE", exit_code);
+	}
+	else if (data->pathname == NULL)
+	{
+		handle_null_pathname(data->word_list[0].word, meta);
+		close_all_fds();
+		finisher(*meta, "ATHE", 127);
+	}
+	else
+		run_executable(data, meta);
 }
