@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 17:25:16 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/03/03 15:58:54 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/04 18:06:19 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,11 @@ void	syntax_error(t_token *token, t_meta *meta)
 	add_upd_hashtable("?", "2", meta->hash);
 }
 
-void	handle_null_pathname(char *cmd, t_meta *meta)
+void	handle_null_pathname(t_cmd *cmd, t_meta *meta)
 {
-	ft_putstr_fd(cmd, STDERR_FILENO);
+	if (cmd->word_list == NULL)
+			return;
+	ft_putstr_fd(cmd->word_list->word, STDERR_FILENO);
 	ft_putendl_fd(": command not found", STDERR_FILENO);
 	add_upd_hashtable("?", "127", meta->hash);
 }

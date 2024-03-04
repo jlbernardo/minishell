@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/03/04 14:27:43 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/04 18:03:05 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ void			format_envp(t_hash **hash, char ***array);
 void			run_executable(t_cmd *data, t_meta *meta);
 void			run_simple_command(t_ast *cmd, t_meta *meta);
 void			format_argv(t_word *word_list, char ***array);
-void			handle_null_pathname(char *cmd, t_meta *meta);
+void			handle_null_pathname(t_cmd *cmd, t_meta *meta);
 void			exec_forked_command(t_cmd *data, t_meta *meta);
 void			upd_simple_exit_status(int exit_status, t_meta	*meta);
 void			redir_quotes(t_redir **redir, int i, int len, char quote);
