@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 17:09:16 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/28 21:16:40 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/03 20:52:18 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,24 +36,25 @@ void	format_envp(t_hash **hash, char ***array)
 	int		index;
 	t_hash	*temp;
 
-	i = 0;
+	i = -1;
 	index = 0;
 	*array = ft_calloc(get_envp_size(hash) + 1, sizeof(char *));
-	while (i < HT_SIZE)
+	while (++i < HT_SIZE)
 	{
 		temp = hash[i];
 		while (hash[i])
 		{
-			len = ft_strlen(hash[i]->name) + ft_strlen(hash[i]->value) + 2;
-			(*array)[index] = ft_calloc(len, sizeof(char));
-			ft_strlcat((*array)[index], hash[i]->name, len);
-			ft_strlcat((*array)[index], "=", len);
-			ft_strlcat((*array)[index], hash[i]->value, len);
-			index++;
+			if (hash[i]->value)
+			{
+				len = ft_strlen(hash[i]->name) + ft_strlen(hash[i]->value) + 2;
+				(*array)[index] = ft_calloc(len, sizeof(char));
+				ft_strlcat((*array)[index], hash[i]->name, len);
+				ft_strlcat((*array)[index], "=", len);
+				ft_strlcat((*array)[index++], hash[i]->value, len);
+			}
 			hash[i] = hash[i]->next;
 		}
 		hash[i] = temp;
-		i++;
 	}
 }
 
