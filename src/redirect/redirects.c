@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:32:57 by iusantos          #+#    #+#             */
-/*   Updated: 2024/03/04 18:08:06 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/03/05 12:12:51 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ int	red_output(t_redir *r)
 	int			fd;
 	struct stat	buf;
 
+	ft_memset(&buf, 0, sizeof(buf));
 	stat(r->filename, &buf);
 	if (S_ISDIR(buf.st_mode) != 0)
 	{
