@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 17:09:16 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/03/04 15:18:50 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/03/04 21:20:15 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,29 +93,29 @@ int	get_wl_size(t_word *word_list)
 	return (len);
 }
 
-int	handle_exit_status(t_meta *meta)
+int	exit_status(t_meta *meta, int exit_status, char *exit_str)
 {
-	int				exit_status;
-	char			*exit_string;
 	pid_t			current_child_pid;
 	static pid_t	last_child_pid;
 
 	current_child_pid = wait(&exit_status);
+	if (WIFSIGNALED(exit_status) && WTERMSIG(exit_status) == 2)
+		ft_putchar_fd('\n', STDERR_FILENO);
 	if (current_child_pid > last_child_pid)
 	{
 		if (WIFSIGNALED(exit_status) != 0)
 		{
-			exit_string = ft_itoa(128 + WTERMSIG(exit_status));
-			add_upd_hashtable("?", exit_string, meta->hash);
-			free(exit_string);
+			exit_str = ft_itoa(128 + WTERMSIG(exit_status));
+			add_upd_hashtable("?", exit_str, meta->hash);
+			free(exit_str);
 		}
 		else if (WEXITSTATUS(exit_status) == 13)
 			add_upd_hashtable("?", "126", meta->hash);
 		else
 		{
-			exit_string = ft_itoa(WEXITSTATUS(exit_status));
-			add_upd_hashtable("?", exit_string, meta->hash);
-			free(exit_string);
+			exit_str = ft_itoa(WEXITSTATUS(exit_status));
+			add_upd_hashtable("?", exit_str, meta->hash);
+			free(exit_str);
 		}
 	}
 	last_child_pid = current_child_pid;

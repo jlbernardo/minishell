@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/03/04 18:03:05 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/03/04 21:15:38 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ t_ast			*parse_cmd(t_token **tokens, t_ast *parent, t_meta *meta);
 
 /* EXECUTOR */
 int				run_builtin(t_meta *meta, t_word *wl);
-int				handle_exit_status(t_meta *meta);
+int				exit_status(t_meta *meta, int exit_status, char *exit_str);
 int				get_wl_size(t_word *word_list);
 int				get_envp_size(t_hash **hash);
 void			remove_quotes(t_ast *ast);
