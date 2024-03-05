@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:49 by julberna          #+#    #+#             */
-/*   Updated: 2024/03/05 16:37:12 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/05 16:42:11 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,13 @@ int	lexer(t_meta *meta)
 
 	meta->tokens = NULL;
 	meta->ast = NULL;
-	if (last_exit(meta) == 0)
-		input = readline("\033[1;32mminishell » \033[0m");
-	else
-		input = readline("\033[1;31mminishell » \033[0m");
+	input = readline("minishell » ");
 	if (g_received_signal == SIGINT)
 		add_upd_hashtable("?", "130", meta->hash);
 	if (!input)
 		eof_basic(meta);
-	validate_history(input);
+	if (ft_strlen(input) > 0)
+		add_history(input);
 	expand_variable(&input, meta);
 	set_lexer(&lex, input);
 	while (lex.read_pos < lex.size && lex.success == TRUTH)
@@ -87,10 +85,4 @@ void	find_token(t_lexer *lex, t_token **tokens, int size)
 		new_token(tokens, WORD, str);
 	}
 	return (free(str));
-}
-
-void	validate_history(char *input)
-{
-	if (ft_strlen(input) > 0)
-		add_history(input);
 }
