@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/03/04 21:45:38 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/05 16:22:48 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,8 +133,8 @@ void			set_lexer(t_lexer *lex, char *input);
 void			validate_history(char *input);
 void			read_char(t_lexer *lex);
 char			*read_unquoted(t_lexer *lex);
-char			*get_variable_name(char *literal);
 char			*prompt_decision(t_meta *meta, char **user);
+char			*get_variable_name(char *literal, int dq, int sq, int *i);
 char			*read_quoted(t_lexer *lex, char quote, int s_open, int d_open);
 
 /* PARSER */
