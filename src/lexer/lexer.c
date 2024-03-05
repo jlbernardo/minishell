@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:49 by julberna          #+#    #+#             */
-/*   Updated: 2024/03/04 22:54:10 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/05 15:31:57 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,15 +98,15 @@ void	set_prompt(char **prompt, t_meta *meta, int size)
 	path = getcwd(NULL, PATH_MAX);
 	user = grab_value("USER", meta->hash);
 	error_code = prompt_decision(meta, &user);
-	size = 34 + ft_strlen(user) + ft_strlen(path) + ft_strlen(error_code);
+	size = 14 + ft_strlen(user) + ft_strlen(path) + ft_strlen(error_code);
 	*prompt = ft_calloc(size, sizeof(char));
-	ft_strlcat(*prompt, "\033[1m┌ ", size);
+	ft_strlcat(*prompt, "\033[1m", size);
 	ft_strlcat(*prompt, user, size);
 	ft_strlcat(*prompt, " » ", size);
 	ft_strlcat(*prompt, path, size);
 	ft_strlcat(*prompt, " ", size);
 	ft_strlcat(*prompt, error_code, size);
-	ft_strlcat(*prompt, "\033[1m\n└─➤ \033[0m", size);
+	ft_strlcat(*prompt, " » ", size);
 	free(error_code);
 	free(path);
 	free(user);
