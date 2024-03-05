@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:49 by julberna          #+#    #+#             */
-/*   Updated: 2024/03/05 15:31:57 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/05 16:37:12 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,15 @@
 
 int	lexer(t_meta *meta)
 {
-	char	*prompt;
 	char	*input;
 	t_lexer	lex;
 
 	meta->tokens = NULL;
 	meta->ast = NULL;
-	set_prompt(&prompt, meta, 0);
-	input = readline(prompt);
-	free(prompt);
+	if (last_exit(meta) == 0)
+		input = readline("\033[1;32mminishell » \033[0m");
+	else
+		input = readline("\033[1;31mminishell » \033[0m");
 	if (g_received_signal == SIGINT)
 		add_upd_hashtable("?", "130", meta->hash);
 	if (!input)
@@ -87,29 +87,6 @@ void	find_token(t_lexer *lex, t_token **tokens, int size)
 		new_token(tokens, WORD, str);
 	}
 	return (free(str));
-}
-
-void	set_prompt(char **prompt, t_meta *meta, int size)
-{
-	char	*path;
-	char	*user;
-	char	*error_code;
-
-	path = getcwd(NULL, PATH_MAX);
-	user = grab_value("USER", meta->hash);
-	error_code = prompt_decision(meta, &user);
-	size = 14 + ft_strlen(user) + ft_strlen(path) + ft_strlen(error_code);
-	*prompt = ft_calloc(size, sizeof(char));
-	ft_strlcat(*prompt, "\033[1m", size);
-	ft_strlcat(*prompt, user, size);
-	ft_strlcat(*prompt, " » ", size);
-	ft_strlcat(*prompt, path, size);
-	ft_strlcat(*prompt, " ", size);
-	ft_strlcat(*prompt, error_code, size);
-	ft_strlcat(*prompt, " » ", size);
-	free(error_code);
-	free(path);
-	free(user);
 }
 
 void	validate_history(char *input)

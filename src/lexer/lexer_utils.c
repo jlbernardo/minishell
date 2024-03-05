@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 20:18:04 by julberna          #+#    #+#             */
-/*   Updated: 2024/03/04 22:01:28 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/05 16:37:18 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,27 +74,4 @@ char	*read_quoted(t_lexer *lex, char quote, int sq, int dq)
 	if (sq % 2 != 0 || dq % 2 != 0)
 		lex->success = LIE;
 	return (string);
-}
-
-char	*prompt_decision(t_meta *meta, char **user)
-{
-	char	*temp;
-	char	*exit_code;
-	char	*error_code;
-
-	exit_code = grab_value("?", meta->hash);
-	if (!*user)
-		*user = ft_strdup("Voldemort ☠");
-	if (last_exit(meta) == 0)
-		error_code = ft_strdup("\033[1;32m[✔]\033[0m");
-	else
-	{
-		error_code = ft_strdup("\033[1;31m[✖");
-		temp = ft_strjoin(error_code, exit_code);
-		free(error_code);
-		error_code = ft_strjoin(temp, "]\033[0m");
-		free(temp);
-	}
-	free(exit_code);
-	return (error_code);
 }
