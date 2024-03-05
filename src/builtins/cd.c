@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:11:53 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/28 21:05:31 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/04 20:58:53 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,17 @@ int	cd(t_meta *meta, t_word *wl)
 
 char	*set_path(t_word *wl, t_hash **ht)
 {
+	char	*home;
+
 	if (wl)
 		return (ft_strdup(wl->word));
 	else
-		return (grab_value("HOME", ht));
+	{
+		home = grab_value("HOME", ht);
+		if (!home)
+			home = ft_strdup("HOME not set");
+		return (home);
+	}
 }
 
 int	give_error(char *path, int len)
@@ -58,6 +65,8 @@ int	give_error(char *path, int len)
 
 	if (len > 2)
 		ft_putendl_fd("minishell: cd: too many arguments", STDERR_FILENO);
+	else if (!ft_strcmp(path, "HOME not set"))
+		ft_putendl_fd("minishell: cd: HOME not set", STDERR_FILENO);
 	else
 	{
 		size = ft_strlen(path) + 16;
