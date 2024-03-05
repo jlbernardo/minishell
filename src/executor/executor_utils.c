@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 17:09:16 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/03/04 21:20:15 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/04 22:57:47 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int	exit_status(t_meta *meta, int exit_status, char *exit_str)
 	static pid_t	last_child_pid;
 
 	current_child_pid = wait(&exit_status);
-	if (WIFSIGNALED(exit_status) && WTERMSIG(exit_status) == 2)
+	if (WIFSIGNALED(exit_status))
 		ft_putchar_fd('\n', STDERR_FILENO);
 	if (current_child_pid > last_child_pid)
 	{

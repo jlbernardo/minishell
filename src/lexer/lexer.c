@@ -6,14 +6,11 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:49 by julberna          #+#    #+#             */
-/*   Updated: 2024/03/04 21:06:48 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/04 22:54:10 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-char	*prompt_decision(t_meta *meta, char **user);
-void	set_prompt(char **prompt, t_meta *meta, int size);
 
 int	lexer(t_meta *meta)
 {
@@ -30,7 +27,7 @@ int	lexer(t_meta *meta)
 		add_upd_hashtable("?", "130", meta->hash);
 	if (!input)
 		eof_basic(meta);
-	add_history(input);
+	validate_history(input);
 	expand_variable(&input, meta);
 	set_lexer(&lex, input);
 	while (lex.read_pos < lex.size && lex.success == TRUTH)
@@ -115,25 +112,8 @@ void	set_prompt(char **prompt, t_meta *meta, int size)
 	free(user);
 }
 
-char	*prompt_decision(t_meta *meta, char **user)
+void	validate_history(char *input)
 {
-	char	*temp;
-	char	*exit_code;
-	char	*error_code;
-
-	exit_code = grab_value("?", meta->hash);
-	if (!*user)
-		*user = "Voldemort ☠";
-	if (last_exit(meta) == 0)
-		error_code = ft_strdup("\033[1;32m[✔]\033[0m");
-	else
-	{
-		error_code = ft_strdup("\033[1;31m[✖");
-		temp = ft_strjoin(error_code, exit_code);
-		free(error_code);
-		error_code = ft_strjoin(temp, "]\033[0m");
-		free(temp);
-	}
-	free(exit_code);
-	return (error_code);
+	if (ft_strlen(input) > 0)
+		add_history(input);
 }
