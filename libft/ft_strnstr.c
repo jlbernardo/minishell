@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iusantos <iusantos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 11:39:45 by iusantos          #+#    #+#             */
-/*   Updated: 2024/02/02 13:48:16 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/03/05 21:13:22 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,4 @@ char	*ft_strnstr(const char *big, const char *little, size_t len)
 		counter++;
 	}
 	return (NULL);
-}			
+}
