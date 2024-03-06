@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 10:42:52 by iusantos          #+#    #+#             */
-/*   Updated: 2024/03/04 15:14:43 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/03/05 18:36:02 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,14 @@ void	run_simple_command(t_ast *cmd, t_meta *meta)
 	pid_t	child_pid;
 	int		exit_status;
 
-	if (cmd->data->word_list && process_redirects(cmd->data->redirects, meta))
+	if (process_redirects(cmd->data->redirects, meta))
 	{
-		if (is_builtin(cmd->data->word_list[0].word))
+		if (cmd->data->word_list && is_builtin(cmd->data->word_list[0].word))
 			run_builtin(meta, cmd->data->word_list);
 		else
 		{
 			if (cmd->data->pathname == NULL)
-				handle_null_pathname(cmd->data->word_list->word, meta);
+				handle_null_pathname(cmd->data, meta);
 			else
 			{
 				child_pid = fork();

@@ -1,29 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   finisher.c                                         :+:      :+:    :+:   */
+/*   ft_notspace.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/29 20:03:39 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/03/05 17:17:53 by Juliany Ber      ###   ########.fr       */
+/*   Created: 2024/01/11 18:56:07 by julberna          #+#    #+#             */
+/*   Updated: 2024/02/13 22:01:59 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
-
-void	finisher(t_meta meta, char *flag, int exit_code)
+int	ft_notspace(int c)
 {
-	if (ft_strchr(flag, 'A'))
-		free_ast(meta.ast);
-	if (ft_strchr(flag, 'T'))
-		free_tokens(meta.tokens);
-	if (ft_strchr(flag, 'H'))
-		free_hash(meta.hash);
-	if (ft_strchr(flag, 'E'))
-	{
-		close_all_fds();
-		free(meta.term);
-		exit(exit_code);
-	}
+	if (c < 0 || (c > 0 && c < 7) || (c > 13 && c < 32) || c > 32)
+		return (1);
+	return (0);
 }

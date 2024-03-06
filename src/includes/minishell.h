@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/03/04 14:27:43 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/05 16:41:52 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ void			expand_variable(char **input, t_meta *meta);
 void			set_lexer(t_lexer *lex, char *input);
 void			read_char(t_lexer *lex);
 char			*read_unquoted(t_lexer *lex);
-char			*get_variable_name(char *literal);
+char			*get_variable_name(char *literal, int dq, int sq, int *i);
 char			*read_quoted(t_lexer *lex, char quote, int s_open, int d_open);
 
 /* PARSER */
@@ -145,7 +145,7 @@ t_ast			*parse_cmd(t_token **tokens, t_ast *parent, t_meta *meta);
 
 /* EXECUTOR */
 int				run_builtin(t_meta *meta, t_word *wl);
-int				handle_exit_status(t_meta *meta);
+int				exit_status(t_meta *meta, int exit_status, char *exit_str);
 int				get_wl_size(t_word *word_list);
 int				get_envp_size(t_hash **hash);
 void			remove_quotes(t_ast *ast);
@@ -154,7 +154,7 @@ void			format_envp(t_hash **hash, char ***array);
 void			run_executable(t_cmd *data, t_meta *meta);
 void			run_simple_command(t_ast *cmd, t_meta *meta);
 void			format_argv(t_word *word_list, char ***array);
-void			handle_null_pathname(char *cmd, t_meta *meta);
+void			handle_null_pathname(t_cmd *cmd, t_meta *meta);
 void			exec_forked_command(t_cmd *data, t_meta *meta);
 void			upd_simple_exit_status(int exit_status, t_meta	*meta);
 void			redir_quotes(t_redir **redir, int i, int len, char quote);

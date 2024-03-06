@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/03/04 00:19:07 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/04 21:15:44 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	run_pipeline(t_ast *ast, t_meta *meta)
 	}
 	last_pipeline_cmd(ast, pipe_fd, meta);
 	free(pipe_fd);
-	while (handle_exit_status(meta) != -1)
+	while (exit_status(meta, 0, NULL) != -1)
 		;
 }
 
@@ -124,7 +124,7 @@ void	exec_forked_command(t_cmd *data, t_meta *meta)
 	}
 	else if (data->pathname == NULL)
 	{
-		handle_null_pathname(data->word_list[0].word, meta);
+		handle_null_pathname(data, meta);
 		close_all_fds();
 		finisher(*meta, "ATHE", 127);
 	}
