@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 22:55:09 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/03/03 17:39:19 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/05 21:05:20 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ t_ast	*parse_pipeline(t_token **tokens, t_ast *parent, t_meta *meta)
 	if (*tokens == NULL)
 		return (pl_node);
 	pl_node = handle_pipeline(tokens, pl_node, meta);
+	if (pl_node->success == LIE && parent)
+		parent->success = LIE;
 	return (pl_node);
 }
 

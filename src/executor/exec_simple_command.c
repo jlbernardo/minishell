@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 10:42:52 by iusantos          #+#    #+#             */
-/*   Updated: 2024/03/04 22:56:58 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/05 18:36:02 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ void	upd_simple_exit_status(int exit_status, t_meta *meta)
 
 	if (WIFSIGNALED(exit_status) != 0)
 	{
-		ft_putchar_fd('\n', STDERR_FILENO);
 		exit_code = 128 + WTERMSIG(exit_status);
 		exit_string = ft_itoa(exit_code);
 		add_upd_hashtable("?", exit_string, meta->hash);
