@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 21:12:03 by julberna          #+#    #+#             */
-/*   Updated: 2024/03/04 14:53:08 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/07 17:47:59 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	parser(t_meta *meta)
 	meta->tokens = temp;
 	get_path(&meta->ast, meta->hash);
 	if (meta->ast && meta->ast->success)
-		return (execute_heredocs(meta->ast, meta));
+		return (TRUTH);
 	return (LIE);
 }
 
