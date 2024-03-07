@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 17:27:16 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/03/03 17:29:32 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/07 18:17:31 by iusantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,6 @@ void	redir_quotes(t_redir **redir, int i, int len, char quote)
 {
 	if (!*redir)
 		return ;
-	if (ft_strcmp((*redir)->filename, "<<") == 0 && (*redir)->next != NULL)
-	{
-		redir_quotes(&(*redir)->next->next, 0, 0, 0);
-		return ;
-	}
 	while ((*redir)->filename[i] != '\0')
 	{
 		if (((*redir)->filename[i] == '"' || (*redir)->filename[i] == '\''))
