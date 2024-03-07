@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 19:35:43 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/03/03 19:42:57 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/07 18:01:53 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,51 +61,48 @@ int	exit_error(char *literal, char *reason)
 
 int	smaller_than_llmin(char *exit_code)
 {
-	int			ret;
 	char		*n;
 	char		*nn;
 	const char	*min_ll = "-9223372036854775808";
 
-	ret = LIE;
 	if (exit_code[0] == '-')
 	{
 		n = trim_prefix(&exit_code[1], "0");
 		nn = ft_calloc(ft_strlen(n) + 2, sizeof(char));
 		ft_strlcat(nn, &exit_code[0], 2);
 		ft_strlcat(nn, n, ft_strlen(n) + 2);
-		if (ft_strlen(nn) > ft_strlen(min_ll) || ft_strcmp(min_ll, nn) < 0)
-			ret = TRUTH;
+		if (ft_strlen(nn) < ft_strlen(min_ll) || ft_strcmp(min_ll, nn) > 0)
+			return (LIE);
 		free(n);
 		free(nn);
+		return (TRUTH);
 	}
-	return (ret);
+	return (LIE);
 }
 
 int	bigger_than_llmax(char *exit_code)
 {
-	int			ret;
 	char		*n;
 	char		*nn;
 	const char	*max_ll = "+9223372036854775807";
 
-	ret = LIE;
 	if (exit_code[0] == '-')
-		return (ret);
+		return (LIE);
 	if (exit_code[0] == '+')
 	{
 		n = trim_prefix(&exit_code[1], "0");
 		nn = ft_calloc(ft_strlen(n) + 2, sizeof(char));
 		ft_strlcat(nn, &exit_code[0], 2);
 		ft_strlcat(nn, n, ft_strlen(n) + 2);
-		if (ft_strlen(nn) > ft_strlen(max_ll) || ft_strcmp(max_ll, nn) < 0)
-			ret = TRUTH;
+		if (ft_strlen(nn) < ft_strlen(max_ll) || ft_strcmp(max_ll, nn) > 0)
+			return (LIE);
 		free(nn);
 	}
 	n = trim_prefix(exit_code, "0");
-	if (ft_strlen(n) > ft_strlen(&max_ll[1]) || ft_strcmp(&max_ll[1], n) < 0)
-		ret = TRUTH;
+	if (ft_strlen(n) < ft_strlen(max_ll + 1) || ft_strcmp(max_ll + 1, n) > 0)
+		return (LIE);
 	free(n);
-	return (ret);
+	return (TRUTH);
 }
 
 char	*trim_prefix(const char *s1, const char *set)
