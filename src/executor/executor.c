@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/03/07 17:45:07 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/03/07 20:20:53 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	executor(t_meta *meta)
 	int	og_stdout;
 
 	remove_quotes(meta->ast);
+	get_path(&meta->ast, meta->hash);
 	if (execute_heredocs(meta->ast, meta) == LIE)
 		return ;
 	og_stdin = dup(STDIN_FILENO);
