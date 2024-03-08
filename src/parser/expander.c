@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 18:32:55 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/03/08 17:32:07 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/08 18:47:24 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	replace_variable(char **input, t_hash **hash)
 	char	*var_name;
 	char	*var_value;
 
-	i = 0;
+	i = -1;
 	var_name = get_variable_name(*input, 0, 0, &i);
 	var_value = grab_value(var_name, hash);
 	temp = ft_strdup(*input);
@@ -54,7 +54,7 @@ char	*get_variable_name(char *literal, int dq, int sq, int *i)
 	int		j;
 	char	*var;
 
-	while (literal[*i])
+	while (literal[++(*i)])
 	{
 		if (literal[*i] == '"' && sq % 2 == 0)
 			dq++;
@@ -65,7 +65,6 @@ char	*get_variable_name(char *literal, int dq, int sq, int *i)
 				|| (literal[(*i) + 1] == '"' && (dq % 2 == 0))
 				|| literal[(*i) + 1] == '\'' ))
 			break ;
-		(*i)++;
 	}
 	j = ++(*i);
 	if (literal[j] && (ft_isalpha(literal[j]) || literal[j] == '_'))
