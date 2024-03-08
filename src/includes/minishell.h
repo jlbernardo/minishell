@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/03/05 16:41:52 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/08 15:19:49 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,6 +221,7 @@ int				ft_exit(t_meta *meta, t_word *wl);
 void			print_export(t_word *vars, t_hash **ht);
 
 /* CONDITIONALS */
+int				ft_isspace(char c);
 int				is_operand(char ch);
 int				sorted(t_word *vars);
 int				is_builtin(char *cmd);

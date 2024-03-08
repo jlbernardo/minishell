@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:16:16 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/03/03 19:06:23 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/08 15:18:21 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,22 +60,6 @@ void	delete_ht_entry(char *key, t_hash **ht)
 		prev = entry;
 		entry = entry->next;
 	}
-}
-
-int	is_readonly(char *literal)
-{
-	int			i;
-	const char	*read_only[7] = {"BASHOPTS", "BASH_VERSINFO", "EUID",
-		"PPID", "SHELLOPTS", "UID", NULL};
-
-	i = 0;
-	while (read_only[i])
-	{
-		if (ft_strcmp(read_only[i], literal) == 0)
-			return (TRUTH);
-		i++;
-	}
-	return (LIE);
 }
 
 int	unset_error(char *word, char *reason)

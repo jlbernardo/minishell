@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:49 by julberna          #+#    #+#             */
-/*   Updated: 2024/03/05 16:42:11 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/08 15:04:03 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	find_token(t_lexer *lex, t_token **tokens, int size)
 {
 	char	*str;
 
-	if (lex->ch == ' ')
+	if (ft_isspace(lex->ch))
 		return ;
 	else if (is_operand(lex->ch))
 	{
