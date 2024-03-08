@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 15:04:50 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/03/08 15:34:06 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/08 19:00:41 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ int	valid_number(char *arg)
 	int	i;
 
 	i = 0;
-	if (!ft_isdigit(arg[i]) && arg[i] != '+' && arg[i] != '-')
+	if ((!ft_isdigit(arg[i]) && arg[i] != '+' && arg[i] != '-')
+		|| (!ft_isdigit(arg[i]) && ft_strlen(arg) == 1))
 		return (LIE);
 	i++;
 	while (arg[i])
