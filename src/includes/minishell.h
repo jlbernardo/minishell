@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:44:05 by julberna          #+#    #+#             */
-/*   Updated: 2024/03/08 15:19:49 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/08 15:34:46 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,6 +225,7 @@ int				ft_isspace(char c);
 int				is_operand(char ch);
 int				sorted(t_word *vars);
 int				is_builtin(char *cmd);
+int				valid_number(char *arg);
 int				is_readonly(char *literal);
 int				has_variable(char *literal);
 int				valid_variable(char *literal);

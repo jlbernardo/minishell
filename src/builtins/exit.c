@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 19:35:43 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/03/07 18:40:11 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/08 15:36:01 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ int	ft_exit(t_meta *meta, t_word *wl)
 	if (wl->next)
 	{
 		arg = wl->next->word;
-		if ((!ft_isdigit(*arg) && *arg != '-' && *arg != '+')
-			|| bigger_than_llmax(arg) || smaller_than_llmin(arg))
+		if (!valid_number(arg) || bigger_than_llmax(arg)
+			|| smaller_than_llmin(arg))
 			exit_code = exit_error(arg, "numeric argument required");
 		else if (wl->next->next)
 		{

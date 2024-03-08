@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 15:04:50 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/03/08 15:18:24 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/08 15:34:06 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,21 @@ int	is_readonly(char *literal)
 		i++;
 	}
 	return (LIE);
+}
+
+int	valid_number(char *arg)
+{
+	int	i;
+
+	i = 0;
+	if (!ft_isdigit(arg[i]) && arg[i] != '+' && arg[i] != '-')
+		return (LIE);
+	i++;
+	while (arg[i])
+	{
+		if (!ft_isdigit(arg[i]))
+			return (LIE);
+		i++;
+	}
+	return (TRUTH);
 }
