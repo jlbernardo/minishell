@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 18:47:27 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/03/07 21:57:32 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/08 16:44:39 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	check_flag(t_word *wl, int *flag)
 	char	*token;
 
 	ret = LIE;
-	if (wl && wl->word[0] == '-')
+	if (wl && wl->word[0] == '-' && wl->word[1])
 	{
 		token = wl->word + 1;
 		token = ft_strtrim(token, "n");
