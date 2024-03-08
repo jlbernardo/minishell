@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:32:57 by iusantos          #+#    #+#             */
-/*   Updated: 2024/03/06 18:44:55 by iusantos         ###   ########.fr       */
+/*   Updated: 2024/03/08 16:22:29 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,17 +104,27 @@ int	red_heredoc(t_redir *r, int cmd_nbr)
 
 int	red_append(t_redir *r)
 {
-	int	fd;
+	int			fd;
+	struct stat	buf;
 
-	if (access(r->filename, F_OK) == 0)
+	ft_memset(&buf, 0, sizeof(buf));
+	stat(r->filename, &buf);
+	if (S_ISDIR(buf.st_mode) != 0)
 	{
-		if (access(r->filename, W_OK) != 0)
-		{
-			print_np_error_msg(r->filename);
-			return (LIE);
-		}
+		print_dir_error_msg(r->filename);
+		return (LIE);
+	}
+	if (access(r->filename, F_OK) == 0 && access(r->filename, W_OK) != 0)
+	{
+		print_np_error_msg(r->filename);
+		return (LIE);
 	}
 	fd = open(r->filename, O_WRONLY | O_APPEND | O_CREAT, 0644);
+	if (fd == -1)
+	{
+		print_nsf_error_msg(r->filename);
+		return (LIE);
+	}
 	dup2(fd, STDOUT_FILENO);
 	close(fd);
 	return (TRUTH);
