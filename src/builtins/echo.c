@@ -6,36 +6,36 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 18:47:27 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/03/03 13:01:14 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/08 16:44:39 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 int	echo_error(void);
-int	check_flag(t_word *wl);
+int	check_flag(t_word *wl, int *flag);
 
 int	echo(t_meta *meta, t_word *wl)
 {
-	int			ret;
+	int			flag;
 	t_word		*temp;
-	const int	flag = check_flag(wl);
 
 	(void)meta;
+	flag = LIE;
 	temp = wl;
 	temp = temp->next;
-	if (flag)
+	while (check_flag(temp, &flag))
 		temp = temp->next;
 	while (temp)
 	{
-		ret = write(STDOUT_FILENO, temp->word, ft_strlen(temp->word));
-		if (ret == -1)
+		if (write(STDOUT_FILENO, temp->word, ft_strlen(temp->word)) == -1)
 			return (echo_error());
 		temp = temp->next;
 		if (temp)
-			ret = write(STDOUT_FILENO, " ", 1);
-		if (ret == -1)
-			return (echo_error());
+		{
+			if (write(STDOUT_FILENO, " ", 1) == -1)
+				return (echo_error());
+		}
 	}
 	if (!flag)
 		write(STDOUT_FILENO, "\n", 1);
@@ -48,9 +48,22 @@ int	echo_error(void)
 	return (-1);
 }
 
-int	check_flag(t_word *wl)
+int	check_flag(t_word *wl, int *flag)
 {
-	if (wl->next && !ft_strncmp(wl->next->word, "-n", 1))
-		return (TRUTH);
-	return (LIE);
+	int		ret;
+	char	*token;
+
+	ret = LIE;
+	if (wl && wl->word[0] == '-' && wl->word[1])
+	{
+		token = wl->word + 1;
+		token = ft_strtrim(token, "n");
+		if (ft_strlen(token) == 0)
+		{
+			*flag = TRUTH;
+			ret = TRUTH;
+		}
+		free(token);
+	}
+	return (ret);
 }

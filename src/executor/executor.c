@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:05:13 by iusantos          #+#    #+#             */
-/*   Updated: 2024/03/04 21:15:44 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/07 20:20:53 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,12 @@ void	executor(t_meta *meta)
 	int	og_stdin;
 	int	og_stdout;
 
+	remove_quotes(meta->ast);
+	get_path(&meta->ast, meta->hash);
+	if (execute_heredocs(meta->ast, meta) == LIE)
+		return ;
 	og_stdin = dup(STDIN_FILENO);
 	og_stdout = dup(STDOUT_FILENO);
-	remove_quotes(meta->ast);
 	if (meta->ast->right == NULL)
 		run_simple_command(meta->ast->left, meta);
 	else

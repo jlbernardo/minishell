@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 19:35:43 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/03/03 19:42:57 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/08 15:36:01 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ int	ft_exit(t_meta *meta, t_word *wl)
 	if (wl->next)
 	{
 		arg = wl->next->word;
-		if ((!ft_isdigit(*arg) && *arg != '-' && *arg != '+')
-			|| bigger_than_llmax(arg) || smaller_than_llmin(arg))
+		if (!valid_number(arg) || bigger_than_llmax(arg)
+			|| smaller_than_llmin(arg))
 			exit_code = exit_error(arg, "numeric argument required");
 		else if (wl->next->next)
 		{
@@ -66,15 +66,17 @@ int	smaller_than_llmin(char *exit_code)
 	char		*nn;
 	const char	*min_ll = "-9223372036854775808";
 
-	ret = LIE;
-	if (exit_code[0] == '-')
+	ret = TRUTH;
+	if (exit_code[0] == '+')
+		return (LIE);
+	else
 	{
 		n = trim_prefix(&exit_code[1], "0");
 		nn = ft_calloc(ft_strlen(n) + 2, sizeof(char));
 		ft_strlcat(nn, &exit_code[0], 2);
 		ft_strlcat(nn, n, ft_strlen(n) + 2);
-		if (ft_strlen(nn) > ft_strlen(min_ll) || ft_strcmp(min_ll, nn) < 0)
-			ret = TRUTH;
+		if (ft_strlen(nn) < ft_strlen(min_ll) || ft_strcmp(min_ll, nn) >= 0)
+			ret = LIE;
 		free(n);
 		free(nn);
 	}
@@ -86,25 +88,23 @@ int	bigger_than_llmax(char *exit_code)
 	int			ret;
 	char		*n;
 	char		*nn;
-	const char	*max_ll = "+9223372036854775807";
+	const char	*max_ll = "9223372036854775807";
 
-	ret = LIE;
+	ret = TRUTH;
 	if (exit_code[0] == '-')
-		return (ret);
-	if (exit_code[0] == '+')
+		return (LIE);
+	else
 	{
-		n = trim_prefix(&exit_code[1], "0");
-		nn = ft_calloc(ft_strlen(n) + 2, sizeof(char));
-		ft_strlcat(nn, &exit_code[0], 2);
-		ft_strlcat(nn, n, ft_strlen(n) + 2);
-		if (ft_strlen(nn) > ft_strlen(max_ll) || ft_strcmp(max_ll, nn) < 0)
-			ret = TRUTH;
+		if (exit_code[0] == '+')
+			exit_code++;
+		n = trim_prefix(exit_code, "0");
+		nn = ft_calloc(ft_strlen(n) + 1, sizeof(char));
+		ft_strlcat(nn, n, ft_strlen(n) + 1);
+		if (ft_strlen(nn) < ft_strlen(max_ll) || ft_strcmp(max_ll, nn) >= 0)
+			ret = LIE;
+		free(n);
 		free(nn);
 	}
-	n = trim_prefix(exit_code, "0");
-	if (ft_strlen(n) > ft_strlen(&max_ll[1]) || ft_strcmp(&max_ll[1], n) < 0)
-		ret = TRUTH;
-	free(n);
 	return (ret);
 }
 

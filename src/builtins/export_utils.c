@@ -6,7 +6,7 @@
 /*   By: Juliany Bernardo <julberna@student.42sp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 18:32:01 by Juliany Ber       #+#    #+#             */
-/*   Updated: 2024/02/25 00:07:00 by Juliany Ber      ###   ########.fr       */
+/*   Updated: 2024/03/08 15:12:00 by Juliany Ber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,23 +93,6 @@ int	sorted(t_word *vars)
 		if (ft_strcmp(vars->word, vars->next->word) > 0)
 			return (LIE);
 		vars = vars->next;
-	}
-	return (TRUTH);
-}
-
-int	valid_variable(char *literal)
-{
-	int	i;
-
-	i = 0;
-	if (literal[i] != '_' && !ft_isalpha(literal[i]))
-		return (LIE);
-	i++;
-	while (literal[i] && literal[i] != '=')
-	{
-		if (literal[i] != '_' && !ft_isalnum(literal[i]))
-			return (LIE);
-		i++;
 	}
 	return (TRUTH);
 }
